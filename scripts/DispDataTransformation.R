@@ -11,7 +11,7 @@ count(db, is.na(Body.mass)) # Na = 1216 dp
 
 dbna <- filter(db, is.na(Body.mass))
 
-dbnasp<- count(dbna, Taxon, Species_ID_gbif)#Amphibian (149), bird (2), fish (881), invertebrate (116), mammal(68)
+dbnasp<- count(dbna, Taxon, Species_ID_gbif)#Amphibian (149), bird (2), fish (881), invertebrate (116), mammal(68), reptile (17)
 
 dbna |> 
   pull(Species_ID_gbif) |>
@@ -21,11 +21,18 @@ dbna |>
 # Need to find the body masses for as many of these species as we can, FishBase, avibase, amphibia web, invertebrate trait database
 
 
-####Tidying up the data####
-#Remove na
-db1 <- db |>
-  filter(!is.na(Body.mass))
 
+####Tidying up the data####
+#Remove rows with missing, zero, or infinite values for dispersal distance and body mass
+db1 <- db |>
+  filter(
+    !is.na(Value),
+    !is.infinite(Value),
+    Value != 0,          # Remove rows with Value equal to 0
+    !is.na(Body.mass),
+    !is.infinite(Body.mass),
+    Body.mass > 0
+  )
 #converting units to meters
 # Conversion factors
 conversion_factors <- data.frame(
@@ -92,12 +99,9 @@ db4 <- db3 |>
   relocate(Body.mass.Units.convert, .after = Body.mass.Units) |>
   select(-Body.mass.Units)
 
+#Further filtering
+#Removing m/h so we just have m - this removes all the Reptile data (n = 17)
+db5 <- db4 |>
+  filter(Unit != "m/h")
 
-
-
-
-
-
-
-
-
+write_csv(db5, "DispersalTransformed.csv")
