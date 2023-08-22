@@ -7,30 +7,14 @@ db <- read.csv("DispersalUntransformed.csv")
 
 
 ####Figuring out data gaps#### 
-count(db, is.na(Body.mass)) # Na = 582 dp
+count(db, is.na(Body.mass)) # Na = 566 dp
 
 dbna <- filter(db, is.na(Body.mass))
 
-count(dbna, Taxon)#Amphibian (149), bird (2), fish (247), invertebrate (116), mammal(68)
-
-dbna |> 
-  pull(Species_ID_gbif) |>
-  n_distinct() 
-#215 species 
-
+count(dbna, Taxon)#Data points: Amphibian (133, bird (2), fish (247), invertebrate (116), mammal(68)
 
 
 ####Tidying up the data####
-#Remove rows with missing, zero, or infinite values for dispersal distance and body mass
-db1 <- db |>
-  filter(
-    !is.na(Value),
-    !is.infinite(Value),
-    Value != 0,          # Remove rows with Value equal to 0
-    !is.na(Body.mass),
-    !is.infinite(Body.mass),
-    Body.mass > 0
-  )
 #converting units to meters
 # Conversion factors
 conversion_factors <- data.frame(
@@ -38,7 +22,7 @@ conversion_factors <- data.frame(
   factor = c(10000, 1000, 1609.34)
 )
 
-db2 <- db1 |>
+db1 <- db |>
   left_join(conversion_factors, by = c("Units" = "unit")) |>
   mutate(
     Value = case_when(
@@ -63,7 +47,7 @@ conversion_factors1 <- data.frame(
   factor = c(1000, 1) # Conversion to grams
 )
 
-db3 <- db2 |>
+db2 <- db1 |>
   left_join(conversion_factors1, by = c("Body.mass.database.Unit" = "unit")) |>
   mutate(
     Body.mass = case_when(
@@ -83,7 +67,7 @@ db3 <- db2 |>
 # Conversion factor for kg to g
 conversion_factor_kg_to_g <- 1000
 
-db4 <- db3 |>
+db3 <- db2 |>
   mutate(
     Body.mass = case_when(
       Body.mass.Units == "kg" & !is.na(Body.mass) ~ Body.mass * conversion_factor_kg_to_g,
@@ -99,7 +83,17 @@ db4 <- db3 |>
 
 #Further filtering
 #Removing m/h so we just have m - this removes all the Reptile data (n = 17)
-db5 <- db4 |>
-  filter(Unit != "m/h")
+#Remove rows with missing, zero, or infinite values for dispersal distance and body mass
+db4 <- db3 |>
+  filter(Unit != "m/h") |>
+  select(-Body.mass.Units.convert, Body.mass.unit = Body.mass.db.Unit.convert) |>
+  filter(
+    !is.na(Value),
+    !is.infinite(Value),
+    Value != 0,          # Remove rows with Value equal to 0
+    !is.na(Body.mass),
+    !is.infinite(Body.mass),
+    Body.mass > 0
+  )
 
-write_csv(db5, "DispersalTransformed.csv")
+write_csv(db4, "DispersalTransformed.csv")

@@ -10,7 +10,9 @@ db5 <- read.csv("DispersalTransformed.csv")
 log_Body.mass <- log(db5$Body.mass)
 log_Distance <- log(db5$Value)
 
+#Linear regression model and extracting the slope (coefficient)
 regression  <- lm(log_Distance ~ log_Body.mass, data = db5)
+summary(regression)
 
 # Create a scatter plot 
 scatter_plot <- ggplot(db5, aes(x = log_Body.mass, y = log_Distance)) +
@@ -19,11 +21,10 @@ scatter_plot <- ggplot(db5, aes(x = log_Body.mass, y = log_Distance)) +
   labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
   theme_minimal()
 
-# Print the scatter plot with linear regression line
 print(scatter_plot)
 
 ####Linear regression for mammals####
-# Filter data for mammals (n = 3596)
+# Filter data for mammals (n = 1567)
 mammdb<- db5 |>
   filter(Taxon == "Mammal")
 
@@ -33,6 +34,7 @@ mammdb$log_Distance <- log(mammdb$Value)
 
 # Perform linear regression
 regression_mamm <- lm(log_Distance ~ log_Body.mass, data = mammdb)
+summary(regression_mamm)
 
 # Create a scatter plot
 scatter_plot_mamm <- ggplot(mammdb, aes(x = log_Body.mass, y = log_Distance)) +
@@ -41,12 +43,11 @@ scatter_plot_mamm <- ggplot(mammdb, aes(x = log_Body.mass, y = log_Distance)) +
   labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
   theme_minimal()
 
-# Print the scatter plot with linear regression line for mammals
 print(scatter_plot_mamm)
 
 
 ####Linear regression for birds####
-# Filter data for bird (n = 2913)
+# Filter data for bird (n = 2222)
 bdb<- db5 |>
   filter(Taxon == "Bird")
 
@@ -56,6 +57,7 @@ bdb$log_Distance <- log(bdb$Value)
 
 # Perform linear regression
 regression_b <- lm(log_Distance ~ log_Body.mass, data = bdb)
+summary(regression_b)
 
 # Create a scatter plot
 scatter_plot_b <- ggplot(bdb, aes(x = log_Body.mass, y = log_Distance)) +
@@ -64,11 +66,10 @@ scatter_plot_b <- ggplot(bdb, aes(x = log_Body.mass, y = log_Distance)) +
   labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
   theme_minimal()
 
-# Print the scatter plot with linear regression line for mammals
 print(scatter_plot_b)
 
 ####Linear regression for amphibian####
-# Filter data for amphibian (n = 41)
+# Filter data for amphibian (n = 57)
 adb<- db5 |>
   filter(Taxon == "Amphibian")
 
@@ -78,6 +79,7 @@ adb$log_Distance <- log(adb$Value)
 
 # Perform linear regression
 regression_a <- lm(log_Distance ~ log_Body.mass, data = adb)
+summary(regression_a)
 
 # Create a scatter plot
 scatter_plot_a <- ggplot(adb, aes(x = log_Body.mass, y = log_Distance)) +
@@ -86,11 +88,10 @@ scatter_plot_a <- ggplot(adb, aes(x = log_Body.mass, y = log_Distance)) +
   labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
   theme_minimal()
 
-# Print the scatter plot with linear regression line for mammals
 print(scatter_plot_a)
 
 ####Linear regression for fish####
-# Filter data for Fish (n = 632, only one body size too - wait till we get the fish base masses)
+# Filter data for Fish (n = 619)
 fdb<- db5 |>
   filter(Taxon == "Fish")
 
@@ -100,6 +101,7 @@ fdb$log_Distance <- log(fdb$Value)
 
 # Perform linear regression
 regression_f <- lm(log_Distance ~ log_Body.mass, data = fdb)
+summary(regression_f)
 
 # Create a scatter plot
 scatter_plot_f <- ggplot(fdb, aes(x = log_Body.mass, y = log_Distance)) +
@@ -108,7 +110,6 @@ scatter_plot_f <- ggplot(fdb, aes(x = log_Body.mass, y = log_Distance)) +
   labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
   theme_minimal()
 
-# Print the scatter plot with linear regression line for mammals
 print(scatter_plot_f)
 
 ####Linear regression for invertebrate####
@@ -122,6 +123,7 @@ idb$log_Distance <- log(idb$Value)
 
 # Perform linear regression
 regression_i <- lm(log_Distance ~ log_Body.mass, data = idb)
+summary(regression_i)
 
 # Create a scatter plot
 scatter_plot_i <- ggplot(idb, aes(x = log_Body.mass, y = log_Distance)) +
@@ -130,5 +132,4 @@ scatter_plot_i <- ggplot(idb, aes(x = log_Body.mass, y = log_Distance)) +
   labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
   theme_minimal()
 
-# Print the scatter plot with linear regression line for mammals
 print(scatter_plot_i)
