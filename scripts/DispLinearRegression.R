@@ -90,7 +90,7 @@ scatter_plot_a <- ggplot(adb, aes(x = log_Body.mass, y = log_Distance)) +
 print(scatter_plot_a)
 
 ####Linear regression for fish####
-# Filter data for Fish (n = 13, only one body size too - wait till we get the fish base masses)
+# Filter data for Fish (n = 632, only one body size too - wait till we get the fish base masses)
 fdb<- db5 |>
   filter(Taxon == "Fish")
 

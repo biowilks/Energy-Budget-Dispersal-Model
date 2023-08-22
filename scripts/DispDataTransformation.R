@@ -7,18 +7,16 @@ db <- read.csv("DispersalUntransformed.csv")
 
 
 ####Figuring out data gaps#### 
-count(db, is.na(Body.mass)) # Na = 1216 dp
+count(db, is.na(Body.mass)) # Na = 582 dp
 
 dbna <- filter(db, is.na(Body.mass))
 
-dbnasp<- count(dbna, Taxon, Species_ID_gbif)#Amphibian (149), bird (2), fish (881), invertebrate (116), mammal(68), reptile (17)
+count(dbna, Taxon)#Amphibian (149), bird (2), fish (247), invertebrate (116), mammal(68)
 
 dbna |> 
   pull(Species_ID_gbif) |>
   n_distinct() 
-#268 species 
-
-# Need to find the body masses for as many of these species as we can, FishBase, avibase, amphibia web, invertebrate trait database
+#215 species 
 
 
 
