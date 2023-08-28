@@ -6,13 +6,26 @@ setwd('C:/Users/xr49abiw/Documents/DispersalProject/data')
 db <- read.csv("DispersalUntransformed.csv")
 
 
-####Figuring out data gaps#### 
-count(db, is.na(Body.mass)) # Na = 566 dp
+####Summarising data#### 
+result <- db |>
+  group_by(Taxon) |>
+  summarize(
+    na_count = sum(is.na(Body.mass)),
+    total_count = n(),
+    proportion_available = 1 - sum(is.na(Body.mass)) / total_count
+  )
 
-dbna <- filter(db, is.na(Body.mass))
+total_result <- result|>
+  summarise(
+    Taxon = "Total",
+    na_count = sum(na_count),
+    total_count = sum(total_count),
+    proportion_available = sum(total_count - na_count) / sum(total_count)
+  )
 
-count(dbna, Taxon)#Data points: Amphibian (133, bird (2), fish (247), invertebrate (116), mammal(68)
+final_result <- bind_rows(result, total_result)
 
+print(final_result)
 
 ####Tidying up the data####
 #converting units to meters
