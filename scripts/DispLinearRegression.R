@@ -5,27 +5,69 @@ setwd('C:/Users/xr49abiw/Documents/DispersalProject/data')
 
 db5 <- read.csv("DispersalTransformed.csv")
 
-####Linear regression for all data ####
+#filtering for mean, median and maximum distances
+meandb <- filter(db5, Statistic == "Mean")
+meddb <- filter(db5, Statistic == "Median")
+maxdb <- filter(db5, Statistic == "Maximum")
+
+####Linear regression for mean####
 #log transform
-log_Body.mass <- log(db5$Body.mass)
-log_Distance <- log(db5$Value)
+log_Body.mass_mean <- log(meandb$Body.mass)
+log_Distance_mean <- log(meandb$Value)
 
 #Linear regression model and extracting the slope (coefficient)
-regression  <- lm(log_Distance ~ log_Body.mass, data = db5)
-summary(regression)
+regression_mean  <- lm(log_Distance_mean ~ log_Body.mass_mean, data = meandb)
+summary(regression_mean)
 
 # Create a scatter plot 
-scatter_plot <- ggplot(db5, aes(x = log_Body.mass, y = log_Distance)) +
+scatter_plot_mean <- ggplot(meandb, aes(x = log_Body.mass_mean, y = log_Distance_mean)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
-  labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
+  labs(x = "Log Body mass (g)", y = "Log mean Dispersal distance (m)") +
   theme_minimal()
 
-print(scatter_plot)
+print(scatter_plot_mean)
+
+####Linear regression for median####
+#log transform
+log_Body.mass_med <- log(meddb$Body.mass)
+log_Distance_med <- log(meddb$Value)
+
+#Linear regression model and extracting the slope (coefficient)
+regression_med  <- lm(log_Distance_med ~ log_Body.mass_med, data = meddb)
+summary(regression_med)
+
+# Create a scatter plot 
+scatter_plot_med <- ggplot(meddb, aes(x = log_Body.mass_med, y = log_Distance_med)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(x = "Log Body mass (g)", y = "Log median Dispersal distance (m)") +
+  theme_minimal()
+
+print(scatter_plot_med)
+
+####Linear regression for maximum####
+#log transform
+log_Body.mass_max <- log(maxdb$Body.mass)
+log_Distance_max <- log(maxdb$Value)
+
+#Linear regression model and extracting the slope (coefficient)
+regression_max  <- lm(log_Distance_max ~ log_Body.mass_max, data = maxdb)
+summary(regression_max)
+
+# Create a scatter plot 
+scatter_plot_max <- ggplot(maxdb, aes(x = log_Body.mass_max, y = log_Distance_max)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(x = "Log Body mass (g)", y = "Log maximum Dispersal distance (m)") +
+  theme_minimal()
+
+print(scatter_plot_max)
+
 
 ####Linear regression for mammals####
-# Filter data for mammals (n = 1567)
-mammdb<- db5 |>
+# Filter data for mammals maximum distance (n = 734)
+mammdb<- maxdb |>
   filter(Taxon == "Mammal")
 
 # Perform log transformation
@@ -45,10 +87,31 @@ scatter_plot_mamm <- ggplot(mammdb, aes(x = log_Body.mass, y = log_Distance)) +
 
 print(scatter_plot_mamm)
 
+# Filter data for mammals mean distance (n = 734)
+mammdb_mean<- meandb |>
+  filter(Taxon == "Mammal")
+
+# Perform log transformation
+mammdb_mean$log_Body.mass <- log(mammdb_mean$Body.mass)
+mammdb_mean$log_Distance <- log(mammdb_mean$Value)
+
+# Perform linear regression
+regression_mamm_mean <- lm(log_Distance ~ log_Body.mass, data = mammdb_mean)
+summary(regression_mamm_mean)
+
+# Create a scatter plot
+scatter_plot_mamm_mean <- ggplot(mammdb_mean, aes(x = log_Body.mass, y = log_Distance)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(x = "Log Body mass (g)", y = "Log Dispersal distance (m)") +
+  theme_minimal()
+
+print(scatter_plot_mamm_mean)
+
 
 ####Linear regression for birds####
-# Filter data for bird (n = 2222)
-bdb<- db5 |>
+# Filter data for bird (n = 2665)
+bdb<- maxdb |>
   filter(Taxon == "Bird")
 
 # Perform log transformation
@@ -69,8 +132,8 @@ scatter_plot_b <- ggplot(bdb, aes(x = log_Body.mass, y = log_Distance)) +
 print(scatter_plot_b)
 
 ####Linear regression for amphibian####
-# Filter data for amphibian (n = 57)
-adb<- db5 |>
+# Filter data for amphibian (n = 134)
+adb<- maxdb |>
   filter(Taxon == "Amphibian")
 
 # Perform log transformation
@@ -91,8 +154,8 @@ scatter_plot_a <- ggplot(adb, aes(x = log_Body.mass, y = log_Distance)) +
 print(scatter_plot_a)
 
 ####Linear regression for fish####
-# Filter data for Fish (n = 619)
-fdb<- db5 |>
+# Filter data for Fish (n = 171)
+fdb<- maxdb |>
   filter(Taxon == "Fish")
 
 # Perform log transformation
@@ -114,7 +177,7 @@ print(scatter_plot_f)
 
 ####Linear regression for invertebrate####
 # Filter data for invertebrate (n = 4)
-idb<- db5 |>
+idb<- maxdb |>
   filter(Taxon == "Invertebrate")
 
 # Perform log transformation

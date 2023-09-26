@@ -27,6 +27,13 @@ final_result <- bind_rows(result, total_result)
 
 print(final_result)
 
+#counting data 
+db |> 
+  pull(`Class_gbif`) |>
+  n_distinct() 
+
+#MetaRef (15), Reference (1502) - may be an over-estimation, species (1608), gbif taxonomic class (10)
+
 ####Tidying up the data####
 #converting units to meters
 # Conversion factors
