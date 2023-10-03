@@ -8,7 +8,7 @@ db <- read.csv("DispersalUntransformed.csv")
 
 ####Summarising data#### 
 result <- db |>
-  group_by(Taxon) |>
+  group_by(Class_gbif) |>
   summarize(
     na_count = sum(is.na(Body.mass)),
     total_count = n(),
@@ -117,3 +117,4 @@ db4 <- db3 |>
   )
 
 write_csv(db4, "DispersalTransformed.csv")
+
