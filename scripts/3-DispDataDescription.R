@@ -34,6 +34,68 @@ maxdb |>
 #       Running  670
 #      Swimming  184
 
+
+###Summarising data### 
+#Body mass coverage for data
+Bresult <- db |>
+  group_by(Class_gbif) |>
+  summarize(
+    na_count = sum(is.na(Body.mass)),
+    total_count = n(),
+    proportion_available = 1 - sum(is.na(Body.mass)) / total_count
+  )
+
+Btotal_result <- Bresult|>
+  summarise(
+    Class_gbif = "Total",
+    na_count = sum(na_count),
+    total_count = sum(total_count),
+    proportion_available = sum(total_count - na_count) / sum(total_count)
+  )
+
+Bfinal_result <- bind_rows(Bresult, Btotal_result)
+
+print(Bfinal_result)
+
+#Movement mode coverage for data
+Mresult <- db |>
+  group_by(Class_gbif) |>
+  summarize(
+    na_count = sum(is.na(Movement.Mode)),
+    total_count = n(),
+    proportion_available = 1 - sum(is.na(Movement.Mode)) / total_count
+  )
+
+Mtotal_result <- Bresult|>
+  summarise(
+    Class_gbif = "Total",
+    na_count = sum(na_count),
+    total_count = sum(total_count),
+    proportion_available = sum(total_count - na_count) / sum(total_count)
+  )
+
+Mfinal_result <- bind_rows(Mresult, Mtotal_result)
+
+print(Mfinal_result)
+
+#counting data 
+db |> 
+  pull(MetaRef) |>
+  n_distinct() 
+
+unique(db$Class_gbif)
+
+#Observations (6790) 
+#Species (1605)
+#Class (10)
+#Family (314)
+#MetaRef (13, minus 1 for Empirical)
+#Reference (1502) - may be an over-estimation
+#Movement mode (4 - minus 1 for NA)
+
+
+
+
 #Summarising data for mean
 meandb <- meandb |>
   filter(!is.na(Movement.Mode))
