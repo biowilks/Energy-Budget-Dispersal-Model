@@ -5,6 +5,14 @@ setwd('C:/Users/xr49abiw/Documents/DispersalProject/data')
 
 db <- read.csv("DispersalUntransformed.csv")
 
+#check the data
+db1 <- db |>
+  filter( Statistic == "Maximum") |>
+  filter(
+    !is.na(Value), !is.na(Body.mass))
+
+
+
 db1 <- db |>
   filter(Units != "km/h", Units != "ha") |>
   filter(

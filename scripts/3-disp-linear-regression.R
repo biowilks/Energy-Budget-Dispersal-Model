@@ -33,13 +33,13 @@ modelfish<-read.csv("swimdispdistance.csv")
 ###Creating plots for each movement mode
 #setting colours
 mov_colour <- c('Flying' = 'red', 'Swimming' = 'blue', 'Running' = 'palegreen4',
-                'Model Flying' = 'darkred', 'Model Swimming' = 'midnightblue', 'Model Running' = 'darkgreen')
+                'Model Flying' ='#660000', 'Model Swimming' = '#000066', 'Model Running' = '#003300')
 
 ##flying birds
 scatter_plot_fly <- fly_max |>
   ggplot(aes(x = Body.mass, y = Value, color = Movement.Mode)) +
   geom_point(size = 2, alpha = 0.2) +
-  geom_smooth(method = "gam", se = T) +
+  geom_smooth(method = "gam",  linetype = "dashed", se = T) +
   geom_line(data = modelbird, aes(x = m_C, y = disp_dist), linewidth = 1, color = mov_colour['Model Flying']) +
   labs(x = "Log10 Body mass (g)", y = "Log10 maximum dispersal distance (m)") +
   scale_color_manual(name = "Movement Mode", values = mov_colour, guide = "none")+
@@ -54,13 +54,15 @@ scatter_plot_fly <- fly_max |>
     breaks = c(1e0, 1e2, 1e4, 1e6, 1e8),
     limits = c(1e0, 1e8)
   ) +
-  ggtitle("")+
+  ggtitle("a")+
   theme(
-    axis.text.x = element_text(size = 18),
-    axis.text.y = element_text(size = 18),
-    axis.text = element_text(size = 18),
-    axis.title = element_text(size = 18),
-    title = element_text(size = 18, face = "bold"))
+    axis.text.x = element_text(size = 25),
+    axis.text.y = element_text(size = 25),
+    axis.text = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    title = element_text(size = 25, face = "bold"),
+    legend.position = "none"
+  )
 
 plot(scatter_plot_fly)
 
@@ -68,7 +70,7 @@ plot(scatter_plot_fly)
 scatter_plot_run <- run_max |>
   ggplot(aes(x = Body.mass, y = Value, color = Movement.Mode)) +
   geom_point(size = 2, alpha = 0.2) +
-  geom_smooth(method = "gam", se = T) +
+  geom_smooth(method = "gam",linetype = "dashed", se = T) +
   geom_line(data = modelmamm, aes(x = m_C, y = disp_dist), linewidth = 1, color = mov_colour['Model Running']) +
   labs(x = "Log10 Body mass (g)", y = "Log10 maximum dispersal distance (m)") +
   scale_color_manual(name = "Movement Mode", values = mov_colour, guide = "none") +
@@ -83,13 +85,15 @@ scatter_plot_run <- run_max |>
     breaks = c(1e0, 1e2, 1e4, 1e6, 1e8),
     limits = c(1e0, 1e8)
   ) +
-  ggtitle("")+
+  ggtitle("b")+
   theme(
-    axis.text.x = element_text(size = 18),
-    axis.text.y = element_text(size = 18),
-    axis.text = element_text(size = 18),
-    axis.title = element_text(size = 18),
-    title = element_text(size = 18, face = "bold"))
+    axis.text.x = element_text(size = 25),
+    axis.text.y = element_text(size = 25),
+    axis.text = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    title = element_text(size = 25, face = "bold"),
+    legend.position = "none"
+  )
 
 
 plot(scatter_plot_run)
@@ -98,7 +102,7 @@ plot(scatter_plot_run)
 scatter_plot_swim <- swim_max |>
   ggplot(aes(x = Body.mass, y = Value, color = Movement.Mode)) +
   geom_point(size = 2, alpha = 0.2) +
-  geom_smooth(method = "gam", se = T) +
+  geom_smooth(method = "gam",linetype = "dashed", se = T) +
   geom_line(data = modelfish, aes(x = m_C, y = disp_dist), linewidth = 1, color = mov_colour['Model Swimming']) +
   labs(x = "Log10 Body mass (g)", y = "Log10 maximum dispersal distance (m)") +
   scale_color_manual(name = "Movement Mode", values = mov_colour, guide = "none")+
@@ -113,18 +117,19 @@ scatter_plot_swim <- swim_max |>
     breaks = c(1e0, 1e2, 1e4, 1e6, 1e8),
     limits = c(1e0, 1e8)
   ) +
-  ggtitle("") +
+  ggtitle("c")+
   theme(
-    axis.text.x = element_text(size = 18),
-    axis.text.y = element_text(size = 18),
-    axis.text = element_text(size = 18),
-    axis.title = element_text(size = 18),
-    title = element_text(size = 18, face = "bold"))
-
+    axis.text.x = element_text(size = 25),
+    axis.text.y = element_text(size = 25),
+    axis.text = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    title = element_text(size = 25, face = "bold"),
+    legend.position = "none"
+  )
 
 plot(scatter_plot_swim)
 
-grid.arrange(scatter_plot_fly, scatter_plot_run,scatter_plot_swim, ncol = 2)
+plot_grid(scatter_plot_fly,scatter_plot_run,scatter_plot_swim, nrow = 1)
 
 
 ##combined graph
