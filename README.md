@@ -1,4 +1,4 @@
-# DispersalProject
+# Energy Budget Model
 
 A [workflowr][] project.
 
