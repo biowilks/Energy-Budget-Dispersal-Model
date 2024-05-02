@@ -88,12 +88,14 @@ energy_fun <- function(m_C,movement_mode,disp_dist) {
 
   ## Calculate time in h
   t = disp_dist/v_C
-
   ## Calculate total energy cost in J
   E_C = (t*FMR_disp)
-  ## Calculate energy remaining after moving the disp dist in J
+  ## Calculate energy remaining after moving the disp dist in J++
   E_R = (E_0-E_C)
-  dsenergy.disp <- cbind(m_C_kg, E_C, E_R, t)
+  ##Calculate relative energy efficiency (relative to a species available energy) in J
+  E_E = (1-(E_C/E_0))
+
+  dsenergy.disp <- cbind(m_C_kg, E_C, E_R, E_E, t)
   return(dsenergy.disp)
 }
 

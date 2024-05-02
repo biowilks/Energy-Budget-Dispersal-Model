@@ -61,7 +61,7 @@ energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
 energy
 
 ###FIGURE 3b####
-# Calculate energy  across different distances for running mammals
+# Calculate relative energy efficiency across different distances for small and large running mammals
 # For different body masses
 ds.energyrunsmall  <- data.frame()
 
@@ -80,26 +80,23 @@ for(disp_dist in seq(0,5000000, length = 10000)) {
 }
 
 # Filter out negative values from both datasets
-ds.energyrunsmall_filtered <- ds.energyrunsmall[ds.energyrunsmall$E_R >= 0, ]
-ds.energyrunlarge_filtered <- ds.energyrunlarge[ds.energyrunlarge$E_R >= 0, ]
+ds.energyrunsmall_filtered <- ds.energyrunsmall[ds.energyrunsmall$E_E >= 0, ]
+ds.energyrunlarge_filtered <- ds.energyrunlarge[ds.energyrunlarge$E_E >= 0, ]
 
 # Define breaks for the y-axis (using only the maximum value of the small dataset)
-breaks <- max(ds.energyrunsmall_filtered$E_R)
+breaks <- max(ds.energyrunsmall_filtered$E_E)
 
 # Define the range for the y-axis with extra space
-y_range <- c(breaks, max(ds.energyrunlarge_filtered$E_R))
+y_range <- c(breaks, max(ds.energyrunlarge_filtered$E_E))
 
-p <- ggplot() +
-  geom_line(data = ds.energyrunsmall_filtered, aes(x = disp_dist, y = E_R), color = "#a4cc7dff", size = 1) +
-  geom_line(data = ds.energyrunlarge_filtered, aes(x = disp_dist, y = E_R), color = "#4c900aff", size = 1) +
-  geom_hline(yintercept = breaks, color = "white", size = 1) +
-  geom_hline(yintercept = 90000000, linetype = "dashed", color = "black", size = 0.1) +
-  scale_x_continuous(labels = scales::comma, breaks = seq(0, 2400000, by = 200000)) +
-  scale_y_continuous(labels = scales::comma) +
-  scale_y_cut(breaks = breaks, space = 0) +
-  coord_cartesian(ylim = y_range) +
-  theme_minimal() +
-  labs(y = "Energy remaining (J)", x = "Distance (m)")+
+relative_energy <- ggplot() +
+  geom_line(data = ds.energyrunsmall_filtered, aes(x = disp_dist, y = E_E), color = "#a4cc7dff", linewidth = 1) +
+  geom_line(data = ds.energyrunlarge_filtered, aes(x = disp_dist, y = E_E), color = "#264805ff", linewidth = 1) +
+   theme_minimal() +
+  geom_hline(yintercept = 0.1,linetype = "dashed", linewidth = 1, ) +
+  geom_vline(xintercept = 150000.0, linewidth = 1) +
+  labs(y = "Er/E0 (J)", x = "Distance (m)")+
+  ggtitle("") +
   theme(
     axis.text.x = element_text(size = 25),
     axis.text.y = element_text(size = 25),
@@ -108,9 +105,60 @@ p <- ggplot() +
     title = element_text(size = 25, face = "bold"))
 
 
-p
+
+relative_energy
 
 ###FIGURE 3c####
+# Allometry of energy costs at 1m (J) i.e. absolute energy cost per meter
+ds.energyrunabsolute  <- data.frame()
+
+for(m_C in seq(10,1000000, length = 100)) {
+  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "running", m_C))
+  mass_disp = cbind(m_C, disp)
+  ds.energyrunabsolute = rbind(ds.energyrunabsolute, mass_disp)
+}
+
+ds.energyflyabsolute  <- data.frame()
+
+for(m_C in seq(10,1000000, length = 100)) {
+  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "flying", m_C))
+  mass_disp = cbind(m_C, disp)
+  ds.energyflyabsolute = rbind(ds.energyflyabsolute, mass_disp)
+}
+
+ds.energyswimabsolute  <- data.frame()
+
+for(m_C in seq(10,1000000, length = 100)) {
+  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "swimming", m_C))
+  mass_disp = cbind(m_C, disp)
+  ds.energyswimabsolute = rbind(ds.energyswimabsolute, mass_disp)
+}
+
+# Filter out negative values from both datasets
+ds.energyrunabsolute_filtered <- ds.energyrunabsolute[ds.energyrunabsolute $E_C >= 0, ]
+ds.energyflyabsolute_filtered <- ds.energyflyabsolute[ds.energyflyabsolute $E_C >= 0, ]
+ds.energyswimabsolute_filtered  <- ds.energyswimabsolute [ds.energyswimabsolute $E_C >= 0, ]
+
+##plotting absolute energy remaining against mass for different movement modes
+absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) +
+  geom_line(color = "chartreuse4", linewidth = 1) +
+  theme_minimal() +
+  geom_line(data = ds.energyflyabsolute_filtered, aes(x = m_C, y = E_C), color = "red", linewidth = 1) +
+  geom_line(data = ds.energyswimabsolute_filtered, aes(x = m_C, y = E_C), color = "blue", linewidth = 1) +
+  labs(y = "Ec/m (J)", x = "Log10 Body mass (g)") +
+  scale_x_log10(
+    labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+  scale_y_log10(
+    labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+  ggtitle("") +
+  theme(
+    axis.text.x = element_text(size = 25),
+    axis.text.y = element_text(size = 25),
+    axis.text = element_text(size = 25),
+    axis.title = element_text(size = 25),
+    title = element_text(size = 25, face = "bold"))
+
+absolute_energy
 
 
 
