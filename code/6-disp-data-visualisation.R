@@ -81,7 +81,7 @@ modelfish<- ds.dispswim |>
 
 
 
-###FIGURE 2####
+###FIGURE 2a-d####
 ## Plot parameters against body mass
 #custom label needed for speed graph
 custom_labels <- c(expression(10^2.5), expression(10^3), expression(10^3.5), expression(10^4), expression(10^4.5))
@@ -170,9 +170,6 @@ E0_plot
 
 plot_grid(E0_plot, BMR_plot, labels = c('a','b'))
 plot_grid(COT_plot,vC_plot, labels = c('c','d'))
-
-plot_grid(E0_plot, BMR_plot, COT_plot,vC_plot, labels = c('a','b','c','d'))
-
 
 ###FIGURE 4a####
 ###Creating plots for each movement mode

@@ -18,7 +18,7 @@ ds.energyrun  <- data.frame()
 
 for(disp_dist in seq(0,5000000
                      , length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "running", disp_dist))
+  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "running", disp_dist, lambda = 0.1))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrun = rbind(ds.energyrun, mass_disp)
 }
@@ -27,7 +27,7 @@ ds.energyfly  <- data.frame()
 
 for(disp_dist in seq(0,5000000
                      , length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "flying",disp_dist))
+  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "flying",disp_dist, lambda = 0.1))
   mass_disp = cbind(disp_dist, disp)
   ds.energyfly = rbind(ds.energyfly, mass_disp)
 }
@@ -35,7 +35,7 @@ for(disp_dist in seq(0,5000000
 ds.energyswim  <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "swimming",disp_dist))
+  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "swimming",disp_dist, lambda = 0.1))
   mass_disp = cbind(disp_dist, disp)
   ds.energyswim = rbind(ds.energyswim, mass_disp)
 }
@@ -66,7 +66,7 @@ energy
 ds.energyrunsmall  <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 45000,movement_mode = "running",disp_dist))
+  disp = as.data.frame(energy_fun(m_C = 45000,movement_mode = "running",disp_dist, lambda = 0.1))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunsmall = rbind(ds.energyrunsmall, mass_disp)
 }
@@ -74,7 +74,7 @@ for(disp_dist in seq(0,5000000, length = 10000)) {
 ds.energyrunlarge <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 4000000,movement_mode = "running",disp_dist))
+  disp = as.data.frame(energy_fun(m_C = 4000000,movement_mode = "running",disp_dist, lambda = 0.1))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunlarge = rbind(ds.energyrunlarge, mass_disp)
 }
@@ -113,7 +113,7 @@ relative_energy
 ds.energyrunabsolute  <- data.frame()
 
 for(m_C in seq(10,1000000, length = 100)) {
-  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "running", m_C))
+  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "running", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyrunabsolute = rbind(ds.energyrunabsolute, mass_disp)
 }
@@ -121,7 +121,7 @@ for(m_C in seq(10,1000000, length = 100)) {
 ds.energyflyabsolute  <- data.frame()
 
 for(m_C in seq(10,1000000, length = 100)) {
-  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "flying", m_C))
+  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "flying", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyflyabsolute = rbind(ds.energyflyabsolute, mass_disp)
 }
@@ -129,7 +129,7 @@ for(m_C in seq(10,1000000, length = 100)) {
 ds.energyswimabsolute  <- data.frame()
 
 for(m_C in seq(10,1000000, length = 100)) {
-  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "swimming", m_C))
+  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "swimming", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyswimabsolute = rbind(ds.energyswimabsolute, mass_disp)
 }
@@ -161,37 +161,60 @@ absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) 
 absolute_energy
 
 
-
 ###FIGURE 3d####
+## Calculating a dispersal-cost-weighted spatial network
+#  Create matrix of distances using energy function to calculate relative energy remaining (E_E)
+#  and the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals
+
 # Set seed for reproducibility
-set.seed(124)
-#number of patches
-n_p = 5
-#coordinates
+set.seed(125)
+# number of patches
+n_p = 7
+# coordinates
 v_x = runif(n_p,min = 0, max = 1)
 v_y = runif(n_p,min = 0, max = 1)
 
 # Calculate distance matrix
 coordinates <- data.frame(v_x, v_y)
 dfdist <- as.matrix(dist(coordinates))
-realised_max_distances <- 150000.0
+realised_max_distances <- 250000
 realised_matrix <- dfdist * realised_max_distances
 
-#energetic costs (J) for running mammal small (4500g) and large (4000000g)
-energetic_cost_small <- data.frame(
-  from_patch = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4),
-  to_patch = c(2, 3, 4, 5, 3, 4, 5, 4, 5, 5),
-  distance = c(65594.86,71353.94,105665.52,21040.54,21222.71,50871.38,53498.43,67202.50,54117.15,99954.86),
-  energetic_cost = c(3342905,3636404,5385022,1072287,1081571,2592553,2726435,3424835,2757967,5093990)
-)
+# Function to calculate relative energy remaining for a given distance in m and mass (m_C) in g
+calculate_energy_flow <- function(distance, m_C) {
+  energy_output <- energy_fun(m_C = m_C, movement_mode = "running", disp_dist = distance, lambda = 0.1)
+  E_E <- energy_output[, "E_E"]
+  return(E_E)
+}
 
-energetic_cost_large <- data.frame(
-  from_patch = c(1, 1, 1, 1, 2, 2, 2, 3, 3, 4),
-  to_patch = c(2, 3, 4, 5, 3, 4, 5, 4, 5, 5),
-  distance = c(65594.86,71353.94,105665.52,21040.54,21222.71,50871.38,53498.43,67202.50,54117.15,99954.86),
-  energetic_cost = c(249961393,271907437,402658083,80178884,80873077,193854839,203865701,256087604,206223448,380896553)
-)
+# Calculate energy flow for small and large masses using the realised distance matrix created above and E_E
+energy_flow_small <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4500))
+energy_flow_large <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000000))
 
+# Function to extract unique combinations of distance and energy flow
+# This removes duplicates of the same distances and adds in patch numbers (using upper.tri), needed for graphical visualisation
+extract_unique_combinations <- function(energy_flow) {
+  upper_tri_indices <- upper.tri(energy_flow)
+  from_patch <- rep(1:nrow(energy_flow), ncol(energy_flow))[upper_tri_indices]
+  to_patch <- rep(1:ncol(energy_flow), each = nrow(energy_flow))[upper_tri_indices]
+  distance <- as.vector(realised_matrix)[upper_tri_indices]
+  energy_flow <- as.vector(energy_flow)[upper_tri_indices]
+
+  energy_flow[energy_flow < 0] <- 0 # replaces negative values with 0, representing no energy flow between patches
+
+  data.frame(
+    from_patch = from_patch,
+    to_patch = to_patch,
+    distance = distance,
+    energy_flow = energy_flow
+  )
+}
+
+# Create data frames for small, large and combined large energy flow
+df_small <- extract_unique_combinations(energy_flow_small)
+df_large <- extract_unique_combinations(energy_flow_large)
+
+## Visualising the dispersal-cost-weighted spatial network
 # Creating node attributes
 node_data <- data.frame(
   id = 1:n_p,
@@ -201,103 +224,59 @@ node_data <- data.frame(
 )
 
 # Create graph objects
-network_small <- graph_from_data_frame(energetic_cost_small, directed = FALSE)
-network_large <- graph_from_data_frame(energetic_cost_large, directed = FALSE)
+network_small <- graph_from_data_frame(df_small, directed = FALSE)
+network_large <- graph_from_data_frame(df_large, directed = FALSE)
 
 # Set up the layout
 layout <- create_layout(network_small, layout = "auto")
 
-# Create edge data frames with proper energetic costs
-edge_data_small <- energetic_cost_small %>%
+# Create edge data frames with proper energy flow and coordinates for small edges
+edge_data_small <- df_small %>%
   mutate(
     x = v_x[from_patch],
     y = v_y[from_patch],
     xend = v_x[to_patch],
     yend = v_y[to_patch],
-    edge.id = 1:nrow(energetic_cost_small)
+    edge.id = 1:nrow(df_small),
+    size = "Small"
   )
 
-edge_data_large <- energetic_cost_large %>%
+# Create edge data frames with proper energy flow and coordinates for large edges
+edge_data_large <- df_large %>%
   mutate(
     x = v_x[from_patch],
     y = v_y[from_patch],
     xend = v_x[to_patch],
     yend = v_y[to_patch],
-    edge.id = 1:nrow(energetic_cost_large)
+    edge.id = 1:nrow(df_large),
+    size = "Large"
   )
 
 # Combine edge data frames
-edge_data_combined <- bind_rows(
-  mutate(edge_data_small, size = "Small"),
-  mutate(edge_data_large, size = "Large")
-)
+edge_data_combined <- bind_rows(edge_data_small, edge_data_large)
 
-#edge
-edge_width_limits <- range(edge_data_combined$energetic_cost)
+# Calculate edge widths based on the energy flow for small dataset
+edge_data_combined$width <- ifelse(edge_data_combined$size == "Small" & edge_data_combined$energy_flow > 0,
+                                   (edge_data_combined$energy_flow - min(df_small$energy_flow)) /
+                                     (max(df_large$energy_flow) - min(df_small$energy_flow)) * 100,
+                                   0)
 
-#colours
-colors <- c('Small' = 'gold', 'Large' = 'darkgoldenrod4')
+# Calculate edge widths based on the energy flow for large dataset
+edge_data_combined$width <- ifelse(edge_data_combined$size == "Large" & edge_data_combined$energy_flow > 0,
+                                   (edge_data_combined$energy_flow - min(df_small$energy_flow)) /
+                                     (max(df_large$energy_flow) - min(df_small$energy_flow)) * 100,
+                                   edge_data_combined$width)
 
-colors <- c('1072287' = '#F8E473',
-            '1081571' = '#F8DE7E',
-            '2592553' = '#FADA5E',
-            '2726435' = '#FFD300',
-            '2757967' = '#FFBF00',
-            '3342905' = '#DBA520',
-            '3424835' = '#EB9605',
-            '3636404' = '#EF820D',
-            '5093990' = '#FF7417',
-            '5385022' = '#FC6600',
-            '80178884' = '#B1560F',
-            '80873077' = '#8B4000',
-            '193854839' = '#7C4700',
-            '203865701' = '#7F461B',
-            '206223448' = '#793802',
-            '249961393' = '#622A0F',
-            '256087604' = '#5C2C06',
-            '271907437'= '#48260D',
-            '380896553'= '#362312',
-            '402658083'= '#2B1700'
-)
-
-# Define edge widths
-edge_widths <- c('1072287' = 1.4,
-                 '1081571' = 1.8,
-                 '2592553' = 2.2,
-                 '2726435' = 2.6,
-                 '2757967' = 3.0,
-                 '3342905' = 3.4,
-                 '3424835' = 3.8,
-                 '3636404' = 4.2,
-                 '5093990' = 4.6,
-                 '5385022' = 5.0,
-                 '80178884' = 5.4,
-                 '80873077' = 5.8,
-                 '193854839' = 6.2,
-                 '203865701' = 6.6,
-                 '206223448' = 7,
-                 '249961393' = 7.4,
-                 '256087604' = 7.8,
-                 '271907437' = 8.2,
-                 '380896553' = 8.6,
-                 '402658083' = 9
-)
-
-edge_data_combined$width <- edge_widths[as.character(edge_data_combined$energetic_cost)]
-edge_data_combined$color <- colors[as.character(edge_data_combined$energetic_cost)]
-edge_data_combined$color <- colors[edge_data_combined$size]
-
+# Plot for small animal energy flow
 p1 <- ggraph(layout, layout = "auto") +
   geom_edge_link(
-    data = edge_data_combined %>% filter(size == "Small"),
-    aes(alpha = energetic_cost,
-        color = color,
-        width = energetic_cost),
+    data = edge_data_combined %>% filter(size == "Small" & energy_flow > 0),
+    aes(width = width),
+    color = "#a4cc7dff",
     lineend = "round",
-    linejoin = "round"
+    linejoin = "round",
+    alpha = 1
   ) +
-  scale_edge_color_identity() +
-  scale_edge_width(limits = edge_width_limits) +
   geom_node_point(
     data = node_data,
     aes(x = x, y = y, fill = color),
@@ -314,17 +293,16 @@ p1 <- ggraph(layout, layout = "auto") +
 
 p1
 
+# Plot for large animal energy flow
 p2 <- ggraph(layout, layout = "auto") +
   geom_edge_link(
-    data = edge_data_combined %>% filter(size == "Large"),
-    aes(alpha = energetic_cost,
-        color = color,
-        width = energetic_cost),
+    data = edge_data_combined %>% filter(size == "Large" & energy_flow > 0),
+    aes(width = width),
+    color = "#264805ff",
     lineend = "round",
-    linejoin = "round"
+    linejoin = "round",
+    alpha = 1
   ) +
-  scale_edge_color_identity() +
-  scale_edge_width(limits = edge_width_limits) +
   geom_node_point(
     data = node_data,
     aes(x = x, y = y, fill = color),
@@ -340,4 +318,3 @@ p2 <- ggraph(layout, layout = "auto") +
   labs(title = "")
 
 p2
-
