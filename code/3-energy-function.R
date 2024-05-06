@@ -9,7 +9,7 @@ setwd(dirname(getActiveDocumentContext()$path))
 ## m_C = body mass in g
 ## movement_mode = running, flying or swimming
 ## disp_dist = dispersal distance in m
-## lambda = 0.1
+## lambda = % of energy storage needed for survival after dispersing
 
 ## 2) OTHER VARIABLES
 ##  A) BODY MASS CONVERSION
@@ -28,6 +28,7 @@ setwd(dirname(getActiveDocumentContext()$path))
 ##    m_C_kg = body mass in kg
 ##    t = time in h
 ##    E_C = total energy cost in J
+##    E_M = energy cost per meter in J
 ##    E_R = energy remaining after moving the disp_dist in J
 ##    E_E = relative energy efficiency (relative to a species available energy) in J
 
@@ -65,7 +66,7 @@ energy_fun <- function(m_C,movement_mode,disp_dist,lambda) {
    #                 Gives energy density in kJ/g converted to J
    #                 Conversion factor from Webb. (1975) in Peters. (1986)
 
-      E_alpha = ((1-lambda) * E_0 )
+   E_alpha = ((1-lambda) * E_0 )
 
 ##  D) Energy loss via dispersal
   if(movement_mode == "running") {
@@ -90,20 +91,21 @@ energy_fun <- function(m_C,movement_mode,disp_dist,lambda) {
   #  Parameter reference:
   #  All movement modes from Alexander. (2003) in J/m
 
-
   FMR_disp = BMR + COT*v_C
 
 ##  OUTPUTS
   #  Calculate time in h
   t = disp_dist/v_C
   #  Calculate total energy cost in J
-  E_C = (t*FMR_disp)
+  E_C = (FMR_disp*t)
+  #  Calculate energy cost per meter in J
+  E_M = E_C/disp_dist
   #  Calculate energy remaining in J
   E_R = (E_0-E_C)
   #  Calculate relative energy remaining in J
   E_E = (1-(E_C/E_alpha))
 
-  dsenergy.disp <- cbind(m_C_kg, E_C, E_R, E_E, t)
+  dsenergy.disp <- cbind(m_C_kg, E_C, E_M, E_R, E_E, t)
   return(dsenergy.disp)
 }
 

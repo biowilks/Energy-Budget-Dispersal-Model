@@ -12,33 +12,46 @@ setwd(dirname(getActiveDocumentContext()$path))
 source("3-energy-function.R")
 
 ###FIGURE 3a####
-# Calculate energy  across different distances (for ~ 2kg  individual)
-# For each movement mode
-ds.energyrun  <- data.frame()
+# Calculate energy  across different distances (for 2kg  individual)
+# create dataframes
+ds.energyrun <- data.frame()
+ds.energyfly <- data.frame()
+ds.energyswim <- data.frame()
 
-for(disp_dist in seq(0,5000000
-                     , length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "running", disp_dist, lambda = 0.1))
-  mass_disp = cbind(disp_dist, disp)
-  ds.energyrun = rbind(ds.energyrun, mass_disp)
+# filter to make sure energy remaining is greater than 0
+energy <- function(m_C, movement_mode, disp_dist, lambda) {
+  energy_df <- as.data.frame(energy_fun(m_C, movement_mode, disp_dist, lambda))
+  if (any(energy_df$E_R < 0)) {
+    return(NULL)
+  } else {
+    return(cbind(disp_dist, energy_df))
+  }
 }
 
-ds.energyfly  <- data.frame()
-
-for(disp_dist in seq(0,5000000
-                     , length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "flying",disp_dist, lambda = 0.1))
-  mass_disp = cbind(disp_dist, disp)
-  ds.energyfly = rbind(ds.energyfly, mass_disp)
+# running
+for (disp_dist in seq(0, 5000000, length = 2000)) {
+  energy_result <- energy(2000, "running", disp_dist, 0.1)
+  if (!is.null(energy_result)) {
+    ds.energyrun <- rbind(ds.energyrun, energy_result)
+  }
 }
 
-ds.energyswim  <- data.frame()
-
-for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 2000,movement_mode = "swimming",disp_dist, lambda = 0.1))
-  mass_disp = cbind(disp_dist, disp)
-  ds.energyswim = rbind(ds.energyswim, mass_disp)
+# flying
+for (disp_dist in seq(0, 5000000, length = 2000)) {
+  energy_result <- energy(2000, "flying", disp_dist, 0.1)
+  if (!is.null(energy_result)) {
+    ds.energyfly <- rbind(ds.energyfly, energy_result)
+  }
 }
+
+# swimming
+for (disp_dist in seq(0, 5000000, length = 2000)) {
+  energy_result <- energy(2000, "swimming", disp_dist, 0.1)
+  if (!is.null(energy_result)) {
+    ds.energyswim <- rbind(ds.energyswim, energy_result)
+  }
+}
+
 
 ##plotting energy remaining against distance for different movement modes
 energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
@@ -162,11 +175,11 @@ absolute_energy
 
 
 ###FIGURE 3d####
-## Calculating a dispersal-cost-weighted spatial network
-#  Create matrix of distances using energy function to calculate relative energy remaining (E_E)
-#  and the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals
+### Calculating a dispersal-cost-weighted spatial network
+  #  Create matrix of distances and use the energy function to calculate relative energy remaining (E_E)
+  #  to represent the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals
 
-# Set seed for reproducibility
+# Set seed for reproducibility to create same network structure each time
 set.seed(125)
 # number of patches
 n_p = 7
@@ -187,12 +200,12 @@ calculate_energy_flow <- function(distance, m_C) {
   return(E_E)
 }
 
-# Calculate energy flow for small and large masses using the realised distance matrix created above and E_E
+# Calculate energy flow for small and large masses using the realised distance matrix created above and energy flow function
 energy_flow_small <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4500))
 energy_flow_large <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000000))
 
 # Function to extract unique combinations of distance and energy flow
-# This removes duplicates of the same distances and adds in patch numbers (using upper.tri), needed for graphical visualisation
+# i.e. removing duplicates of the same distances and adding in patch numbers (using upper.tri), both needed for graphical visualisation
 extract_unique_combinations <- function(energy_flow) {
   upper_tri_indices <- upper.tri(energy_flow)
   from_patch <- rep(1:nrow(energy_flow), ncol(energy_flow))[upper_tri_indices]
@@ -200,7 +213,7 @@ extract_unique_combinations <- function(energy_flow) {
   distance <- as.vector(realised_matrix)[upper_tri_indices]
   energy_flow <- as.vector(energy_flow)[upper_tri_indices]
 
-  energy_flow[energy_flow < 0] <- 0 # replaces negative values with 0, representing no energy flow between patches
+  energy_flow[energy_flow < 0] <- 0 # replaces negative values with 0, representing no energy flow between patches - to show impossible links
 
   data.frame(
     from_patch = from_patch,
@@ -210,12 +223,14 @@ extract_unique_combinations <- function(energy_flow) {
   )
 }
 
-# Create data frames for small, large and combined large energy flow
+# Create data frames for small and large energy flow
 df_small <- extract_unique_combinations(energy_flow_small)
 df_large <- extract_unique_combinations(energy_flow_large)
 
-## Visualising the dispersal-cost-weighted spatial network
-# Creating node attributes
+### Visualising the dispersal-cost-weighted spatial network
+  # using igraph
+
+# Creating node attributes - using coordinates produced above
 node_data <- data.frame(
   id = 1:n_p,
   color = "grey30",

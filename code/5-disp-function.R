@@ -15,12 +15,17 @@ setwd(dirname(getActiveDocumentContext()$path))
 ##     m_C_kg = body mass in kg
 ##  B) SPEED VARIABLES
 ##     v_C = movement speed in m/h
-##  C) ENERGY LOSS
+##  C) ENERGY STORAGE
+##     E_0 = Energy storage in J
+##     E_alpha = Energy available for dispersal in J
+##  D) ENERGY LOSS
 ##     BMR = basal metabolic rate in J/h
 ##     COT = costs of transport in J/m
 ##     FMR_disp = field metabolic rate in J/h
-##  D) ENERGY STORAGE
-##     E_0 = Energy storage in J
+
+##  3) OUTPUTS
+##    t = time in h
+##    disp_dist = maximum dispersal distance in m
 
 
 
@@ -42,8 +47,25 @@ disp_fun <- function(m_C,movement_mode,lambda) {
 #  Given in m/s, converted to m/h, body mass in kg
 
 
+## D) Energy storage
+   if(movement_mode == "running") {
+     E_0 =  (((10^-1.30)*m_C^1)/1000)*40*10^6  } else if (movement_mode == "flying"){
+       E_0 =  (((10^-1.20)*m_C^0.98)/1000)*40*10^6 } else {E_0 = ((10^0.62)*m_C^0.02)*m_C*1000 }
 
-## C) Energy loss via dispersal
+   # Parameter reference:
+   # Mammal (running) and
+   # Bird (flying)   E_0 from Antol & Kozlowski. (2020)
+   #                 Gives energy in log10 g converted to kg and then J
+   #                 Conversion factor from Peters. (1986)
+
+   # Fish (swimming) E_0 calculated using data from Martin et al. (2018)
+   #                 Refitted energy density/length data, converting length to mass
+   #                 Gives energy density in kJ/g converted to J
+   #                 Conversion factor from Webb. (1975) in Peters. (1986)
+
+    E_alpha = ((1-lambda) * E_0 )
+
+## D) Energy loss via dispersal
    if(movement_mode == "running") {
     BMR = (3.248*m_C^0.735)*20 } else if (movement_mode == "flying"){
       BMR = (7.434*m_C^0.648)*20 } else {BMR = (((10^1.87)*m_C_kg^0.95)/1.33)*20 }
@@ -69,31 +91,14 @@ disp_fun <- function(m_C,movement_mode,lambda) {
 
    FMR_disp = BMR + COT*v_C
 
+##  OUTPUTS
+ # Calculate time in h
+   t = E_alpha/ FMR_disp
 
-## D) Energy storage
-   if(movement_mode == "running") {
-    E_0 =  (((10^-1.30)*m_C^1)/1000)*40*10^6  } else if (movement_mode == "flying"){
-      E_0 =  (((10^-1.20)*m_C^0.98)/1000)*40*10^6 } else {E_0 = ((10^0.62)*m_C^0.02)*m_C*1000 }
-
-# Parameter reference:
-# Mammal (running) and
-# Bird (flying)   E_0 from Antol & Kozlowski. (2020)
-#                 Gives energy in log10 g converted to kg and then J
-#                 Conversion factor from Peters. (1986)
-
-# Fish (swimming) E_0 calculated using data from Martin et al. (2018)
-#                 Refitted energy density/length data, converting length to mass
-#                 Gives energy density in kJ/g converted to J
-#                 Conversion factor from Webb. (1975) in Peters. (1986)
-
-
-
-## Calculate time in h
-   t = ((1-lambda) * E_0 )/ FMR_disp
-
-## Calculate dispersal distance in m
+ # Calculate dispersal distance in m
   disp_dist = (t*v_C)
-  ds.disp <- cbind(m_C_kg, E_0, v_C, t, FMR_disp, disp_dist, BMR, COT,lambda)
+
+  ds.disp <- cbind(disp_dist, m_C_kg, E_0, E_alpha, v_C, t, FMR_disp, BMR, COT, lambda)
   return(ds.disp)
 }
 

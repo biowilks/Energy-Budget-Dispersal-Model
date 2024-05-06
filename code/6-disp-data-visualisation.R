@@ -25,39 +25,48 @@ dispdatamax <- dispdata |>
          !is.na(Body.mass) & !is.infinite(Body.mass) & !is.nan(Body.mass),
          !is.na(Movement.Mode) )
 
-##filtering for each movement mode
+#  filtering for each movement mode
 run_max<- dispdatamax|> filter (Movement.Mode == "Running") |> select(Species_ID_gbif,Value,Body.mass,Movement.Mode)
 fly_max <- dispdatamax |> filter (Movement.Mode == "Flying")|> select(Species_ID_gbif,Value,Body.mass,Movement.Mode)
 swim_max <- dispdatamax |> filter (Movement.Mode == "Swimming")|> select(Species_ID_gbif,Value,Body.mass,Movement.Mode)
 
+#  summarising dataset
+dispdatamax |>
+  pull(Reference) |>
+  n_distinct()
+
 ###MODEL PREDICTIONS FOR EACH MOVEMENT MODE####
-# Calculate dispersal distances across body mass gradient (mass values based on empirical data available)
-# For each movement mode
-ds.disprun  <- data.frame()
+# Calculate dispersal distances for body massess present in empirical dataset
+# Find unique body mass values from empirical data for each movement mode
+body_mass_run <- unique(run_max$Body.mass)
+body_mass_fly <- unique(fly_max$Body.mass)
+body_mass_swim <- unique(swim_max$Body.mass)
 
-for(m_C in seq(7.6,3940034.28
-               , length = 100)) {
-  disp = as.data.frame(disp_fun(m_C,movement_mode = "running",lambda = 0.1))
-  mass_disp = cbind(m_C, disp)
-  ds.disprun = rbind(ds.disprun, mass_disp)
+# Calculate dispersal predictions for each movement mode and body mass, using disp_fun and unique body mass values
+maximum_disp_dist <- function(body_mass, movement_mode) {
+  maximum_disp_dist <- data.frame()
+  for (m_C in body_mass) {
+    disp <- as.data.frame(disp_fun(m_C, movement_mode = movement_mode, lambda = 0.1))
+    mass_disp <- cbind(m_C, disp)
+    maximum_disp_dist <- rbind(maximum_disp_dist, mass_disp)
+  }
+  return(maximum_disp_dist)
 }
 
-ds.dispfly  <- data.frame()
+# maximum dispersal distance predictions
+ds.disprun <- maximum_disp_dist(body_mass_run, "running")
+ds.dispfly <- maximum_disp_dist(body_mass_fly, "flying")
+ds.dispswim <- maximum_disp_dist(body_mass_swim, "swimming")
 
-for(m_C in seq(3.1,11800
-               , length = 100)) {
-  disp = as.data.frame(disp_fun(m_C,movement_mode = "flying",lambda = 0.1))
-  mass_disp = cbind(m_C, disp)
-  ds.dispfly = rbind(ds.dispfly, mass_disp)
-}
+#Rename for plotting
+modelmamm <- ds.disprun |>
+  select(m_C,disp_dist)
 
-ds.dispswim  <- data.frame()
+modelbird <- ds.dispfly |>
+  select(m_C,disp_dist)
 
-for(m_C in seq(220, 550000, length = 100)) {
-  disp = as.data.frame(disp_fun(m_C,movement_mode = "swimming",lambda = 0.1))
-  mass_disp = cbind(m_C, disp)
-  ds.dispswim = rbind(ds.dispswim, mass_disp)
-}
+modelfish<- ds.dispswim |>
+  select(m_C,disp_dist)
 
 # Model summary for each movement mode
 model.disprun <- lm(log10(disp_dist) ~ log10(m_C), data = ds.disprun)
@@ -69,15 +78,34 @@ summary(model.dispfly)
 model.dispswim <- lm(log10(disp_dist) ~ log10(m_C), data = ds.dispswim)
 summary(model.dispswim)
 
-#Rename for plotting
-modelmamm <- ds.disprun |>
-  select(m_C,disp_dist)
 
-modelbird <- ds.dispfly |>
-  select(m_C,disp_dist)
 
-modelfish<- ds.dispswim |>
-  select(m_C,disp_dist)
+###CALCULATING PERCENTAGE OF DATA ABOVE MODEL PREDICTIONS####
+# Left join empirical data with model predictions based on body mass
+run_max_merged <- left_join(run_max, ds.disprun, by = c("Body.mass" = "m_C")) %>%
+  select(Species_ID_gbif, Value, disp_dist, Body.mass)
+fly_max_merged <- left_join(fly_max, ds.dispfly, by = c("Body.mass" = "m_C")) %>%
+  select(Species_ID_gbif, Value, disp_dist, Body.mass)
+swim_max_merged <- left_join(swim_max, ds.dispswim, by = c("Body.mass" = "m_C")) %>%
+  select(Species_ID_gbif, Value, disp_dist, Body.mass)
+
+# calculate the percentage of data points exceeding model predictions
+percentage_exceeding <- function(empirical_data, model_predictions) {
+  exceeding_counts <- sum(empirical_data > model_predictions, na.rm = TRUE)
+  total_data_points <- sum(!is.na(empirical_data))
+  percentage_exceeding <- exceeding_counts / total_data_points * 100
+  return(percentage_exceeding)
+}
+
+# for each movement mode
+run_max_merged %>%
+  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
+
+fly_max_merged %>%
+  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
+
+swim_max_merged %>%
+  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
 
 
 
@@ -171,7 +199,7 @@ E0_plot
 plot_grid(E0_plot, BMR_plot, labels = c('a','b'))
 plot_grid(COT_plot,vC_plot, labels = c('c','d'))
 
-###FIGURE 4a####
+###FIGURE 4a-c####
 ###Creating plots for each movement mode
 #setting colours
 mov_colour <- c('Flying' = 'red', 'Swimming' = 'blue', 'Running' = 'palegreen4',
@@ -209,7 +237,6 @@ scatter_plot_fly <- fly_max |>
 plot(scatter_plot_fly)
 
 
-###FIGURE 4b####
 ##running mammals
 scatter_plot_run <- run_max |>
   ggplot(aes(x = Body.mass, y = Value, color = Movement.Mode)) +
@@ -242,7 +269,6 @@ scatter_plot_run <- run_max |>
 
 plot(scatter_plot_run)
 
-###FIGURE 4c####
 ##swimming fish
 scatter_plot_swim <- swim_max |>
   ggplot(aes(x = Body.mass, y = Value, color = Movement.Mode)) +
