@@ -1,7 +1,7 @@
 library(tidyverse)
 library(dplyr)
 
-setwd('C:/Users/xr49abiw/Documents/DispersalProject/data')
+setwd('C:/Users/xr49abiw/Documents/Energy-Budget-Model/data')
 
 energy <- read.csv("EnergyDensityDatebaseDryad.csv")
 
@@ -49,11 +49,11 @@ energy1 <- energy |>
 
 energy2 <- energy1 |>
     mutate(Weight2 = case_when(is.na(Weight) ~ (10*Length.m^3)*1000,
-                               T ~ NA)) 
+                               T ~ NA))
 
 energy3 <- energy2 |>
   mutate(Weight_final = case_when(is.na(Weight) ~ Weight2,
-                             T ~ Weight)) 
+                             T ~ Weight))
 
 # Log10 transform
 energy3$log10_Energy <- log10(energy3$EnergyDensity.kJ.g)
@@ -73,6 +73,6 @@ scatter_plot <- ggplot(energy3, aes(x = log10_Weight, y = log10_Energy)) +
 print(scatter_plot)
 
 #number of datapoints
-energy1 |> 
+energy1 |>
   pull(`Species`) |>
   n_distinct()

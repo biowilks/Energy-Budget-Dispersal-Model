@@ -58,7 +58,7 @@ disp_fun <- function(m_C,movement_mode,lambda) {
    #                 Gives energy in log10 g converted to kg and then J
    #                 Conversion factor from Peters. (1986)
 
-   # Fish (swimming) E_0 calculated using data from Martin et al. (2018)
+   # Fish (swimming) E_0 calculated using data from Martin et al. (2017)
    #                 Refitted energy density/length data, converting length to mass
    #                 Gives energy density in kJ/g converted to J
    #                 Conversion factor from Webb. (1975) in Peters. (1986)

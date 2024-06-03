@@ -61,7 +61,7 @@ energy_fun <- function(m_C,movement_mode,disp_dist,lambda) {
    #                 Gives energy in log10 g converted to kg and then J
    #                 Conversion factor from Peters. (1986)
 
-   # Fish (swimming) E_0 calculated using data from Martin et al. (2018)
+   # Fish (swimming) E_0 calculated using data from Martin et al. (2017)
    #                 Refitted energy density/length data, converting length to mass
    #                 Gives energy density in kJ/g converted to J
    #                 Conversion factor from Webb. (1975) in Peters. (1986)
@@ -102,12 +102,12 @@ energy_fun <- function(m_C,movement_mode,disp_dist,lambda) {
   E_M = E_C/disp_dist
   #  Calculate energy remaining in J
   E_R = (E_0-E_C)
-  #  Calculate relative energy remaining in J
+  #  Calculate relative energy remaining
   E_E = (1-(E_C/E_alpha))
 
-  dsenergy.disp <- cbind(m_C_kg, E_C, E_M, E_R, E_E, t)
+  dsenergy.disp <- cbind(m_C_kg, E_0, E_C, E_M, E_R, E_E, t)
   return(dsenergy.disp)
 }
 
 
-energy_fun(m_C = 4000000, movement_mode = "running", disp_dist = 161747.88, lambda = 0.1)
+energy_fun(m_C = 10000, movement_mode = "running", disp_dist = 161747.88, lambda = 0)

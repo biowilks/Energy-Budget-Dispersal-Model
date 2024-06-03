@@ -56,13 +56,13 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 ##plotting energy remaining against distance for different movement modes
 energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(color = "chartreuse4", linewidth = 1) +
-  scale_x_continuous(labels = scales::comma)+
-  scale_y_continuous(labels = scales::comma, limits=c(0, 10000000))+
+  scale_x_continuous(limits=c(0, 3500000))+
+  scale_y_continuous(limits=c(0, 10000000))+
   theme_minimal() +
-  geom_hline(yintercept = 0, linewidth = 1) +
+  theme( axis.line = element_line(colour = "grey20",size = 1, linetype = "solid"))+
   geom_line(data = ds.energyfly, aes(x = disp_dist, y = E_R), color = "red", linewidth = 1) +
   geom_line(data = ds.energyswim, aes(x = disp_dist, y = E_R), color = "blue", linewidth = 1) +
-  labs(y = "Energy remaining (J)", x = "Distance (m)")+
+  labs(y = "", x = "")+
   ggtitle("") +
   theme(
     axis.text.x = element_text(size = 25),
@@ -79,7 +79,7 @@ energy
 ds.energyrunsmall  <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 45000,movement_mode = "running",disp_dist, lambda = 0.1))
+  disp = as.data.frame(energy_fun(m_C = 45000,movement_mode = "running",disp_dist, lambda = 0))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunsmall = rbind(ds.energyrunsmall, mass_disp)
 }
@@ -87,7 +87,7 @@ for(disp_dist in seq(0,5000000, length = 10000)) {
 ds.energyrunlarge <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 4000000,movement_mode = "running",disp_dist, lambda = 0.1))
+  disp = as.data.frame(energy_fun(m_C = 4000000,movement_mode = "running",disp_dist, lambda = 0))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunlarge = rbind(ds.energyrunlarge, mass_disp)
 }
@@ -106,9 +106,10 @@ relative_energy <- ggplot() +
   geom_line(data = ds.energyrunsmall_filtered, aes(x = disp_dist, y = E_E), color = "#a4cc7dff", linewidth = 1) +
   geom_line(data = ds.energyrunlarge_filtered, aes(x = disp_dist, y = E_E), color = "#264805ff", linewidth = 1) +
    theme_minimal() +
+  theme( axis.line = element_line(colour = "grey20",size = 1, linetype = "solid"))+
   geom_hline(yintercept = 0.1,linetype = "dashed", linewidth = 1, ) +
   geom_vline(xintercept = 150000.0, linewidth = 1) +
-  labs(y = "Er/E0 (J)", x = "Distance (m)")+
+  labs(y = "", x = "")+
   ggtitle("") +
   theme(
     axis.text.x = element_text(size = 25),
@@ -158,7 +159,8 @@ absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) 
   theme_minimal() +
   geom_line(data = ds.energyflyabsolute_filtered, aes(x = m_C, y = E_C), color = "red", linewidth = 1) +
   geom_line(data = ds.energyswimabsolute_filtered, aes(x = m_C, y = E_C), color = "blue", linewidth = 1) +
-  labs(y = "Ec/m (J)", x = "Log10 Body mass (g)") +
+  labs(y = "", x = "") +
+  theme( axis.line = element_line(colour = "grey20",size = 1, linetype = "solid"))+
   scale_x_log10(
     labels = scales::trans_format("log10", scales::math_format(10^.x))) +
   scale_y_log10(
