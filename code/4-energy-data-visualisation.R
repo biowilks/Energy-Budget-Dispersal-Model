@@ -1,12 +1,10 @@
 rm(list=ls())
 
-library(rstudioapi)
-library(tidyverse)
-library(cowplot)
-library(ggbreak)
-library(scales)
-library(igraph)
-library(ggraph)
+library("rstudioapi")
+library("tidyverse")
+library("scales")
+library("igraph")
+library("ggraph")
 
 setwd(dirname(getActiveDocumentContext()$path))
 source("3-energy-function.R")
