@@ -1,9 +1,7 @@
 library('workflowr')
 
-wflow_git_config(user.name = "biowilks", user.email = "biowilks@gmail.com")
-
-
 #### using workflowr to create all folders and files in directory####
+wflow_git_config(user.name = "biowilks", user.email = "biowilks@gmail.com")
 
 wflow_start(
   directory = "C:/Users/xr49abiw/Documents/Energy-Budget-Model",
@@ -30,11 +28,6 @@ wflow_view()
 #check status of the files
 wflow_status()
 
-#publish updated files to website
-wflow_publish(c("C:/Users/xr49abiw/Documents/Energy-Budget-Model/analysis/index.Rmd",
-                "C:/Users/xr49abiw/Documents/Energy-Budget-Model/analysis/about.Rmd",
-                "C:/Users/xr49abiw/Documents/Energy-Budget-Model/analysis/license.Rmd"))
-
 #### Publishing website publicly ####
 wflow_git_remote(
   remote = "origin",
@@ -43,6 +36,5 @@ wflow_git_remote(
   action = "set_url"
 )
 
-
-wflow_use_github("biowilks", repository = "Energy-Budget-Model")
-wflow_publish("analysis/*.Rmd", "Publishing Energy Budget Model website")
+wflow_publish("analysis/*.Rmd", "Editing Energy Budget Model website")
+wflow_git_push()

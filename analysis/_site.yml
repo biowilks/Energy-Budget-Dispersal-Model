@@ -1,7 +1,7 @@
-name: DispersalProject
+name: Bioenergetic Dispersal Model for Animals
 output_dir: ../docs
 navbar:
-  title: DispersalProject
+  title: Bioenergetic Dispersal Model for Animals
   left:
   - text: Home
     href: index.html
