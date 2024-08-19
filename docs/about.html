@@ -13,7 +13,7 @@
 
 <title>About</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -281,7 +281,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -292,8 +292,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -302,13 +302,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-04-15
+<strong>Last updated:</strong> 2024-08-19
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>Energy-Budget-Model/</code> <span
@@ -331,33 +331,36 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombiowilksDispersalProjecttree687c586293d5c4b44c5754438cadff6482d6d271targetblank687c586a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcombiowilksDispersalProjecttreef704dc6a4ed73e4aa066a49a3dc8bcbdb8f7cc6etargetblankf704dc6a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/biowilks/DispersalProject/tree/687c586293d5c4b44c5754438cadff6482d6d271" target="_blank">687c586</a>
+<a href="https://github.com/biowilks/DispersalProject/tree/f704dc6a4ed73e4aa066a49a3dc8bcbdb8f7cc6e" target="_blank">f704dc6</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcombiowilksDispersalProjecttree687c586293d5c4b44c5754438cadff6482d6d271targetblank687c586a"
+id="strongRepositoryversionstrongahrefhttpsgithubcombiowilksDispersalProjecttreef704dc6a4ed73e4aa066a49a3dc8bcbdb8f7cc6etargetblankf704dc6a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -367,7 +370,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/biowilks/DispersalProject/tree/687c586293d5c4b44c5754438cadff6482d6d271" target="_blank">687c586</a>.
+<a href="https://github.com/biowilks/DispersalProject/tree/f704dc6a4ed73e4aa066a49a3dc8bcbdb8f7cc6e" target="_blank">f704dc6</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -384,9 +387,27 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    code/.Rhistory
+    Ignored:    output/.Rhistory
+
+Untracked files:
+    Untracked:  code/1-fish-energy-and-trait-data.R
+    Untracked:  code/3-parameter-conversions.R
+    Untracked:  code/4-energy-function.R
+    Untracked:  code/5-energy-data-visualisation.R
+    Untracked:  code/6-disp-function.R
+    Untracked:  code/7-disp-data-visualisation.R
 
 Unstaged changes:
-    Modified:   scripts/0-disp-workflowr-script.R
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   code/0-disp-workflowr-script.R
+    Deleted:    code/1-fish-energy-reserve-and-trait-data.R
+    Deleted:    code/3-energy-function.R
+    Deleted:    code/4-energy-data-visualisation.R
+    Deleted:    code/5-disp-function.R
+    Deleted:    code/6-disp-data-visualisation.R
 
 </code></pre>
 <p>
@@ -433,6 +454,23 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/biowilks/DispersalProject/5262580b220fee03a10ee42c7b98b199b3104552/docs/about.html" target="_blank">5262580</a>
+</td>
+<td>
+Wilkinson
+</td>
+<td>
+2024-04-15
+</td>
+<td>
+Updating files
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
@@ -455,7 +493,169 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Describe your project.</p>
+<p><strong>From traits to travel: A mechanistic approach to quantifying
+the energetics of animal dispersal</strong></p>
+<div id="authors" class="section level1">
+<h1>Authors</h1>
+<p><strong>Caitlin Wilkinson</strong> (<a
+href="mailto:caitlin.wilkinson@idiv.de"
+class="email">caitlin.wilkinson@idiv.de</a>) <a
+href="https://orcid.org/0000-0002-2831-8235"><img
+src="https://orcid.org/sites/default/files/images/orcid_16x16.png" /></a></p>
+<p>Ulrich Brose<a href="http://orcid.org/####"><img
+src="https://orcid.org/sites/default/files/images/orcid_16x16.png" /></a></p>
+<p>Alexander Dyer<a href="http://orcid.org/####"><img
+src="https://orcid.org/sites/default/files/images/orcid_16x16.png" /></a></p>
+<p>Myriam R. Hirt<a href="http://orcid.org/####"><img
+src="https://orcid.org/sites/default/files/images/orcid_16x16.png" /></a></p>
+<p>Remo Ryser<a href="http://orcid.org/####"><img
+src="https://orcid.org/sites/default/files/images/orcid_16x16.png" /></a></p>
+</div>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>This repository contains all underlying data and code needed to
+reproduce the analyses in the paper mentioned above.</p>
+<div id="accessing-code-and-data" class="section level2">
+<h2>Accessing code and data</h2>
+<p>See the <a
+href="https://github.com/biowilks/Energy-Budget-Model/tree/master/code"><code>code</code></a>
+directory on GitHub for the code that generated the figures and analyses
+in the manuscript.</p>
+<p>The raw data needed for analyses is provided in <a
+href="https://github.com/biowilks/Energy-Budget-Model/tree/master/data"><code>data</code></a>.</p>
+</div>
+<div id="structure-of-the-analysis" class="section level2">
+<h2>Structure of the analysis</h2>
+<ul>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/0-disp-workflowr-script.R">0-disp-workflowr-script</a>
+provides the code to create a workflowr project and organised
+subdirectories in GitHub (Blischak et al. 2023).</p></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/1-fish-energy-reserve-and-trait-data.R">1-fish-energy-reserve-and-trait-data</a>
+provides the code to:</p>
+<center>
+<ol style="list-style-type: decimal">
+<li>extract body mass data from Fishbase and SeaLifeBase (Boettiger et
+al. 2023)
+</center>
+<center>
+<ol start="2" style="list-style-type: decimal">
+<li>Refitting the energy storage data provided in (Martin et al. 2017)
+to convert length (mm) to mass (g). This was to obtain the intercept and
+slope for the fish energy storage allometry used in our model
+</center></li>
+</ol></li>
+</ol></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/2-disp-raw-data-transformation.R">2-disp-raw-data-transformation</a>
+provides the code to transform the raw maximum dispersal distance data
+to:</p>
+<center>
+<ol style="list-style-type: decimal">
+<li>Import trait datasets and extract and harmonise names using rgbif
+</center>
+<center>
+<ol start="2" style="list-style-type: decimal">
+<li>Add in missing body mass data
+</center>
+<center>
+<ol start="3" style="list-style-type: decimal">
+<li>Add in missing movement mode
+</center>
+<center>
+<ol start="4" style="list-style-type: decimal">
+<li>Filtering data to include flying birds, running mammals, swimming
+fish only
+</center>
+<center>
+<ol start="5" style="list-style-type: decimal">
+<li>Harmonising all units for distance (m) and body mass (g)
+</center></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/3-parameter-conversions.R">3-parameter-conversions</a>
+provides the code to convert the units from the original parameter
+allometries to the ones used in the energy budget model.</p></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/4-energy-function.R">4-energy-function</a>
+provides the energy-budget model function needed to obtain the energetic
+costs of dispersal in J.</p></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/5-energy-data-visualisation.R">5-energy-data-visualisation</a>
+provides the code needed to produce figures 3a-d in the paper mentioned
+above.</p></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/6-disp-function.R">6-disp-function</a>
+provides the energy-budget model function needed to obtain the maximum
+dispersal distance of animals in m.</p></li>
+<li><p><a
+href="https://github.com/biowilks/Energy-Budget-Model/blob/master/code/7-disp-data-visualisation.R">7-disp-data-visualisation</a>
+provides the code needed to:</p>
+<center>
+<ol style="list-style-type: decimal">
+<li>Make model predictions for maximum dispersal distance for each
+movement mode and related taxonomic group to compare to the empirical
+data
+</center>
+<center>
+<ol start="2" style="list-style-type: decimal">
+<li>Calculate the percentage of data which lies above model predictions
+</center>
+<center>
+<ol start="3" style="list-style-type: decimal">
+<li>Produce figures 2a-d and 4a-c in the paper mentioned above.
+</center></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ul>
+</div>
+</div>
+<div id="r-packages-used" class="section level1">
+<h1>R-packages used</h1>
+<ul>
+<li><em>rgbif</em> (Chamberlain et al. 2024)</li>
+<li><em>rstudioapi</em> (Ushey et al. 2024)</li>
+<li><em>tidyverse</em> (Wickham et al. 2019)</li>
+<li><em>viridis</em> (Garnier et al. 2024)</li>
+<li><em>scales</em> (Wickham et al. 2023)</li>
+<li><em>igraph</em> (Csardi et al. 2024)</li>
+<li><em>ggraph</em> (Pedersen. 2024)</li>
+</ul>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Blischak, J., Carbonetto, P., Stephens, M., GitLab), L.Z.
+(Instructions for hosting with, Server), P.F. (Support for hosting with
+S., code), T.T. (Instructions for sharing common, et al. (2023).
+workflowr: A Framework for Reproducible and Collaborative Data
+Science.</p>
+<p>Boettiger, C., Chamberlain, S., Lang, D.T., Wainwright, P. &amp;
+Cazelles, K. (2023). rfishbase: R Interface to “FishBase.” Chamberlain,
+S., Oldoni, D., Barve, V., Desmet, P., Geffert, L., Mcglinn, D., et
+al. (2024). rgbif: Interface to the Global Biodiversity Information
+Facility API.</p>
+<p>Csárdi, G., Nepusz, T., Traag, V., Horvát, S., Zanini, F., Noom, D.,
+et al. (2024). igraph: Network Analysis and Visualization. Garnier, S.,
+Ross, N., Rudis, B., Sciaini, M., Camargo, A.P. &amp; Scherer, C.
+(2024). viridis: Colorblind-Friendly Color Maps for R.</p>
+<p>Martin, B.T., Heintz, R., Danner, E.M. &amp; Nisbet, R.M. (2017).
+Integrating lipid storage into general representations of fish
+energetics. Journal of Animal Ecology, 86, 812–825.</p>
+<p>Pedersen, T.L. &amp; RStudio. (2024). ggraph: An Implementation of
+Grammar of Graphics for Graphs and Networks.</p>
+<p>R Core Team. (2021). R: A Language and Environment for Statistical
+Computing.</p>
+<p>Ushey, K., Allaire, J.J., Wickham, H., Ritchie, G. &amp; RStudio.
+(2024). rstudioapi: Safely Access the RStudio API.</p>
+<p>Wickham, H., Pedersen, T.L., Seidel, D., Posit &amp; PBC. (2023).
+scales: Scale Functions for Visualization.</p>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using

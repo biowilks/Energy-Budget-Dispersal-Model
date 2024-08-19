@@ -8,4 +8,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+This [workflowr]() site contains all information and results about this research project.
+
+Project details can be found in the [About](about.html) page.

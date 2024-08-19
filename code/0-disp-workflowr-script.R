@@ -3,7 +3,7 @@ library('workflowr')
 wflow_git_config(user.name = "biowilks", user.email = "biowilks@gmail.com")
 
 
-## adding workflowr files to existing directory
+## using workflowr to create all folders and files in directory
 
 wflow_start(
   directory = "C:/Users/xr49abiw/Documents/Energy-Budget-Model",
@@ -20,3 +20,11 @@ wflow_start(
 
 
 wflow_publish()
+
+### Building website after making edits in .Rmd files###
+wflow_build()
+
+##View updated website
+wflow_view()
+
+wflow_status()
