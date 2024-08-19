@@ -12,7 +12,7 @@ navbar:
   right:
   - icon: fab fa-github
     text: Source code
-    href: https://github.com/biowilks/DispersalProject
+    href: https://github.com/biowilks/Energy-Budget-Model
 output:
   workflowr::wflow_html:
     toc: yes
