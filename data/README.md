@@ -2,24 +2,41 @@
 
 Here are all the RAW data files needed for analyses in the paper (doi:XXXX): 
 
+
+
+
 **Trait databases** 
+
 *Wilman et al. 2014*
 - MamFuncDat.txt
 - BirdFuncDat.txt
+
+
+
 *Boettiger et al. 2023*
 - FishBase.txt
 - SeaLifeBase.txt
+
+
+
 *Herberstein et al. 2022* 
 - AnimalTraits.txt
+
+
 
 
 **Maximum Dispersal Distance data**
 - DispersalUntransformed.csv
 
+
+
 **Fish Energy Density data**
-(Needed to refit the fish energy storage data provided in (Martin et al. 2017) - see [1-fish-energy-reserve-and-trait-data](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/1-fish-energy-reserve-and-trait-data.R)
+(Needed to refit the fish energy storage data provided in (Martin et al. 2017) - see [1-fish-energy-reserve-and-trait-data](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/1-fish-energy-and-trait-data.R)
 
 - EnergyDensityDatabaseDryad.csv
+
+
+
 
 
 **References**

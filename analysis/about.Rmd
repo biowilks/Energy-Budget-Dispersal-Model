@@ -8,6 +8,8 @@ editor_options:
 ---
 **From traits to travel: A mechanistic approach to quantifying the energetics of animal dispersal**
 
+Paper link (XXXX)
+
 # Authors
 **Caitlin Wilkinson** (caitlin.wilkinson@idiv.de) [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-2831-8235)
 
@@ -32,7 +34,7 @@ The raw data needed for analyses is provided in [`data`](https://github.com/biow
 
 - [0-disp-workflowr-script](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/0-disp-workflowr-script.R) provides the code to create a workflowr project and organised subdirectories in GitHub (Blischak et al. 2023). 
 
-- [1-fish-energy-reserve-and-trait-data](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/1-fish-energy-reserve-and-trait-data.R) provides the code to: 
+- [1-fish-energy-reserve-and-trait-data](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/1-fish-energy-and-trait-data.R) provides the code to: 
 <div class="indent-list"> 1) Extract body mass data from Fishbase and SeaLifeBase (Boettiger et al. 2023) </div>
 <div class="indent-list"> 2) Refit the energy storage data provided in (Martin et al. 2017) to convert length (mm) to mass (g). This was to obtain the intercept and slope for the fish energy storage allometry used in our model </div>
 
