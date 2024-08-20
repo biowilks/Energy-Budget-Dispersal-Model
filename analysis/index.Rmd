@@ -8,6 +8,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-This [workflowr]() site contains all information and results about this research project.
+This [workflowr]() site contains all information about this research project.
 
-Project details can be found in the [About](about.html) page.
+Project details can be found in the [About](about.html) page and in README files in each subdirectory.

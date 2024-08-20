@@ -26,9 +26,11 @@ This repository contains all underlying data and code needed to reproduce the an
 
 ## Accessing code and data 
 
-See the [`code`](https://github.com/biowilks/Energy-Budget-Model/tree/master/code) directory on GitHub for the code that generated the figures and analyses in the manuscript.
+See the [`code`](https://github.com/biowilks/Energy-Budget-Model/tree/master/code) directory on GitHub for the script that generates the figures and analyses in the manuscript.
 
-The raw data needed for analyses is provided in [`data`](https://github.com/biowilks/Energy-Budget-Model/tree/master/data). 
+The raw data needed for analyses is provided in [`data`](https://github.com/biowilks/Energy-Budget-Model/tree/master/data).
+
+The model outputs and transformed maximum dispersal distance data is provided in[`output`](https://github.com/biowilks/Energy-Budget-Dispersal-Model/tree/master/output). 
 
 ## Structure of the analysis
 

@@ -35,8 +35,9 @@ Here are all the RAW data files needed for analyses in the paper (doi:XXXX):
 
 - EnergyDensityDatabaseDryad.csv
 
-
-
+**Converted parameter values**
+- pars_old.csv
+- gammas_old.csv
 
 
 **References**
