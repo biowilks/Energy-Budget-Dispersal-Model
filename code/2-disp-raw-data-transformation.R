@@ -1,25 +1,30 @@
 rm(list=ls())
 
+setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/data")
+
+# Load all packages ----------
 library(tidyverse)
 library(rgbif)
 
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/data")
-
-#### Import trait datasets####
+# Import trait datasets ----------
 db <- read.csv("DispersalUntransformed.csv")|>
   filter(Statistic == "Maximum")
 
-#Wilman2014 - EltonTraits
+# Wilman2014 - EltonTraits
 eltonbird<-read_tsv('BirdFuncDat.txt')
 eltonmam<-read_tsv('MamFuncDat.txt')
-#Boettiger2023 - FishBase
+
+# Boettiger2023 - FishBase
 fb <-read_tsv('FishBase.txt')
-#Boettiger2023 - SeaLifeBase
+# Boettiger2023 - SeaLifeBase
 slb <-read_tsv('SealifeBase.txt')
-#Herberstein2022
+
+# Herberstein2022
 anidat<-read_tsv('AnimalTraits.txt')
 
-#### Data harmonisation####
+
+
+# 1) Data harmonisation ----------
 # extract species names
 setdiff(c('a', 'b', 'c'), c('a', 'b')) #find the differences between the the two sets
 
@@ -44,7 +49,7 @@ res <- bind_rows(
     distinct_all()
 )
 
-#Harmonisation using rgbif
+# Harmonisation using rgbif
 checklist <- res |>
   mutate(species = gsub('[?]', '', species)) |>
   filter(validUTF8(species))
@@ -122,23 +127,20 @@ for (i in seq_along(res)) {
 
 res <- bind_rows(res) #bind chunks
 
-#overview of taxonomy and match type from rgbif
+# overview of taxonomy and match type from rgbif
 overviewtaxa <- res
 
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/output")
-write_csv(overviewtaxa, "taxonomy_gbif_match.csv")
 
-#### Adding body mass####
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/data")
 
+# 2) Adding body mass ----------
 db <- read.csv("DispersalUntransformed.csv")|>
   filter(Statistic == "Maximum")
 
-#Making the Body.mass column 'NA' if an empty cell
+# Making the Body.mass column 'NA' if an empty cell
 db1 <- db |>
   mutate_at(vars(Body.mass), ~ifelse(. == "", NA, .))
 
-#left joining body mass data by gbif.binomial
+# Left join body mass data by gbif.binomial
 birds <- eltonbird |>
   transmute(
     original = Scientific,
@@ -209,7 +211,7 @@ masses <- bind_rows(
       !is.na(mammalmass) ~ "Wilman et al 2014",
       !is.na(fishmass) ~ "Boettiger et al. 2023",
       !is.na(seamass) ~ "Boettiger et al. 2023",
-      !is.na(animass) ~ "Slavenko et al 2016",
+      !is.na(animass) ~ "Herberstein et al 2022",
       TRUE ~ NA_character_
     ),
     Unit = case_when(
@@ -256,7 +258,7 @@ traits1 <- traits |>
   select(-Source, -Mass, -Unit,-Body.mass.ref,-db)
 
 # Define the priority order for Body mass database sources
-source_priority <- c("Wilman et al 2014", "Boettiger et al. 2023", "Slavenko et al 2016")
+source_priority <- c("Wilman et al 2014", "Boettiger et al. 2023", "Herberstein et al 2022")
 
 # Group by Event ID and Body mass source, and select one row based on source priority
 traits2 <- traits1 |>
@@ -268,39 +270,15 @@ traits2 <- traits1 |>
 # Combine the data frames
 db3 <- rbind(movement, traits2)
 
-#remove duplicates
+# Remove duplicates
 db4 <- db3 |>
   group_by(`Event.ID`) |>
   slice_head() |>
   ungroup()
 
-
-#Data summary for body mass additions
-#by Class
-Bresult <- db4 |>
-  group_by(class) |>
-  summarize(
-    na_count = sum(is.na(`Body.mass`)| `Body.mass` == ""),
-    total_count = n(),
-    proportion_available = 1 - sum(is.na(`Body.mass`)| `Body.mass` == "") / total_count
-  )
-
-Btotal_result <- Bresult|>
-  summarise(
-    class = "Total",
-    na_count = sum(na_count),
-    total_count = sum(total_count),
-    proportion_available = sum(total_count - na_count) / sum(total_count)
-  )
-
-Bfinal_result <- bind_rows(Bresult, Btotal_result)
-
-print(Bfinal_result)
-
-
-#### Adding movement mode####
+# 3) Adding movement mode ----------
 # Infer movement modes by class
-#find class to search for the next step
+## find class to search for the next step
 unique(db4$class)
 
 # Adding movement type based on class - google/wikipedia search
@@ -317,7 +295,7 @@ db5 <- db4 |>
   )
 
 # Infer movement modes from family
-#To find out family names to find movement mode for
+# To find out family names to find movement mode for
 namovementdata <- db5 %>%
   filter(is.na(Movement.mode) | Movement.mode == "") %>%
   mutate(`Movement Mode Ref` = NA)
@@ -356,6 +334,7 @@ db6 <- db5 |>
 # Other movement mode:
 # Thomomys bottae (digging), Pteromys volans (gliding), Hylobates lar, Trichosurus vulpecula, Phascolarctos cinereus, Alouatta palliata, Sciurus carolinensis, Sciurus niger,
 # Macaca sylvanus, Microcebus murinus, Tamiasciurus hudsonicus, Rupicapra rupicapra, Rupicapra pyrenaica (climbing), Ursus maritimus (mixed)
+
 na_movement_data1 <- db6 %>%
   filter(is.na(Movement.mode) | Movement.mode == "") %>%
   mutate(`Movement Mode Ref` = NA)
@@ -422,100 +401,21 @@ db7 <- db6 |>
     TRUE ~ `Movement Mode Ref`
   ))
 
-#Data summary for movement mode additions
-#by Class
-Mresult <- db7 |>
-  group_by(class) |>
-  summarize(
-    na_count = sum(is.na(`Movement.mode`)| `Movement.mode` == ""),
-    total_count = n(),
-    proportion_available = 1 - sum(is.na(`Movement.mode`)| `Movement.mode` == "") / total_count
-  )
-
-Mtotal_result <- Mresult|>
-  summarise(
-    class = "Total",
-    na_count = sum(na_count),
-    total_count = sum(total_count),
-    proportion_available = sum(total_count - na_count) / sum(total_count)
-  )
-
-Mfinal_result <- bind_rows(Mresult, Mtotal_result)
-
-print(Mfinal_result)
-
-#### Making combined values for McCaslin and Swift references####
-# As these references have many points for the same species and we just want 1 maximum for each species respectively
-# Selecting the highest value for one species
-# For McCaslin et al. 2020
-dbcombmc <- db7 %>%
-  filter(Reference == "McCaslin et al. 2020") %>%
-  group_by(gbif.binomial) %>%
-  summarise(
-    Value_max = max(Value, na.rm = TRUE),
-    Reference = "McCaslin et al. 2020",
-    across(everything(), ~ first(.)),
-    .groups = 'drop'
-  ) %>%
-  distinct()
-
-# For Swift et al. 2021
-dbcombs <- db7 %>%
-  filter(Reference == "Swift et al. 2021") %>%
-  group_by(gbif.binomial) %>%
-  summarise(
-    Value_max = max(Value, na.rm = TRUE),
-    Reference = "Swift et al. 2021",
-    across(everything(), ~ first(.)),
-    .groups = 'drop'
-  ) %>%
-  distinct()
-
-# Combine the results
-combfinal <- bind_rows(dbcombs, dbcombmc)
-
-# Replace the original data for McCaslin et al. 2020 and Swift et al. 2021 with just the maximum value
-dbtrans <- db7 %>%
-  filter(!Reference %in% c("McCaslin et al. 2020", "Swift et al. 2021")) %>%
-  bind_rows(
-    db7 %>%
-      filter(Reference == "McCaslin et al. 2020") %>%
-      group_by(gbif.binomial) %>%
-      summarise(
-        Value = max(Value, na.rm = TRUE),
-        Reference = "McCaslin et al. 2020",
-        across(everything(), ~ first(.)),
-        .groups = 'drop'
-      ) %>%
-      distinct(),
-    db7 %>%
-      filter(Reference == "Swift et al. 2021") %>%
-      group_by(gbif.binomial) %>%
-      summarise(
-        Value = max(Value, na.rm = TRUE),
-        Reference = "Swift et al. 2021",
-        across(everything(), ~ first(.)),
-        .groups = 'drop'
-      ) %>%
-      distinct()
-  ) %>%
-  distinct()
-
-#### Filtering data to just include flying birds, running mammals and swimming fish ####
-db_final <- dbtrans %>%
+# 4) Filtering data to just include flying birds, running mammals and swimming fish ----------
+db_final <- db7 %>%
   filter(!is.na(Body.mass)) %>%
   filter((Movement.mode == "Flying" & !class %in% c("Mammalia", "Insecta")) |
            (Movement.mode == "Running" & !class %in% c("Aves", "Squamata")) |
            (Movement.mode == "Swimming" & !class %in% c("Mammalia", "Aves")))
 
-#### Harmonising all the units for distance and body masses####
-## Excluding rows with km/h and ha in 'Units' column and with NA in 'Value' and 'Body mass' columns
+# 5) Harmonising all the units for distance and body masses ----------
+# Excluding rows with km/h and ha in 'Units' column and with NA in 'Value' and 'Body mass' columns
 db_final1 <- db_final |>
   filter(Units != "km/h", Units != "ha") |>
   filter(
     !is.na(Value), !is.na(Body.mass))
 
-## Converting units for body mass and distance
+# Converting units for body mass and distance
 # Converting all distance values to meters
 db_final2 <- db_final1 |>
   mutate(Value = case_when(Units == "km"  ~ Value * 1000,
@@ -527,10 +427,14 @@ db_final2 <- db_final1 |>
 
 # Converting all body mass values to grams
 db_final3 <- db_final2 |>
-  mutate(Body.mass = case_when(Body.mass.units == "kg"  ~ Body.mass * 1000,
+  rename(Locomotion.mode = Movement.mode) |>
+  rename(Locomotion.mode.source = `Movement Mode Ref`) |>
+  mutate(Body.mass = case_when(Body.mass.units == "kg" ~ Body.mass * 1000,
                                TRUE ~ Body.mass)) |>
   mutate(Body.mass.units = "g")
 
 
+# Save transformed data and taxa overview
 setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/output")
+write_csv(overviewtaxa, "taxonomy_gbif_match.csv")
 write_csv(db_final3, "DispersalTransformed.csv")

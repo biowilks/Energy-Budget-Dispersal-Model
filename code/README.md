@@ -14,7 +14,7 @@ Here is all the code needed for analyses in the paper (doi:XXXX):
 
 
 - [2-disp-raw-data-transformation](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/2-disp-raw-data-transformation.R) provides the code to transform the raw maximum dispersal distance data to: 
-<div class="indent-list"> 1) Import trait datasets and extract and harmonise names using rgbif</div>
+<div class="indent-list"> 1) Extract and harmonise names using rgbif</div>
 <div class="indent-list"> 2) Add in missing body mass data </div>
 <div class="indent-list"> 3) Add in missing movement mode </div>
 <div class="indent-list"> 4) Filtering data to include flying birds, running mammals, swimming fish only </div>

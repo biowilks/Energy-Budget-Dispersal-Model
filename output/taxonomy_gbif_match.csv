@@ -74,7 +74,6 @@ dispdb,Rattus fuscipes,Rattus fuscipes,2439233,SPECIES,ACCEPTED,EXACT,Chordata,M
 dispdb,Spermophilus saturatus,Sciuridae,9456,FAMILY,ACCEPTED,HIGHERRANK,Chordata,Mammalia,Sciuridae,NA,NA
 dispdb,Macropus giganteus,Macropus giganteus,5219981,SPECIES,ACCEPTED,EXACT,Chordata,Mammalia,Macropodidae,Macropus,Macropus giganteus
 dispdb,Lynx lynx,Lynx lynx,2435240,SPECIES,ACCEPTED,EXACT,Chordata,Mammalia,Felidae,Lynx,Lynx lynx
-dispdb,Ecdyonurus venosus,Ecdyonurus venosus,4481461,SPECIES,ACCEPTED,EXACT,Arthropoda,Insecta,Heptageniidae,Ecdyonurus,Ecdyonurus venosus
 dispdb,Agrilus planipennis,Agrilus planipennis,5878492,SPECIES,ACCEPTED,EXACT,Arthropoda,Insecta,Buprestidae,Agrilus,Agrilus planipennis
 dispdb,Anoplophora glabripennis ,Anoplophora glabripennis,7572133,SPECIES,ACCEPTED,EXACT,Arthropoda,Insecta,Cerambycidae,Anoplophora,Anoplophora glabripennis
 dispdb,Bolitophagus reticulatus ,Bolitophagus reticulatus,4454798,SPECIES,ACCEPTED,EXACT,Arthropoda,Insecta,Tenebrionidae,Bolitophagus,Bolitophagus reticulatus
@@ -999,6 +998,7 @@ dispdb,Dendroica petechia,Dendroica petechia,NA,SPECIES,SYNONYM,NA,Chordata,Aves
 dispdb,Artamus leucorynchus,Artamus leucorhynchus,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Artamidae,Artamus,Artamus leucoryn
 dispdb,Arses telescophthalmus,Arses telescophthalmus,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Monarchidae,Arses,Arses telescopthalmus
 dispdb,Oporornis formosus,Oporornis formosus,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Parulidae,Geothlypis,Geothlypis formosa
+dispdb,Carduelis tristis,Carduelis tristis,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Fringillidae,Spinus,Spinus tristis
 dispdb,Gelochelidon nilotica,Gelochelidon nilotica,2481263,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Laridae,Gelochelidon,Gelochelidon nilotica
 dispdb,Sterna paradisaea,Sterna paradisaea,5229230,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Laridae,Sterna,Sterna paradisaea
 dispdb,Plectrophenax nivalis,Plectrophenax nivalis,2491719,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Calcariidae,Plectrophenax,Plectrophenax nivalis
@@ -1128,6 +1128,7 @@ dispdb,Delichon urbicum,Delichon urbicum,2489214,SPECIES,ACCEPTED,EXACT,Chordata
 dispdb,Scaphiopus holbrookii,Scaphiopus holbrookii,2429796,SPECIES,ACCEPTED,EXACT,Chordata,Amphibia,Scaphiopodidae,Scaphiopus,Scaphiopus holbrookii
 dispdb,Rana temporaria,Rana temporaria,2426805,SPECIES,ACCEPTED,EXACT,Chordata,Amphibia,Ranidae,Rana,Rana temporaria
 dispdb,Hoplocephalus bungaroides,Hoplocephalus bungaroides,9561258,SPECIES,ACCEPTED,EXACT,Chordata,Squamata,Elapidae,Hoplocephalus,Hoplocephalus bungaroides
+dispdb,Ecdyonurus venosus,Ecdyonurus venosus,4481461,SPECIES,ACCEPTED,EXACT,Arthropoda,Insecta,Heptageniidae,Ecdyonurus,Ecdyonurus venosus
 eltonbirds,Struthio camelus,Struthio camelus,2495150,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Struthionidae,Struthio,Struthio camelus
 eltonbirds,Rhea americana,Rhea americana,2495165,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Rheidae,Rhea,Rhea americana
 eltonbirds,Rhea pennata,Rhea pennata,2495160,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Rheidae,Rhea,Rhea pennata
@@ -1855,7 +1856,6 @@ eltonbirds,Galbula tombacea,Galbula tombacea,5228249,SPECIES,ACCEPTED,EXACT,Chor
 eltonbirds,Galbula cyanescens,Galbula cyanescens,5228246,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Galbulidae,Galbula,Galbula cyanescens
 eltonbirds,Galbula chalcothorax,Galbula chalcothorax,5228261,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Galbulidae,Galbula,Galbula chalcothorax
 eltonbirds,Galbula leucogastra,Galbula leucogastra,5228243,SPECIES,ACCEPTED,EXACT,Chordata,Aves,Galbulidae,Galbula,Galbula leucogastra
-dispdb,Carduelis tristis,Carduelis tristis,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Fringillidae,Spinus,Spinus tristis
 dispdb,Dendroica kirtlandii,Dendroica kirtlandii,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Parulidae,Setophaga,Setophaga kirtlandii
 dispdb,Carduelis flavirostris,Carduelis flavirostris,NA,SPECIES,HOMOTYPIC_SYNONYM,NA,Chordata,Aves,Fringillidae,Linaria,Linaria flavirostris
 dispdb,Dendroica pinus,Dendroica pinus,NA,SPECIES,SYNONYM,NA,Chordata,Aves,Parulidae,Setophaga,Setophaga pinus

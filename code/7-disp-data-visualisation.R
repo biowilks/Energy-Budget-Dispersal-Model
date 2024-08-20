@@ -1,52 +1,48 @@
 rm(list=ls())
 
+# Load packages ----------
 library("tidyverse")
 library("viridis")
 library("scales")
 
-###IMPORTING DATA AND FUNCTIONS NEEDED FOR DATA VISUALISATION####
-#Importing energy budget model function
+# Import dispersal function and empirical data----------
 setwd(dirname(getActiveDocumentContext()$path))
 source("6-disp-function.R")
 
-#Importing empirical data
 setwd('C:/Users/xr49abiw/Documents/Energy-Budget-Model/output')
 dispdata <- read.csv("DispersalTransformed.csv")
 
-##  Filtering data for maximum dispersal distance data for running mammals, flying birds and swimming fish
 #   Removing NA, NaN and Inf values
 dispdatamax <- dispdata |>
   filter(!is.na(Value) & !is.infinite(Value) & !is.nan(Value),
          !is.na(Body.mass) & !is.infinite(Body.mass) & !is.nan(Body.mass),
-         !is.na(Movement.mode) )
+         !is.na(Locomotion.mode) )
 
-#  filtering for each movement mode
-run_max<- dispdatamax|> filter (Movement.mode == "Running")
-fly_max <- dispdatamax |> filter (Movement.mode == "Flying")
-swim_max <- dispdatamax |> filter (Movement.mode == "Swimming")
+#  Filtering for each locomotion mode
+run_max<- dispdatamax|> filter (Locomotion.mode == "Running")
+fly_max <- dispdatamax |> filter (Locomotion.mode == "Flying")
+swim_max <- dispdatamax |> filter (Locomotion.mode == "Swimming")
 
-# Find unique body mass values from empirical data for each movement mode
+# Find unique body mass values from empirical data for each locomotion mode
 body_mass_run <- unique(run_max$Body.mass)
 body_mass_fly <- unique(fly_max$Body.mass)
 body_mass_swim <- unique(swim_max$Body.mass)
 
-#  summarising dataset
-dispdatamax |>
-  pull(Reference) |>
-  n_distinct()
 
-###MODEL PREDICTIONS FOR EACH MOVEMENT MODE####
+
+# Bioenergetic dispersal model predictions of maximum dispersal distance for each locomotion mode ----------
+
 # Calculate dispersal distances for body masses present in empirical dataset
-# Find unique body mass values from empirical data for each movement mode
+# Find unique body mass values from empirical data for each locomotion mode
 body_mass_run <- unique(run_max$Body.mass)
 body_mass_fly <- unique(fly_max$Body.mass)
 body_mass_swim <- unique(swim_max$Body.mass)
 
-# Calculate dispersal predictions for each movement mode and body mass, using disp_fun and unique body mass values
-maximum_disp_dist <- function(body_mass, movement_mode) {
+# Calculate dispersal predictions for each locomotion mode and body mass, using disp_fun and unique body mass values
+maximum_disp_dist <- function(body_mass, locomotion_mode) {
   maximum_disp_dist <- data.frame()
   for (m_C in body_mass) {
-    disp <- as.data.frame(disp_fun(m_C, movement_mode = movement_mode, lambda = 0.1))
+    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1))
     mass_disp <- cbind(m_C, disp)
     maximum_disp_dist <- rbind(maximum_disp_dist, mass_disp)
   }
@@ -68,19 +64,8 @@ modelbird <- ds.dispfly |>
 modelfish<- ds.dispswim |>
   select(m_C,disp_dist)
 
-# Model summary for each movement mode
-model.disprun <- lm(log10(disp_dist) ~ log10(m_C), data = ds.disprun)
-summary(model.disprun)
 
-model.dispfly <- lm(log10(disp_dist) ~ log10(m_C), data = ds.dispfly)
-summary(model.dispfly)
-
-model.dispswim <- lm(log10(disp_dist) ~ log10(m_C), data = ds.dispswim)
-summary(model.dispswim)
-
-
-
-###CALCULATING PERCENTAGE OF DATA ABOVE MODEL PREDICTIONS####
+# Calculating percentage of empirical data above bioenergetic dispersal model predictions ----------
 # Left join empirical data with model predictions based on body mass
 run_max_merged <- left_join(run_max, ds.disprun, by = c("Body.mass" = "m_C")) %>%
   select(gbif.binomial, Value, disp_dist, Body.mass)
@@ -97,7 +82,7 @@ percentage_exceeding <- function(empirical_data, model_predictions) {
   return(percentage_exceeding)
 }
 
-# for each movement mode
+# for each locomotion mode
 run_max_merged %>%
   summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
 
@@ -109,7 +94,7 @@ swim_max_merged %>%
 
 
 
-###FIGURE 2a-d####
+# FIGURE 2a-d - The relationships between body mass and the parameters underlying the bioenergetic dispersal model ----------
 ## Plot parameters against body mass
 #custom label needed for speed graph
 custom_labels <- c(expression(10^2.5), expression(10^3), expression(10^3.5), expression(10^4), expression(10^4.5))
@@ -201,20 +186,20 @@ E0_plot <- ggplot(ds.disprun, aes(x = m_C, y = E_0, color = viridis(3)[3])) +
 
 
 
-###FIGURE 4a-c####
-###Creating plots for each movement mode
+# FIGURE 4a-c - The relationship between maximum dispersal distance and body mass for a) flying birds, b) running mammals and c) swimming fish ----------
+###Creating plots for each locomotion mode
 #setting colours
 mov_colour <- c('Flying' = 'red', 'Swimming' = 'blue', 'Running' = 'palegreen4',
                 'Model Flying' ='#660000', 'Model Swimming' = '#000066', 'Model Running' = '#003300')
 
 ##flying birds
 scatter_plot_fly <- fly_max |>
-  ggplot(aes(x = Body.mass, y = Value, color = Movement.mode)) +
+  ggplot(aes(x = Body.mass, y = Value, color = Locomotion.mode)) +
   geom_point(size = 2, alpha = 0.2) +
   geom_smooth(method = "gam",  linetype = "dashed", se = T, linewidth = 1.5) +
   geom_line(data = modelbird, aes(x = m_C, y = disp_dist), linewidth = 1.5, color = mov_colour['Model Flying']) +
   labs(x = "", y = "") +
-  scale_color_manual(name = "Movement Mode", values = mov_colour, guide = "none")+
+  scale_color_manual(name = "Locomotion Mode", values = mov_colour, guide = "none")+
   theme_minimal() +
   scale_x_log10(
     labels = scales::trans_format("log10", scales::math_format(10^.x)),
@@ -241,12 +226,12 @@ plot(scatter_plot_fly)
 
 ##running mammals
 scatter_plot_run <- run_max |>
-  ggplot(aes(x = Body.mass, y = Value, color = Movement.mode)) +
+  ggplot(aes(x = Body.mass, y = Value, color = Locomotion.mode)) +
   geom_point(size = 2, alpha = 0.2) +
   geom_smooth(method = "gam",linetype = "dashed", se = T,linewidth = 1.5) +
   geom_line(data = modelmamm, aes(x = m_C, y = disp_dist), linewidth = 1.5, color = mov_colour['Model Running']) +
   labs(x = "", y = "") +
-  scale_color_manual(name = "Movement Mode", values = mov_colour, guide = "none") +
+  scale_color_manual(name = "Locomotion Mode", values = mov_colour, guide = "none") +
   theme_minimal()  +
   scale_x_log10(
     labels = scales::trans_format("log10", scales::math_format(10^.x)),
@@ -274,12 +259,12 @@ plot(scatter_plot_run)
 
 ##swimming fish
 scatter_plot_swim <- swim_max |>
-  ggplot(aes(x = Body.mass, y = Value, color = Movement.mode)) +
+  ggplot(aes(x = Body.mass, y = Value, color = Locomotion.mode)) +
   geom_point(size = 2, alpha = 0.2) +
   geom_smooth(method = "gam",linetype = "dashed", se = T,linewidth = 1.5,) +
   geom_line(data = modelfish, aes(x = m_C, y = disp_dist), linewidth = 1.5, color = mov_colour['Model Swimming']) +
   labs(x = "", y = "") +
-  scale_color_manual(name = "Movement Mode", values = mov_colour, guide = "none")+
+  scale_color_manual(name = "Locomotion Mode", values = mov_colour, guide = "none")+
   theme_minimal()  +
   scale_x_log10(
     labels = scales::trans_format("log10", scales::math_format(10^.x)),

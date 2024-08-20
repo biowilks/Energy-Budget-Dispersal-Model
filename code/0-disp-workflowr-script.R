@@ -1,8 +1,12 @@
+rm(list=ls())
+
+# Load all packages ----------
 library('workflowr')
 
-#### using workflowr to create all folders and files in directory####
+#### Configure Git settings for workflowr project ----------
 wflow_git_config(user.name = "biowilks", user.email = "biowilks@gmail.com")
 
+# Start a new workflowr project in an existing directory
 wflow_start(
   directory = "C:/Users/xr49abiw/Documents/Energy-Budget-Model",
   name = NULL,
@@ -16,25 +20,25 @@ wflow_start(
   user.email = NULL
 )
 
-
+# Publish changes in the workflowr project
 wflow_publish()
 
-#### Building website after making edits in .Rmd files ####
+# Build the website after making edits in .Rmd files
 wflow_build()
 
-##View updated website
+# View the updated website locally
 wflow_view()
 
-#check status of the files
+# Check the status of files in the workflowr project
 wflow_status()
 
-#### Publishing website publicly ####
+# Configure the Git remote for publishing the website ----------
 wflow_git_remote(
   remote = "origin",
   user = "biowilks",
   repo = "Energy-Budget-Model",
   action = "set_url"
 )
-
+# Publish and push the website to GitHub
 wflow_publish("analysis/*.Rmd", "Editing Energy Budget Model website")
 wflow_git_push()

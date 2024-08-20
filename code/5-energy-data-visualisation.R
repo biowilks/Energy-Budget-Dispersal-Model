@@ -1,15 +1,17 @@
 rm(list=ls())
 
+# Load packages ----------
 library("rstudioapi")
 library("tidyverse")
 library("scales")
 library("igraph")
 library("ggraph")
 
+# Import energy function ----------
 setwd(dirname(getActiveDocumentContext()$path))
-source("3-energy-function.R")
+source("4-energy-function.R")
 
-###FIGURE 3a####
+# FIGURE 3a - Absolute energy depletion across locomotion modes ----------
 # Calculate energy  across different distances (for 2kg  individual)
 # create dataframes
 ds.energyrun <- data.frame()
@@ -17,8 +19,8 @@ ds.energyfly <- data.frame()
 ds.energyswim <- data.frame()
 
 # filter to make sure energy remaining is greater than 0
-energy <- function(m_C, movement_mode, disp_dist, lambda) {
-  energy_df <- as.data.frame(energy_fun(m_C, movement_mode, disp_dist, lambda))
+energy <- function(m_C, locomotion_mode, disp_dist, lambda) {
+  energy_df <- as.data.frame(energy_fun(m_C, locomotion_mode, disp_dist, lambda))
   if (any(energy_df$E_R < 0)) {
     return(NULL)
   } else {
@@ -51,7 +53,7 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 }
 
 
-##plotting energy remaining against distance for different movement modes
+##plotting energy remaining against distance for different locomotion mode
 energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
   scale_x_continuous(limits=c(0, 3500000))+
@@ -71,13 +73,13 @@ energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
 
 energy
 
-###FIGURE 3b####
+# FIGURE 3b - Relative energy depletion for differently sized running animals ----------
 # Calculate relative energy efficiency across different distances for small and large running mammals
 # For different body masses
 ds.energyrunsmall  <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 45000,movement_mode = "running",disp_dist, lambda = 0))
+  disp = as.data.frame(energy_fun(m_C = 45000,locomotion_mode = "running",disp_dist, lambda = 0))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunsmall = rbind(ds.energyrunsmall, mass_disp)
 }
@@ -85,7 +87,7 @@ for(disp_dist in seq(0,5000000, length = 10000)) {
 ds.energyrunlarge <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 4000000,movement_mode = "running",disp_dist, lambda = 0))
+  disp = as.data.frame(energy_fun(m_C = 4000000,locomotion_mode = "running",disp_dist, lambda = 0))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunlarge = rbind(ds.energyrunlarge, mass_disp)
 }
@@ -120,12 +122,12 @@ relative_energy <- ggplot() +
 
 relative_energy
 
-###FIGURE 3c####
+# FIGURE 3c - Allometry of absolute dispersal costs across locomotion modes ----------
 # Allometry of energy costs at 1m (J) i.e. absolute energy cost per meter
 ds.energyrunabsolute  <- data.frame()
 
 for(m_C in seq(10,1000000, length = 100)) {
-  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "running", m_C, lambda = 0.1))
+  disp = as.data.frame(energy_fun(disp_dist = 1, locomotion_mode = "running", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyrunabsolute = rbind(ds.energyrunabsolute, mass_disp)
 }
@@ -133,7 +135,7 @@ for(m_C in seq(10,1000000, length = 100)) {
 ds.energyflyabsolute  <- data.frame()
 
 for(m_C in seq(10,1000000, length = 100)) {
-  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "flying", m_C, lambda = 0.1))
+  disp = as.data.frame(energy_fun(disp_dist = 1, locomotion_mode = "flying", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyflyabsolute = rbind(ds.energyflyabsolute, mass_disp)
 }
@@ -141,7 +143,7 @@ for(m_C in seq(10,1000000, length = 100)) {
 ds.energyswimabsolute  <- data.frame()
 
 for(m_C in seq(10,1000000, length = 100)) {
-  disp = as.data.frame(energy_fun(disp_dist = 1, movement_mode = "swimming", m_C, lambda = 0.1))
+  disp = as.data.frame(energy_fun(disp_dist = 1, locomotion_mode = "swimming", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyswimabsolute = rbind(ds.energyswimabsolute, mass_disp)
 }
@@ -151,7 +153,7 @@ ds.energyrunabsolute_filtered <- ds.energyrunabsolute[ds.energyrunabsolute $E_C 
 ds.energyflyabsolute_filtered <- ds.energyflyabsolute[ds.energyflyabsolute $E_C >= 0, ]
 ds.energyswimabsolute_filtered  <- ds.energyswimabsolute [ds.energyswimabsolute $E_C >= 0, ]
 
-##plotting absolute energy remaining against mass for different movement modes
+##plotting absolute energy remaining against mass for different locomotion_mode
 absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
   theme_minimal() +
@@ -174,7 +176,7 @@ absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) 
 absolute_energy
 
 
-###FIGURE 3d####
+# FIGURE 3d - A dispersal-cost-weoghter network for differently sized running animals ----------
 ### Calculating a dispersal-cost-weighted spatial network
   #  Create matrix of distances and use the energy function to calculate relative energy remaining (E_E)
   #  to represent the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals
@@ -195,7 +197,7 @@ realised_matrix <- dfdist * realised_max_distances
 
 # Function to calculate relative energy remaining for a given distance in m and mass (m_C) in g
 calculate_energy_flow <- function(distance, m_C) {
-  energy_output <- energy_fun(m_C = m_C, movement_mode = "running", disp_dist = distance, lambda = 0.1)
+  energy_output <- energy_fun(m_C = m_C, locomotion_mode = "running", disp_dist = distance, lambda = 0.1)
   E_E <- energy_output[, "E_E"]
   return(E_E)
 }
@@ -333,3 +335,4 @@ p2 <- ggraph(layout, layout = "auto") +
   labs(title = "")
 
 p2
+

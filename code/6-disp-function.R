@@ -1,94 +1,104 @@
 rm(list=ls())
+setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/output")
 
+# Load packages ----------
 library("rstudioapi")
 library("tidyverse")
 
-setwd(dirname(getActiveDocumentContext()$path))
+# Import converted parameters ----------
+conv_para <- read.csv("convertedparameters.csv")
+conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 
+# Description of input variables, parameters and outputs ----------
 ## 1) INPUT VARIABLES
 ## m_C = body mass in g
 ## movement_mode = running, flying or swimming
 ## lambda = % of energy storage needed for survival after dispersing
 
 ## 2) OTHER VARIABLES
-##  A) BODY MASS CONVERSION
-##     m_C_kg = body mass in kg
-##  B) SPEED VARIABLES
-##     v_C = movement speed in m/h
-##  C) ENERGY STORAGE
+##  A) ENERGY STORAGE
 ##     E_0 = Energy storage in J
+##     a1 = intercept: fat mass of birds
+##     b1 = exponent: fat mass of birds
+##     a2 = intercept energy storage of mammals
+##     b2 = exponent: fat mass of mammals
+##     a3 = intercept: energy density of fish
+##     b3 = exponent: energy density of fish
+##
 ##     E_alpha = Energy available for dispersal in J
-##  D) ENERGY LOSS
+
+
+##  B) ENERGY LOSS
 ##     BMR = basal metabolic rate in J/h
+##     a4 = intercept: BMR of birds
+##     b4 = exponent: BMR of birds
+##     a5 = intercept: BMR of mammals
+##     b5 = exponent: BMR of mammals
+##     a6 = intercept: BMR of fish
+##     b6 = exponent: BMR of fish
+
 ##     COT = costs of transport in J/m
+##     a7 = intercept: COTmin of flying
+##     b7 = exponent: COTmin of flying
+##     a8 = intercept: COTmin of running
+##     b8 = exponent: COTmin of running
+##     a9 = intercept: COTmin of swimming
+##     b9 = exponent: COTmin of swimming
+
 ##     FMR_disp = field metabolic rate in J/h
+
+##  C) SPEED VARIABLES
+##     v_C = movement speed in m/h
+##     v_0_fly = intercept: locomotion rate of flying
+##     v_0_run = intercept: locomotion rate of running
+##     v_0_swim = intercept: locomotion rate of swimming
+##     c = exponent: locomotion rate
+##     k = intercept: heat-dissipation time
+##     d = exponent: heat-dissipation time
 
 ##  3) OUTPUTS
 ##    t = time in h
 ##    disp_dist = maximum dispersal distance in m
 
 
+# Bioenergetic dispersal model dispersal function ----------
+disp_fun <- function(m_C,locomotion_mode,lambda) {
+  ##  A) Energy storage
+  if (locomotion_mode == "flying") {
+    E_0 = conv_para_list[["a1"]] * m_C^conv_para_list[["b1"]] } else if (locomotion_mode == "running") {
+      E_0 = conv_para_list[["a2"]] * m_C^conv_para_list[["b2"]] } else if (locomotion_mode == "swimming") {
+        E_0 = conv_para_list[["a3"]] * m_C^conv_para_list[["b3"]] }
 
-disp_fun <- function(m_C,movement_mode,lambda) {
-## A) Body mass conversion
-   m_C_kg = m_C/1000
+  # Energy available for dispersal
+  E_alpha = ((1-lambda) * E_0)
 
-## B) Speed variables (Dyer et al. 2023)
-   if(movement_mode == "running") {
-    v_0 = 0.28 } else if (movement_mode == "flying"){
-      v_0 = 30.54} else { v_0 = 0.39}
-   c = 0.27
-   d = 0.24
-   k = 0.033
-   v_C = (((1/k)*m_C_kg^c)/((m_C_kg^(c+d)) + (1/(k*v_0))))*3600
-
-#  Parameter reference:
-#  All movement modes from Dyer et al. (2023)
-#  Given in m/s, converted to m/h, body mass in kg
-
-
-## D) Energy storage
-   if(movement_mode == "running") {
-     E_0 =  (((10^-1.30)*m_C^1)/1000)*40*10^6  } else if (movement_mode == "flying"){
-       E_0 =  (((10^-1.20)*m_C^0.98)/1000)*40*10^6 } else {E_0 = ((10^0.62)*m_C^0.02)*m_C*1000 }
-
-   # Parameter reference:
-   # Mammal (running) and
-   # Bird (flying)   E_0 from Antol & Kozlowski. (2020)
-   #                 Gives energy in log10 g converted to kg and then J
-   #                 Conversion factor from Peters. (1986)
-
-   # Fish (swimming) E_0 calculated using data from Martin et al. (2017)
-   #                 Refitted energy density/length data, converting length to mass
-   #                 Gives energy density in kJ/g converted to J
-   #                 Conversion factor from Webb. (1975) in Peters. (1986)
-
-    E_alpha = ((1-lambda) * E_0 )
-
-## D) Energy loss via dispersal
-   if(movement_mode == "running") {
-    BMR = (3.248*m_C^0.735)*20 } else if (movement_mode == "flying"){
-      BMR = (7.434*m_C^0.648)*20 } else {BMR = (((10^1.87)*m_C_kg^0.95)/1.33)*20 }
-
-#  Parameter reference:
-#  Mammal (running) and
-#  Bird (flying)    BMR from (Gavrilov et al. 2022)
-#                   Given in mL o2/h, body mass in g, converted to J/h
-#                   Conversion factor taken from Peters. (1986)
-
-#  Fish (swimming) BMR from (Watanabe & Payne. 2023)
-#                   Given in mg o2/h, body mass in kg, converted to mL o2/h and then to J/h
-#                   Conversion factor taken from Peters. (1986)
+  ##  B) Energy loss via dispersal
+  # Basal metabolic rate
+  if (locomotion_mode == "flying") {
+    BMR = conv_para_list[["a4"]] * m_C^conv_para_list[["b4"]] } else if (locomotion_mode == "running") {
+      BMR = conv_para_list[["a5"]] * m_C^conv_para_list[["b5"]] } else if (locomotion_mode == "swimming") {
+        BMR = conv_para_list[["a6"]] * m_C^conv_para_list[["b6"]] }
 
 
-   if(movement_mode == "running") {
-    COT = 10.7*m_C_kg^0.68 } else if (movement_mode == "flying"){
-      COT = 3.6*m_C_kg^0.69 } else {COT = 1.1*m_C_kg^0.62}
+  # Cost of transport
+  if (locomotion_mode == "flying") {
+    COT = conv_para_list[["a7"]] * m_C^conv_para_list[["b7"]] } else if (locomotion_mode == "running") {
+      COT = conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]] } else if (locomotion_mode == "swimming") {
+        COT = conv_para_list[["a9"]] * m_C^conv_para_list[["b9"]] }
 
-#  Parameter reference:
-#  All movement modes from Alexander. (2003) in J/m, body mass in kg
+  ##  C) Speed
+  if(locomotion_mode == "flying") {
+    v_0 = conv_para_list[["v_0_fly"]] } else if (locomotion_mode == "running"){
+      v_0 = conv_para_list[["v_0_run"]] } else {v_0 = conv_para_list[["v_0_swim"]]}
 
-  FMR_disp = BMR + COT*v_C
+  c = conv_para_list[["c"]]
+  d = conv_para_list[["k"]]
+  k = conv_para_list[["d"]]
+  v_C = (((1/k)*m_C^c)/((m_C^(c+d)) + (1/(k*v_0))))
+
+
+  # Field metabolic rate while dispersing
+  FMR_disp = BMR + COT * v_C
 
 ##  OUTPUTS
  # Calculate time in h
@@ -97,9 +107,16 @@ disp_fun <- function(m_C,movement_mode,lambda) {
  # Calculate dispersal distance in m
   disp_dist = (t*v_C)
 
-  ds.disp <- cbind(disp_dist, m_C_kg, E_0, E_alpha, v_C, t, FMR_disp, BMR, COT, lambda)
+  ds.disp <- cbind(E_0, COT, BMR, v_C, disp_dist, t)
   return(ds.disp)
 }
 
 
-disp_fun(m_C = 20000,movement_mode = "running", lambda = 0.1)
+disp_fun(m_C = 10000, locomotion_mode = "running", lambda = 0.1)
+
+# new code
+#           E_0      COT      BMR      v_C  disp_dist        t
+# [1,] 20047489 47.79514 56577.79 4.157371  1321.152 317.7854
+# old code
+#          E_0      COT      BMR      v_C   disp_dist     t
+#[1,] 20047489 51.21342 56577.79 1822.491  219344.3 120.3541
