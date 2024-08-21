@@ -25,6 +25,8 @@ Energy-Budget-Model/
 │   ├── 7-disp-data-visualisation.R
 │   ├── README.md
 ├── data/
+│   ├── parsold.csv
+│   ├── gammasold.csv
 │   ├── MamFuncDat.txt
 │   ├── BirdFuncDat.txt
 │   ├── FishBase.txt

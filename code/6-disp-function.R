@@ -92,8 +92,8 @@ disp_fun <- function(m_C,locomotion_mode,lambda) {
       v_0 = conv_para_list[["v_0_run"]] } else {v_0 = conv_para_list[["v_0_swim"]]}
 
   c = conv_para_list[["c"]]
-  d = conv_para_list[["k"]]
-  k = conv_para_list[["d"]]
+  d = conv_para_list[["d"]]
+  k = conv_para_list[["k"]]
   v_C = (((1/k)*m_C^c)/((m_C^(c+d)) + (1/(k*v_0))))
 
 
@@ -117,6 +117,7 @@ disp_fun(m_C = 10000, locomotion_mode = "running", lambda = 0.1)
 # new code
 #           E_0      COT      BMR      v_C  disp_dist        t
 # [1,] 20047489 47.79514 56577.79 4.157371  1321.152 317.7854
+
 # old code
 #          E_0      COT      BMR      v_C   disp_dist     t
 #[1,] 20047489 51.21342 56577.79 1822.491  219344.3 120.3541

@@ -40,5 +40,5 @@ wflow_git_remote(
   action = "set_url"
 )
 # Publish and push the website to GitHub
-wflow_publish("analysis/*.Rmd", "Editing Energy Budget Model website")
+wflow_publish('analysis/about.Rmd', 'analysis/index.Rmd')
 wflow_git_push()

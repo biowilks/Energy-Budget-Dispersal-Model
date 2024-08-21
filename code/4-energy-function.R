@@ -98,8 +98,8 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
      v_0 = conv_para_list[["v_0_run"]] } else {v_0 = conv_para_list[["v_0_swim"]]}
 
    c = conv_para_list[["c"]]
-   d = conv_para_list[["k"]]
-   k = conv_para_list[["d"]]
+   d = conv_para_list[["d"]]
+   k = conv_para_list[["k"]]
    v_C = (((1/k)*m_C^c)/((m_C^(c+d)) + (1/(k*v_0))))
 
 # Field metabolic rate while dispersing

@@ -9,10 +9,10 @@ library("tidyverse")
 
 # Body mass, M_C: g
 # Energy storage, E_0: J
-# Basal metabolic rate, BMR: J h^-1
-# Field metabolic rate, FMR_disp: J h^-1
-# Gross cost of transport, COT: J m^-1
-# Movement speed, v_C: m h^-1
+# Basal metabolic rate, BMR: J/h
+# Field metabolic rate, FMR_disp: J/h
+# Gross cost of transport, COT: J/m
+# Movement speed, v_C: m/h
 # Time, t: h
 # Max dispersal distance, disp_dist:  m
 
