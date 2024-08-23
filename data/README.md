@@ -39,6 +39,9 @@ Here are all the RAW data files needed for analyses in the paper (doi:XXXX):
 - pars_old.csv
 - gammas_old.csv
 
+**Data_metadata**
+- containing all the metadata files for each .csv file in the folder. 
+
 
 **References**
 Boettiger, C., Chamberlain, S., Lang, D.T., Wainwright, P. & Cazelles, K. (2023). rfishbase: R Interface to “FishBase.”

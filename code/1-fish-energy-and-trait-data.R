@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd('C:/Users/xr49abiw/Documents/Energy-Budget-Model/data')
+setwd('~/Energy-Budget-Model/data')
 
 # Load all packages ----------
 library(tidyverse)
@@ -103,3 +103,4 @@ scatter_plot3 <- ggplot(energy3, aes(x = log10_Weight, y = log10_Energy)) +
   geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(x = "log10 Weight (g)", y = "log10 Energy Density (kJ/g)") +
   theme_minimal()
+

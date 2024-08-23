@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/data")
+setwd("~/Energy-Budget-Model/data")
 
 # Load all packages ----------
 library(tidyverse)
@@ -435,6 +435,6 @@ db_final3 <- db_final2 |>
 
 
 # Save transformed data and taxa overview
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/output")
+setwd("~/Documents/Energy-Budget-Model/output")
 write_csv(overviewtaxa, "taxonomy_gbif_match.csv")
 write_csv(db_final3, "DispersalTransformed.csv")

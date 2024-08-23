@@ -8,7 +8,7 @@ library("igraph")
 library("ggraph")
 
 # Import energy function ----------
-setwd(dirname(getActiveDocumentContext()$path))
+setwd("~/Energy-Budget-Model/code")
 source("4-energy-function.R")
 
 # FIGURE 3a - Absolute energy depletion across locomotion modes ----------
@@ -56,7 +56,7 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 ##plotting energy remaining against distance for different locomotion mode
 energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
-  scale_x_continuous(limits=c(0, 3500000))+
+  scale_x_continuous(limits=c(0, 4000000))+
   scale_y_continuous(limits=c(0, 10000000))+
   theme_minimal() +
   theme( axis.line = element_line(colour = "grey20",linewidth = 1, linetype = "solid"))+

@@ -34,6 +34,7 @@ Energy-Budget-Model/
 │   ├── AnimalTraits.txt
 │   ├── DispersalUntransformed.csv
 │   ├── EnergyDensityDatabaseDryad.csv
+│   ├── Data_metadata.xlsx
 │   └── README.md
 ├── docs/
 │   ├── figures/
@@ -48,6 +49,7 @@ Energy-Budget-Model/
 │   ├── rundispdistance.csv
 │   ├── swimdispdistance.csv
 │   ├── taxonomy_gbif_match.csv
+│   ├── Output_metadata.xlsx
 │   └── README.md
 ├── .gitattributes
 ├── .gitignore

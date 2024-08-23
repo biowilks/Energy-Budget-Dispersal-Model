@@ -13,13 +13,13 @@ Paper link (XXXX)
 # Authors
 **Caitlin Wilkinson** (caitlin.wilkinson@idiv.de) [![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-2831-8235)
 
-Ulrich Brose[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](http://orcid.org/####)
+Ulrich Brose[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-9156-583X)
 
-Alexander Dyer[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](http://orcid.org/####)
+Alexander Dyer[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0001-9030-438X)
 
-Myriam R. Hirt[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](http://orcid.org/####)
+Myriam R. Hirt[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-8112-2020)
 
-Remo Ryser[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](http://orcid.org/####)
+Remo Ryser[![](https://orcid.org/sites/default/files/images/orcid_16x16.png)](https://orcid.org/0000-0002-3771-8986)
 
 # Overview
 This repository contains all underlying data and code needed to reproduce the analyses in the paper mentioned above. 

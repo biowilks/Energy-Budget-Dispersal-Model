@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/output")
+setwd("~/Energy-Budget-Model/output")
 
 # Load packages ----------
 library("rstudioapi")
@@ -85,12 +85,11 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
      BMR = conv_para_list[["a5"]] * m_C^conv_para_list[["b5"]] } else if (locomotion_mode == "swimming") {
      BMR = conv_para_list[["a6"]] * m_C^conv_para_list[["b6"]] }
 
-
-  # Cost of transport
-   if (locomotion_mode == "flying") {
-     COT = conv_para_list[["a7"]] * m_C^conv_para_list[["b7"]] } else if (locomotion_mode == "running") {
-     COT = conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]] } else if (locomotion_mode == "swimming") {
-     COT = conv_para_list[["a9"]] * m_C^conv_para_list[["b9"]] }
+   # Cost of transport
+   #if (locomotion_mode == "flying") {
+   # COT = conv_para_list[["a7"]] * m_C^conv_para_list[["b7"]] } else if (locomotion_mode == "running") {
+   #  COT = conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]] } else if (locomotion_mode == "swimming") {
+   #   COT = conv_para_list[["a9"]] * m_C^conv_para_list[["b9"]] }
 
 ##  C) Speed
    if(locomotion_mode == "flying") {
@@ -102,8 +101,29 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
    k = conv_para_list[["k"]]
    v_C = (((1/k)*m_C^c)/((m_C^(c+d)) + (1/(k*v_0))))
 
-# Field metabolic rate while dispersing
-  FMR_disp = BMR + COT * v_C
+   ## Locomotion costs
+   m_C_kg = m_C/1000
+   v_C_ms = v_C/3600
+
+   # Wares. 1978 equation for fish:
+   if (locomotion_mode == "flying") {
+     LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
+       LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
+         LCOT = (((( 1.17*m_C_kg^0.44) * (v_C_ms^2.42))*m_C_kg)*3600) }
+
+   # Beamish. 1978 equation  for fish:
+   # if (locomotion_mode == "flying") {
+   #  LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
+    #   LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
+     #    LCOT = ((( 0.116*exp(1.884*m_C_kg^-0.36) * v_C_ms)*m_C_kg)*3600) }
+
+   # Field metabolic rate while dispersing
+   #FMR_disp = BMR + COT * v_C
+   if(locomotion_mode == "flying") {
+     FMR_disp = (1.1* BMR) + LCOT } else if (locomotion_mode == "running"){
+       FMR_disp = BMR + LCOT} else {
+         FMR_disp = BMR + LCOT}
+
 
 ##  OUTPUTS
   #  Calculate time in h
@@ -117,17 +137,9 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
   #  Calculate relative energy remaining
   E_E = (1-(E_C/E_alpha))
 
-  dsenergy.disp <- cbind(E_0, COT, BMR, v_C, E_C, E_M, E_R, E_E, t) #change this to delete parameters once tested the conversions worked
+  dsenergy.disp <- cbind(E_0, LCOT, FMR_disp, BMR, v_C, E_C, E_M, E_R, E_E, t) #change this to delete parameters once tested the conversions worked
   return(dsenergy.disp)
 }
 
 
-energy_fun(m_C = 10000, locomotion_mode = "running", disp_dist = 100000, lambda = 10)
-
-# new code
-#        E_0      COT      BMR      v_C        E_C      E_M         E_R      E_E        t
-# [1,] 20047489 47.79514 56577.79 4.157371 1365682728 13656.83 -1345635238 8.569154 24053.66
-
-# old code
-#         E_0      COT      BMR      v_C     E_C      E_M      E_R     E_E        t
-# [1,] 20047489 51.21342 56577.79 1822.491 8225763 82.25763 11821727 1.04559 54.86995
+energy_fun(m_C = 10000, locomotion_mode = "running", disp_dist = 100000, lambda = 0.1)

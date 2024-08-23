@@ -1,8 +1,7 @@
 rm(list=ls())
-setwd('C:/Users/xr49abiw/Documents/Energy-Budget-Model/data')
+setwd('~/Energy-Budget-Model/data')
 
 # Load packages ----------
-
 library("tidyverse")
 
 # Desired units for parameters
@@ -42,5 +41,5 @@ pars_new_df <- pars_old_df %>% mutate(par_val_conv = calc_conv(pars_old_df$conve
 # Extract parameter name and converted value needed for Bioenergetic dispersal model
 converted_pars <- pars_new_df %>% select(par_name,par_val_conv)
 
-setwd("C:/Users/xr49abiw/Documents/Energy-Budget-Model/output")
+setwd("~/Documents/Energy-Budget-Model/output")
 write_csv(converted_pars, "convertedparameters.csv")

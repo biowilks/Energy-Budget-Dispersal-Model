@@ -3,13 +3,14 @@ rm(list=ls())
 # Load packages ----------
 library("tidyverse")
 library("viridis")
+library("rstudioapi")
 library("scales")
 
 # Import dispersal function and empirical data----------
-setwd(dirname(getActiveDocumentContext()$path))
+setwd("~/Energy-Budget-Model/code")
 source("6-disp-function.R")
 
-setwd('C:/Users/xr49abiw/Documents/Energy-Budget-Model/output')
+setwd('~/Energy-Budget-Model/output')
 dispdata <- read.csv("DispersalTransformed.csv")
 
 #   Removing NA, NaN and Inf values
@@ -142,15 +143,15 @@ BMR_plot <- ggplot(ds.disprun, aes(x = m_C, y = BMR, color = viridis(3)[3])) +
     legend.position = "none"
   )
 
-COT_plot <- ggplot(ds.disprun, aes(x=m_C, y = COT)) +
+LCOT_plot <- ggplot(ds.disprun, aes(x=m_C, y = LCOT)) +
   geom_line() +
   scale_x_log10(labels = scales::trans_format("log10", scales::math_format(10^.x))) +
   scale_y_log10(labels = scales::trans_format("log10", scales::math_format(10^.x))) +
   theme_minimal() +
   theme( axis.line = element_line(colour = "grey20",size = 1.5, linetype = "solid"))+
-  geom_line(data = ds.disprun,aes(x=m_C, y = COT),color = "chartreuse4",linewidth=1.5)+
-  geom_line(data = ds.dispfly,aes(x=m_C, y = COT),color = "red",linewidth=1.5)+
-  geom_line(data = ds.dispswim,aes(x=m_C, y = COT),color = "blue",linewidth=1.5)+
+  geom_line(data = ds.disprun,aes(x=m_C, y = LCOT),color = "chartreuse4",linewidth=1.5)+
+  geom_line(data = ds.dispfly,aes(x=m_C, y = LCOT),color = "red",linewidth=1.5)+
+  geom_line(data = ds.dispswim,aes(x=m_C, y = LCOT),color = "blue",linewidth=1.5)+
   labs(y= "", x = "")+
   theme(
     axis.text.x = element_text(size = 35),

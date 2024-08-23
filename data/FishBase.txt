@@ -23,7 +23,7 @@ SpecCode	Species	Weight
 6583	Acanthopagrus sivicolus	2500
 8836	Acanthopsetta nadeshnyi	1200
 46831	Acanthorhodeus chankaensis	44.79999923706055
-4287	Acanthostracion polygonium	152.39999389648437
+4287	Acanthostracion polygonium	152.39999389648438
 943	Acanthurus chirurgus	5100
 4274	Aluterus monoceros	2710
 4275	Aluterus scriptus	2500
@@ -37,7 +37,7 @@ SpecCode	Species	Weight
 23015	Acantopsis dialuzona	50
 11272	Acapoeta tanganicae	2250
 12258	Acarichthys heckelii	276
-12260	Acaronia nassa	189.89999389648437
+12260	Acaronia nassa	189.89999389648438
 4894	Acentrogobius caninus	51.599998474121094
 54133	Acentrogobius chlorostigmatoides	29.489999771118164
 23582	Acentrogobius moloanus	5.900000095367432
@@ -106,7 +106,7 @@ SpecCode	Species	Weight
 67460	Alburnus kotschyi	50.27000045776367
 52610	Alburnus mossulensis	97.5999984741211
 65057	Alburnus scoranza	47.400001525878906
-52618	Alburnus sellal	155.39999389648437
+52618	Alburnus sellal	155.39999389648438
 9635	Alburnus tarichi	172.4199981689453
 65226	Alburnus thessalicus	30.200000762939453
 68229	Alburnus timarensis	44.22999954223633
@@ -441,7 +441,7 @@ SpecCode	Species	Weight
 24686	Canthophrys gongota	17.8799991607666
 56223	Capoeta aculeata	695.0999755859375
 62914	Capoeta banarescui	838
-55303	Capoeta buhsei	150.10000610351562
+55303	Capoeta buhsei	150.10000610351563
 67903	Capoeta coadi	66.4000015258789
 55343	Capoeta fusca	25.899999618530273
 68539	Capoeta razii	109.9000015258789
@@ -648,7 +648,7 @@ SpecCode	Species	Weight
 62992	Cichla pleiozona	2400
 6461	Cichla temensis	12240
 25778	Cichlasoma amazonarum	115.9000015258789
-46781	Cichlasoma araguaiense	151.97000122070312
+46781	Cichlasoma araguaiense	151.97000122070313
 4494	Cirrhinus cirrhosus	12700
 27149	Cirrhinus microlepis	5000
 49051	Cirrhinus molitorella	500
@@ -782,7 +782,7 @@ SpecCode	Species	Weight
 51319	Curimatella alburnus	220.3300018310547
 51877	Curimatella dorsalis	37
 51878	Curimatella immaculata	90
-51321	Curimatella meyeri	171.89999389648437
+51321	Curimatella meyeri	171.89999389648438
 95	Cybiosarda elegans	2000
 10313	Cyclocheilichthys apogon	340.6000061035156
 979	Cyclopsetta chittendeni	76
@@ -796,7 +796,7 @@ SpecCode	Species	Weight
 5455	Cynoglossus bilineatus	61.900001525878906
 17174	Cynoglossus gracilis	152
 8956	Cynoglossus interruptus	42.599998474121094
-8958	Cynoglossus joyneri	236.89999389648437
+8958	Cynoglossus joyneri	236.89999389648438
 59531	Cynoglossus lighti	51.5
 59539	Cynoglossus macrolepidotus	353.5
 59556	Cynoglossus sibogae	54.40999984741211
@@ -804,7 +804,7 @@ SpecCode	Species	Weight
 16281	Cynoglossus sinusarabici	26.5
 13777	Cynoponticus coniceps	11000
 1096	Cynoponticus savanna	130
-51136	Cynopotamus amazonum	161.27999877929687
+51136	Cynopotamus amazonum	161.27999877929688
 57801	Cynopotamus kincaidi	333
 63561	Cynopotamus xinguano	35
 1169	Cynoscion acoupa	17000
@@ -917,7 +917,7 @@ SpecCode	Species	Weight
 7692	Drepane longimana	2866
 59328	Ebosia falcata	15
 2467	Echeneis naucrates	2300
-47950	Eigenmannia humboldtii	138.39999389648437
+47950	Eigenmannia humboldtii	138.39999389648438
 12221	Eigenmannia virescens	113.5999984741211
 412	Elagatis bipinnulata	46210
 63783	Electrolux addisoni	1800
@@ -1008,7 +1008,7 @@ SpecCode	Species	Weight
 681	Etmopterus lucifer	775
 687	Etmopterus spinax	850
 4221	Etropus crossotus	64.4000015258789
-1049	Eucinostomus argenteus	119.66000366210937
+1049	Eucinostomus argenteus	119.66000366210938
 13729	Eucinostomus entomelas	172
 3567	Eucinostomus jonesii	16.899999618530273
 1052	Eucinostomus melanopterus	26.5
@@ -1027,7 +1027,7 @@ SpecCode	Species	Weight
 1909	Ferdauia orthogrammus	6610
 3276	Fistularia petimba	4650
 3275	Fistularia tabacaria	279.010009765625
-49556	Floridichthys polyommus	213.10000610351562
+49556	Floridichthys polyommus	213.10000610351563
 54953	Folifer brevifilis	626.20001220703125
 4954	Fontitrygon margarita	20000
 26645	Fontitrygon margaritella	1000
@@ -1185,7 +1185,7 @@ SpecCode	Species	Weight
 1478	Harengula clupeola	109
 5053	Harriotta raleighana	1625
 58312	Harttia punctata	66.18000030517578
-47475	Hassar affinis	195.60000610351562
+47475	Hassar affinis	195.60000610351563
 66281	Hassar gabiru	292
 47479	Hassar orestis	240
 76	Helicolenus dactylopterus	1550
@@ -1208,7 +1208,7 @@ SpecCode	Species	Weight
 56026	Hemiculter tchangi	238.8000030517578
 54924	Hemiculterella sauvagei	43.5
 56027	Hemiculterella wui	60.2400016784668
-47464	Hemidoras boulengeri	129.10000610351562
+47464	Hemidoras boulengeri	129.10000610351563
 47468	Hemidoras morei	72.19999694824219
 47455	Hemidoras stenopeltis	86.5199966430664
 47472	Hemidoras stuebelii	70.5
@@ -1268,7 +1268,7 @@ SpecCode	Species	Weight
 47066	Hoplarchus psittacus	730
 5305	Hoplerythrinus unitaeniatus	520
 25297	Hymenocephalus billsam	270.8999938964844
-16277	Hymenogadus gracilis	235.60000610351562
+16277	Hymenogadus gracilis	235.60000610351563
 53570	Hypancistrus zebra	3.990000009536743
 1247	Hypanus americanus	135630
 27850	Hoplias aimara	40000
@@ -1303,7 +1303,7 @@ SpecCode	Species	Weight
 10656	Hyphessobrycon pulchripinnis	1.3619999885559082
 57094	Hypoclinemus mentalis	288.6499938964844
 60314	Hypomasticus julii	181
-52578	Hypomasticus pachycheilus	255.52999877929687
+52578	Hypomasticus pachycheilus	255.52999877929688
 23752	Hypomesus japonicus	158
 254	Hypomesus olidus	50
 274	Hypophthalmichthys molitrix	50000
@@ -1443,7 +1443,7 @@ SpecCode	Species	Weight
 4480	Lampetra fluviatilis	150
 1072	Lampris guttatus	270000
 7145	Lampris immaculatus	30000
-428	Larimichthys crocea	243.60000610351562
+428	Larimichthys crocea	243.60000610351563
 416	Larimichthys polyactis	189.8000030517578
 14014	Larimus argenteus	520.969970703125
 1180	Larimus breviceps	500
@@ -1550,7 +1550,7 @@ SpecCode	Species	Weight
 65541	Loricaria birindellii	118.19999694824219
 50665	Loricariichthys acutus	91.5999984741211
 50673	Loricariichthys derbyi	161
-23463	Loricariichthys maculatus	130.60000610351562
+23463	Loricariichthys maculatus	130.60000610351563
 50675	Loricariichthys nudirostris	89.63999938964844
 50677	Loricariichthys platymetopon	311
 310	Lota lota	34000
@@ -1559,7 +1559,7 @@ SpecCode	Species	Weight
 54737	Luciocyprinus langsoni	15000
 3785	Lumpenella longirostris	150
 1401	Lutjanus agennes	60000
-63308	Lutjanus alexandrei	199.89999389648437
+63308	Lutjanus alexandrei	199.89999389648438
 1403	Lutjanus analis	15600
 1404	Lutjanus apodus	10800
 1405	Lutjanus aratus	14960
@@ -1637,7 +1637,7 @@ SpecCode	Species	Weight
 4789	Megalobrama terminalis	4000
 4114	Megalocottus platycephalus	1060
 25732	Megalodoras uranoscopus	2860
-64682	Megalonema amaxanthum	221.08999633789062
+64682	Megalonema amaxanthum	221.08999633789063
 47742	Megalonema platanum	387.1000061035156
 47741	Megalonema xanthum	44
 1079	Megalops atlanticus	161000
@@ -1657,7 +1657,7 @@ SpecCode	Species	Weight
 11140	Mesonauta festivus	97.410003662109375
 54811	Mesopotamichthys sharpeyi	800
 25518	Metynnis argenteus	153
-56430	Metynnis guaporensis	180.10000610351562
+56430	Metynnis guaporensis	180.10000610351563
 26527	Metynnis lippincottianus	205.3699951171875
 51152	Metynnis luna	102
 2402	Micralestes acutidens	2
@@ -1904,7 +1904,7 @@ SpecCode	Species	Weight
 50462	Otocinclus vittatus	0.7300000190734863
 9978	Oxyurichthys microlepis	14.550000190734863
 8030	Oxyurichthys papuensis	52
-62691	Parancistrus nudiventris	236.39999389648437
+62691	Parancistrus nudiventris	236.39999389648438
 7051	Paranotothenia magellanica	1451
 4824	Otolithes ruber	7000
 5605	Oxycheilinus unifasciatus	1400
@@ -2030,7 +2030,7 @@ SpecCode	Species	Weight
 12587	Pateobatis fai	18500
 49963	Peckoltia oligospila	70
 49978	Peckoltia vittata	43
-7928	Pegusa nasuta	139.85000610351562
+7928	Pegusa nasuta	139.85000610351563
 48340	Pelasgus prespensis	3.9000000953674316
 62438	Pelasgus thesproticus	5.3480000495910645
 283	Pelecus cultratus	2000
@@ -2086,7 +2086,7 @@ SpecCode	Species	Weight
 63010	Plagioscion montei	830
 4310	Plagioscion squamosissimus	4500
 15287	Planiliza affinis	408.29998779296875
-13673	Planiliza carinata	145.10000610351562
+13673	Planiliza carinata	145.10000610351563
 13000	Planiliza haematocheilus	5000
 46376	Planiliza klunzingeri	191
 4668	Planiliza parsia	97.660003662109375
@@ -2125,7 +2125,7 @@ SpecCode	Species	Weight
 50366	Podothecus sturioides	192
 23359	Poecilia vivipara	6.480000019073486
 425	Pogonias cromis	51280
-7072	Pogonophryne barsukovi	199.39999389648437
+7072	Pogonophryne barsukovi	199.39999389648438
 7079	Pogonophryne marmorata	131
 34	Pollachius pollachius	18140
 1343	Pollachius virens	32000
@@ -2219,7 +2219,7 @@ SpecCode	Species	Weight
 54435	Psammobatis extenta	116.08000183105469
 54438	Psammobatis normani	1350
 54122	Psammobatis rudis	910
-25651	Psectrogaster amazonica	174.52999877929687
+25651	Psectrogaster amazonica	174.52999877929688
 53106	Psectrogaster falcata	255.6199951171875
 25652	Psectrogaster rutiloides	147.6199951171875
 14280	Psenopsis cyanea	170
@@ -2250,7 +2250,7 @@ SpecCode	Species	Weight
 50136	Pseudopercis semifasciata	10000
 63419	Pseudophoxinus alii	33.70000076293945
 52636	Pseudophoxinus anatolicus	417.5
-52657	Pseudophoxinus crassus	133.10000610351562
+52657	Pseudophoxinus crassus	133.10000610351563
 52659	Pseudophoxinus egridiri	5.269999980926514
 64527	Pseudophoxinus elizavetae	14.979999542236328
 65919	Pseudophoxinus hittitorum	12.8100004196167
@@ -2512,7 +2512,7 @@ SpecCode	Species	Weight
 1348	Scophthalmus maximus	25000
 529	Scophthalmus rhombus	8000
 12553	Scorpaena izensis	1500
-10185	Scorpaena maderensis	107.72000122070312
+10185	Scorpaena maderensis	107.72000122070313
 12554	Scorpaena neglecta	900
 1201	Scorpaena plumieri	1550
 1758	Scorpaena porcus	870
@@ -2620,8 +2620,8 @@ SpecCode	Species	Weight
 25310	Silurus triostegus	8500
 46118	Sinibotia pulchra	6.199999809265137
 46113	Sinibotia superciliaris	43.099998474121094
-17289	Sinibrama macrops	128.39999389648437
-54910	Sinibrama melrosei	155.39999389648437
+17289	Sinibrama macrops	128.39999389648438
+54910	Sinibrama melrosei	155.39999389648438
 28054	Siniperca chuatsi	8000
 55170	Siniperca knerii	739.79998779296875
 55171	Siniperca scherzeri	607.29998779296875
@@ -2633,7 +2633,7 @@ SpecCode	Species	Weight
 525	Solea solea	3000
 58423	Sorubim elongatus	260
 12144	Sorubim lima	1300
-59981	Sorubim maniradii	131.97000122070312
+59981	Sorubim maniradii	131.97000122070313
 48578	Sorubim trigonocephalus	509.3800048828125
 1161	Sparisoma viride	1600
 1164	Sparus aurata	17200
@@ -2718,7 +2718,7 @@ SpecCode	Species	Weight
 4580	Symphodus rostratus	73.87999725341797
 215	Symphorus nematophorus	13200
 13637	Symphurus chabanaudi	166.1300048828125
-24626	Symphurus elongatus	119.52999877929687
+24626	Symphurus elongatus	119.52999877929688
 10734	Synodus sageneus	150
 14155	Synodus scituliceps	808
 220	Tetrapturus pfluegeri	58000
@@ -2807,7 +2807,7 @@ SpecCode	Species	Weight
 52149	Trachelyopterus ceratophysus	271
 47698	Trachelyopterus coriaceus	40
 13280	Trachelyopterus galeatus	675
-47734	Trachelyopterus insignis	231.39999389648437
+47734	Trachelyopterus insignis	231.39999389648438
 52150	Trachelyopterus teaguei	157
 1967	Trachinotus africanus	14100
 1978	Trachinotus baillonii	1500
@@ -2864,7 +2864,7 @@ SpecCode	Species	Weight
 3590	Umbrina roncador	2490
 58086	Triportheus magdalenae	470
 13248	Triportheus rotundatus	235
-58087	Triportheus signatus	128.60000610351562
+58087	Triportheus signatus	128.60000610351563
 58085	Triportheus trifurcatus	231.9600067138672
 8733	Trygonorrhina fasciata	6700
 67324	Turcinoemacheilus bahaii	1.7899999618530273
@@ -2892,7 +2892,7 @@ SpecCode	Species	Weight
 5354	Variola louti	12000
 6609	Verasper moseri	4000
 6607	Verasper variegatus	4000
-56759	Verilus atlanticus	181.39999389648437
+56759	Verilus atlanticus	181.39999389648438
 6375	Vimba vimba	1392
 7385	Vinciguerria nimbaria	2.0999999046325684
 10314	Wallago leerii	86000
