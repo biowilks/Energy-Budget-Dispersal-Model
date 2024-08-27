@@ -18,7 +18,17 @@ conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 ## lambda = % of energy storage needed for survival after dispersing
 
 ## 2) OTHER VARIABLES
-##  A) ENERGY STORAGE
+
+##  A) SPEED VARIABLES
+##     v_C = movement speed in m/h
+##     v_0_fly = intercept: locomotion rate of flying
+##     v_0_run = intercept: locomotion rate of running
+##     v_0_swim = intercept: locomotion rate of swimming
+##     c = exponent: locomotion rate
+##     k = intercept: heat-dissipation time
+##     d = exponent: heat-dissipation time
+
+##  B) ENERGY STORAGE
 ##     E_0 = Energy storage in J
 ##     a1 = intercept: fat mass of birds
 ##     b1 = exponent: fat mass of birds
@@ -30,7 +40,7 @@ conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 ##     E_alpha = Energy available for dispersal in J
 
 
-##  B) ENERGY LOSS
+##  C) ENERGY LOSS
 ##     BMR = basal metabolic rate in J/h
 ##     a4 = intercept: BMR of birds
 ##     b4 = exponent: BMR of birds
@@ -39,24 +49,18 @@ conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 ##     a6 = intercept: BMR of fish
 ##     b6 = exponent: BMR of fish
 
-##     COT = costs of transport in J/m
-##     a7 = intercept: COTmin of flying
-##     b7 = exponent: COTmin of flying
-##     a8 = intercept: COTmin of running
-##     b8 = exponent: COTmin of running
-##     a9 = intercept: COTmin of swimming
-##     b9 = exponent: COTmin of swimming
+##     LCOT = locomotion costs
+##     a7 = intercept:
+##     a8 = intercept:
+##     a9 = intercept:
+##     a10 = intercept:
+##     b7 = exponent:
+##     b8 = exponent:
+##     b9 = exponent:
+##     b10 = exponent:
 
 ##     FMR_disp = field metabolic rate in J/h
 
-##  C) SPEED VARIABLES
-##     v_C = movement speed in m/h
-##     v_0_fly = intercept: locomotion rate of flying
-##     v_0_run = intercept: locomotion rate of running
-##     v_0_swim = intercept: locomotion rate of swimming
-##     c = exponent: locomotion rate
-##     k = intercept: heat-dissipation time
-##     d = exponent: heat-dissipation time
 
 ##  3) OUTPUTS
 ##    t = time in h
@@ -69,6 +73,17 @@ conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 # Bioenergetic dispersal model energy function ----------
 energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
 
+
+##  C) Speed
+  if(locomotion_mode == "flying") {
+    v_0 = conv_para_list[["v_0_fly"]] } else if (locomotion_mode == "running"){
+      v_0 = conv_para_list[["v_0_run"]] } else {v_0 = conv_para_list[["v_0_swim"]]}
+
+  c = conv_para_list[["c"]]
+  d = conv_para_list[["d"]]
+  k = conv_para_list[["k"]]
+  v_C = (((1/k)*m_C^c)/((m_C^(c+d)) + (1/(k*v_0))))
+
 ##  A) Energy storage
   if (locomotion_mode == "flying") {
     E_0 = conv_para_list[["a1"]] * m_C^conv_para_list[["b1"]] } else if (locomotion_mode == "running") {
@@ -78,6 +93,7 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
   # Energy available for dispersal
    E_alpha = ((1-lambda) * E_0)
 
+
 ##  B) Energy loss via dispersal
  # Basal metabolic rate
    if (locomotion_mode == "flying") {
@@ -85,44 +101,18 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
      BMR = conv_para_list[["a5"]] * m_C^conv_para_list[["b5"]] } else if (locomotion_mode == "swimming") {
      BMR = conv_para_list[["a6"]] * m_C^conv_para_list[["b6"]] }
 
-   # Cost of transport
-   #if (locomotion_mode == "flying") {
-   # COT = conv_para_list[["a7"]] * m_C^conv_para_list[["b7"]] } else if (locomotion_mode == "running") {
-   #  COT = conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]] } else if (locomotion_mode == "swimming") {
-   #   COT = conv_para_list[["a9"]] * m_C^conv_para_list[["b9"]] }
-
-##  C) Speed
-   if(locomotion_mode == "flying") {
-     v_0 = conv_para_list[["v_0_fly"]] } else if (locomotion_mode == "running"){
-     v_0 = conv_para_list[["v_0_run"]] } else {v_0 = conv_para_list[["v_0_swim"]]}
-
-   c = conv_para_list[["c"]]
-   d = conv_para_list[["d"]]
-   k = conv_para_list[["k"]]
-   v_C = (((1/k)*m_C^c)/((m_C^(c+d)) + (1/(k*v_0))))
-
-   ## Locomotion costs
+   ## Locomotion costs - change this after without the conversions!!!
    m_C_kg = m_C/1000
    v_C_ms = v_C/3600
 
-   # Wares. 1978 equation for fish:
-   if (locomotion_mode == "flying") {
-     LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
-       LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
-         LCOT = (((( 1.17*m_C_kg^0.44) * (v_C_ms^2.42))*m_C_kg)*3600) }
-
-   # Beamish. 1978 equation  for fish:
-   # if (locomotion_mode == "flying") {
-   #  LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
-    #   LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
-     #    LCOT = ((( 0.116*exp(1.884*m_C_kg^-0.36) * v_C_ms)*m_C_kg)*3600) }
+  if (locomotion_mode == "flying") {
+  LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
+  LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
+  LCOT = ((( 0.116*exp(1.884*m_C_kg^-0.36 * v_C_ms))*m_C_kg)*3600) }
 
    # Field metabolic rate while dispersing
-   #FMR_disp = BMR + COT * v_C
    if(locomotion_mode == "flying") {
-     FMR_disp = (1.1* BMR) + LCOT } else if (locomotion_mode == "running"){
-       FMR_disp = BMR + LCOT} else {
-         FMR_disp = BMR + LCOT}
+     FMR_disp = (1.1* BMR) + LCOT } else if (locomotion_mode == "running"){FMR_disp = BMR + LCOT} else {FMR_disp = BMR + LCOT}
 
 
 ##  OUTPUTS
@@ -137,7 +127,7 @@ energy_fun <- function(m_C,locomotion_mode,disp_dist,lambda) {
   #  Calculate relative energy remaining
   E_E = (1-(E_C/E_alpha))
 
-  dsenergy.disp <- cbind(E_0, LCOT, FMR_disp, BMR, v_C, E_C, E_M, E_R, E_E, t) #change this to delete parameters once tested the conversions worked
+  dsenergy.disp <- cbind(E_C, E_M, E_R, E_E, t)
   return(dsenergy.disp)
 }
 

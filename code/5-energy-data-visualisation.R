@@ -53,7 +53,7 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 }
 
 
-##plotting energy remaining against distance for different locomotion mode
+## plotting energy remaining against distance for different locomotion mode
 energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
   scale_x_continuous(limits=c(0, 4000000))+
@@ -176,7 +176,7 @@ absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) 
 absolute_energy
 
 
-# FIGURE 3d - A dispersal-cost-weoghter network for differently sized running animals ----------
+# FIGURE 3d - A dispersal-cost-weighted network for differently sized running animals ----------
 ### Calculating a dispersal-cost-weighted spatial network
   #  Create matrix of distances and use the energy function to calculate relative energy remaining (E_E)
   #  to represent the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals

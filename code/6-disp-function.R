@@ -100,16 +100,16 @@ disp_fun <- function(m_C,locomotion_mode,lambda) {
   v_C_ms = v_C/3600
 
   # Wares. 1978 equation for fish:
+  #if (locomotion_mode == "flying") {
+   # LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
+    #  LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
+     #   LCOT = (((( 1.17*m_C_kg^0.44) * (v_C_ms^2.42))*m_C_kg)*3600) }
+
+  # Beamish. 1978 equation  for fish:
   if (locomotion_mode == "flying") {
     LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
       LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
-        LCOT = (((( 1.17*m_C_kg^0.44) * (v_C_ms^2.42))*m_C_kg)*3600) }
-
-  # Beamish. 1978 equation  for fish:
-  # if (locomotion_mode == "flying") {
-  #  LCOT = ((32*m_C_kg^-0.34*v_C_ms^-1 + 0.0033*m_C_kg^-0.34*v_C_ms^2.5 + 0.0058*m_C_kg^-0.51*v_C_ms^2.5)*m_C_kg)*3600 } else if (locomotion_mode == "running") {
-  #   LCOT = ((conv_para_list[["a8"]] * m_C^conv_para_list[["b8"]]) * v_C)} else if (locomotion_mode == "swimming") {
-  #    LCOT = ((( 0.116*exp(1.884*m_C_kg^-0.36) * v_C_ms)*m_C_kg)*3600) }
+        LCOT = ((( 0.116*exp(1.884*m_C_kg^-0.36 * v_C_ms))*m_C_kg)*3600) }
 
   # Field metabolic rate while dispersing
    #FMR_disp = BMR + COT * v_C
@@ -125,7 +125,7 @@ disp_fun <- function(m_C,locomotion_mode,lambda) {
  # Calculate dispersal distance in m
   disp_dist = (t*v_C)
 
-  ds.disp <- cbind(E_0, LCOT,FMR_disp, BMR, v_C, disp_dist, t)
+  ds.disp <- cbind(disp_dist, t)
   return(ds.disp)
 }
 

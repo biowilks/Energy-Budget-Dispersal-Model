@@ -66,35 +66,6 @@ modelfish<- ds.dispswim |>
   select(m_C,disp_dist)
 
 
-# Calculating percentage of empirical data above bioenergetic dispersal model predictions ----------
-# Left join empirical data with model predictions based on body mass
-run_max_merged <- left_join(run_max, ds.disprun, by = c("Body.mass" = "m_C")) %>%
-  select(gbif.binomial, Value, disp_dist, Body.mass)
-fly_max_merged <- left_join(fly_max, ds.dispfly, by = c("Body.mass" = "m_C")) %>%
-  select(gbif.binomial, Value, disp_dist, Body.mass)
-swim_max_merged <- left_join(swim_max, ds.dispswim, by = c("Body.mass" = "m_C")) %>%
-  select(gbif.binomial, Value, disp_dist, Body.mass)
-
-# calculate the percentage of data points exceeding model predictions
-percentage_exceeding <- function(empirical_data, model_predictions) {
-  exceeding_counts <- sum(empirical_data > model_predictions, na.rm = TRUE)
-  total_data_points <- sum(!is.na(empirical_data))
-  percentage_exceeding <- exceeding_counts / total_data_points * 100
-  return(percentage_exceeding)
-}
-
-# for each locomotion mode
-run_max_merged %>%
-  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
-
-fly_max_merged %>%
-  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
-
-swim_max_merged %>%
-  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
-
-
-
 # FIGURE 2a-d - The relationships between body mass and the parameters underlying the bioenergetic dispersal model ----------
 ## Plot parameters against body mass
 #custom label needed for speed graph
@@ -291,4 +262,29 @@ scatter_plot_swim <- swim_max |>
 
 plot(scatter_plot_swim)
 
+# Calculating percentage of empirical data above bioenergetic dispersal model predictions ----------
+# Left join empirical data with model predictions based on body mass
+run_max_merged <- left_join(run_max, ds.disprun, by = c("Body.mass" = "m_C")) %>%
+  select(gbif.binomial, Value, disp_dist, Body.mass)
+fly_max_merged <- left_join(fly_max, ds.dispfly, by = c("Body.mass" = "m_C")) %>%
+  select(gbif.binomial, Value, disp_dist, Body.mass)
+swim_max_merged <- left_join(swim_max, ds.dispswim, by = c("Body.mass" = "m_C")) %>%
+  select(gbif.binomial, Value, disp_dist, Body.mass)
 
+# calculate the percentage of data points exceeding model predictions
+percentage_exceeding <- function(empirical_data, model_predictions) {
+  exceeding_counts <- sum(empirical_data > model_predictions, na.rm = TRUE)
+  total_data_points <- sum(!is.na(empirical_data))
+  percentage_exceeding <- exceeding_counts / total_data_points * 100
+  return(percentage_exceeding)
+}
+
+# for each locomotion mode
+run_max_merged %>%
+  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
+
+fly_max_merged %>%
+  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))
+
+swim_max_merged %>%
+  summarise(percentage_exceeding = percentage_exceeding(Value, disp_dist))

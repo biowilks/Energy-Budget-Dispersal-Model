@@ -429,12 +429,12 @@ db_final2 <- db_final1 |>
 db_final3 <- db_final2 |>
   rename(Locomotion.mode = Movement.mode) |>
   rename(Locomotion.mode.source = `Movement Mode Ref`) |>
-  mutate(Body.mass = case_when(Body.mass.units == "kg" ~ Body.mass * 1000,
+  mutate(Body.mass = case_when(Body.mass.units == "g" ~ Body.mass / 1000,
                                TRUE ~ Body.mass)) |>
-  mutate(Body.mass.units = "g")
+  mutate(Body.mass.units = "kg")
 
 
 # Save transformed data and taxa overview
-setwd("~/Documents/Energy-Budget-Model/output")
+setwd("~/Energy-Budget-Model/output")
 write_csv(overviewtaxa, "taxonomy_gbif_match.csv")
 write_csv(db_final3, "DispersalTransformed.csv")

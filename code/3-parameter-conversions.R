@@ -41,5 +41,5 @@ pars_new_df <- pars_old_df %>% mutate(par_val_conv = calc_conv(pars_old_df$conve
 # Extract parameter name and converted value needed for Bioenergetic dispersal model
 converted_pars <- pars_new_df %>% select(par_name,par_val_conv)
 
-setwd("~/Documents/Energy-Budget-Model/output")
+setwd("~/Energy-Budget-Model/output")
 write_csv(converted_pars, "convertedparameters.csv")
