@@ -1,25 +1,33 @@
 par_name,par_value_old,units_old,description,par_val_conv,units_conv,ref,conversion_equation
-a1,0.063095734,kg kg^-b1,intercept: fat mass of birds,2523.829,J g^-b1,Antol & Kozlowski 2020,a1*gamma1*(1/kg_to_g^b1)
-b1,0.98,dimensionless,exponent: fat mass of birds,0.98,dimensionless,Antol & Kozlowski 2020,b1
-a2,0.050118723,kg kg^-b2,intercept energy storage of mammals,2004.749,J g^-b2,Antol & Kozlowski 2020,a2*gamma1*(1/kg_to_g^b2)
-b2,1,dimensionless,exponent: fat mass of mammals,1,dimensionless,Antol & Kozlowski 2020,b2
-a3,4.168693835,kJ g^-b3,intercept: energy density of fish,4168.694,J g^-b3,Martin et al. 2017,a3*gamma2
-b3,0.02,dimensionless,exponent: energy density of fish,1.02,dimensionless,Martin et al. 2017,b3+1
-a4,7.434,ml02 h^-1 g^-b4,intercept: BMR of birds,148.68,J h^-1 g^-b4,Gavrilov et al. 2022,a4*gamma3
-b4,0.648,dimensionless,exponent: BMR of birds,0.648,dimensionless,Gavrilov et al. 2022,b4
-a5,3.248,ml02 h^-1 g^-b5,intercept: BMR of mammals,64.96,J h^-1 g^-b5,Gavrilov et al. 2022,a5*gamma3
-b5,0.735,dimensionless,exponent: BMR of mammals,0.735,dimensionless,Gavrilov et al. 2022,b5
-a6,74.13102413,mg02 h^-1 kg^-b6,intercept: BMR of fish,1.574629,J h^-1 g^-b6,Watanabe & Payne. 2023,a6*(1/gamma4)*gamma3*(1/kg_to_g^b6)
-b6,0.95,dimensionless,exponent: BMR of fish,0.95,dimensionless,Watanabe & Payne. 2023,b6
-a7,3.6,J m^-1 kg^-b7,intercept: COTmin of flying,0.03064097,J m^-1 g^-b7,Alexander. 2003,a7*(1/kg_to_g^b7)
-b7,0.69,dimensionless,exponent: COTmin of flying,0.69,dimensionless,Alexander. 2003,b7
-a8,10.7,J m^-1 kg^-b8,intercept: COTmin of running,0.09758516,J m^-1 g^-b8,Alexander. 2003,a8*(1/kg_to_g^b8)
-b8,0.68,dimensionless,exponent: COTmin of running,0.68,dimensionless,Alexander. 2003,b8
-a9,1.1,J m^-1 kg^-b9,intercept: COTmin of swimming,0.01518423,J m^-1 g^-b9,Alexander. 2003,a9*(1/kg_to_g^b9)
-b9,0.62,dimensionless,exponent: COTmin of swimming,0.62,dimensionless,Alexander. 2003,b9
-v_0_fly,30.54,m s^-1 kg^-c,intercept: locomotion rate of flying,17028.30943,m h^-1 g^-c,Dyer et al. 2023,v_0_fly*gamma5*(1/kg_to_g^c)
-v_0_run,0.28,m s^-1 kg^-c,intercept: locomotion rate of running,156.1207152,m h^-1 g^-c,Dyer et al. 2023,v_0_run*gamma5*(1/kg_to_g^c)
-v_0_swim,0.39,m s^-1 kg^-c,intercept: locomotion rate of swimming,217.4538533,m h^-1 g^-c,Dyer et al. 2023,v_0_swim*gamma5*(1/kg_to_g^c)
-c,0.27,dimensionless,exponent: locomotion rate,0.27,dimensionless,Dyer et al. 2023,c
-k,0.033,s m^-1 kg^-d,intercept: heat-dissipation time,1.75E-06,s m^-1 g^-d,Dyer et al. 2023,k*(1/gamma5)*(1/kg_to_g^d)
-d,0.24,dimensionless,exponent: heat-dissipation time,0.24,dimensionless,Dyer et al. 2023,d
+a1,0.063095734,kg kg^-b1,intercept: energy stores of fat in birds,,J kg^-b1,Antol & Kozlowski 2020,a1*gamma1
+b1,0.98,dimensionless,exponent: energy stores of fat in birds,,dimensionless,Antol & Kozlowski 2020,b1
+a2,0.050118723,kg kg^-b2,intercept: energy stores of fat in mammals,,J kg^-b2,Antol & Kozlowski 2020,a2*gamma1
+b2,1,dimensionless,exponent: energy stores of fat in mammals,,dimensionless,Antol & Kozlowski 2020,b2
+a3,4.168693835,kJ g^-b3,intercept: energy density of fish,,J kg^-b3,Martin et al. 2017,a3*gamma2*gamma6^(b3+1)
+b3,0.02,dimensionless,exponent: energy density of fish,,dimensionless,Martin et al. 2017,b3+1
+a4,7.434,ml02 h^-1 g^-b4,intercept: BMR of birds,,J s^-1 kg^-b4,Gavrilov et al. 2022,a4*gamma3*gamma6^b4*(1/gamma4)
+b4,0.648,dimensionless,exponent: BMR of birds,,dimensionless,Gavrilov et al. 2022,b4
+a5,3.248,ml02 h^-1 g^-b5,intercept: BMR of mammals,,J s^-1 kg^-b5,Gavrilov et al. 2022,a5*gamma3*gamma6^b5*(1/gamma4)
+b5,0.735,dimensionless,exponent: BMR of mammals,,dimensionless,Gavrilov et al. 2022,b5
+a6,74.13102413,mg02 h^-1 kg^-b6,intercept: BMR of fish,,J s^-1 kg^-b6,Watanabe & Payne. 2023,a6*(1/gamma5)*gamma3*(1/gamma4)
+b6,0.95,dimensionless,exponent: BMR of fish,,dimensionless,Watanabe & Payne. 2023,b6
+a7,32,J s^-1 m^-b8 kg^b7 s^b8,intercept: LCOT of flying,,J s^-1 m^-b8 kg^-b7 s^b8,Peters. 1986,a7
+a8,0.0033,J s^-1 m^-b9 kg^b7 s^b9,intercept: LCOT of flying,,J s^-1 m^-b9 kg^-b7 s^b9,Peters. 1986,a8
+a9,0.0058,J s^-1 m^-b9 kg^b10 s^b9,intercept: LCOT of flying,,J s^-1 m^-b9 kg^-b10 s^b9,Peters. 1986,a9
+b7,-0.34,dimensionless,exponent: LCOT of flying,,dimensionless,Peters. 1986,b7+1
+b8,-1,dimensionless,exponent: LCOT of flying,,J m^-1 g^-b8,Peters. 1986,b8
+b9,2.5,dimensionless,exponent: LCOT of flying,,dimensionless,Peters. 1986,b9
+b10,-0.51,dimensionless,exponent: LCOT of flying,,J m^-1 g^-b9,Peters. 1986,b10+1
+a10,11.3,J s^-1 m^-1 kg^b11 s^-1,intercept: LCOT of running,,J s^-1 m^-1 kg^-b11,Peters. 1986,a10
+b11,-0.28,dimensionless,exponent: LCOT of running,,dimensionless,Peters. 1986,b11+1
+a11,0.116,J s^-1,intercept: LCOT of swimming,,J s^-1,Peters. 1986,a11
+a12,1.884,J s^-1,intercept: LCOT of swimming,,J s^-1,Peters. 1986,a12
+b12,-0.36,dimensionless,exponent: LCOT of swimming,,dimensionless,Peters. 1986,b12
+a13,1.1,dimensionless,intercept: Postural cost of flying,,dimensionless,Peters. 1986,a13
+a14,1.2,dimensionless,intercept: Postural cost of running,,dimensionless,Peters. 1986,a14
+v_0_fly,30.54,m s^-1 kg^-c,intercept: locomotion rate of flying,,m s^-1 kg^-c,Dyer et al. 2023,v_0_fly
+v_0_run,0.28,m s^-1 kg^-c,intercept: locomotion rate of running,,m s^-1 kg^-c,Dyer et al. 2023,v_0_run
+v_0_swim,0.39,m s^-1 kg^-c,intercept: locomotion rate of swimming,,m s^-1 kg^-c,Dyer et al. 2023,v_0_swim
+c,0.27,dimensionless,exponent: locomotion rate,,dimensionless,Dyer et al. 2023,c
+k,0.033,s m^-1 kg^-d,intercept: heat-dissipation time,,s m^-1 kg^-d,Dyer et al. 2023,k
+d,0.24,dimensionless,exponent: heat-dissipation time,,dimensionless,Dyer et al. 2023,d

@@ -1,8 +1,7 @@
 par_name,par_value_old,units_old,description,ref
-gamma1,4.00E+07,J kg^1:,convert kg of fat to J,Peters 1989
+gamma1,4.00E+07,J kg^1,convert kg of fat to J,Peters 1986
 gamma2,1000,dimensionless,convert kJ to J,NA
-gamma3,20,J ml02^-1,convert ml 02 to J,Peters 1989
-gamma4,1.33,J mg02^-1,covnert mg 02 -> J,NA
-gamma5,3600,dimensionless,convert m s^-1 to m h^-1,NA
-kg_to_g,1000,dimensionless,convert kg to g,NA
-g_to_kg,0.001,dimensionless,convert g to kg,NA
+gamma3,20,J ml02^-1,convert ml 02 to J,Peters 1986
+gamma4,3600,J h^1,convert J h^1 to J s^1,NA
+gamma5,1.43,mgO2 ml02^-1,convert ml 02 to mg O2,Peters 1986
+gamma6,1000,dimensionless,convert kg to g ,NA

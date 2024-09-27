@@ -276,6 +276,18 @@ db4 <- db3 |>
   slice_head() |>
   ungroup()
 
+
+body_mass_summary <- db4 %>%
+  summarise(
+    total_bodymass = sum(!is.na(Body.mass)),
+    total_datapoints = n(),
+    proportion_filled = (total_bodymass / total_datapoints) * 100
+  )
+
+body_mass_summary
+
+
+
 # 3) Adding movement mode ----------
 # Infer movement modes by class
 ## find class to search for the next step
@@ -295,12 +307,21 @@ db5 <- db4 |>
   )
 
 # Infer movement modes from family
+# Summary of species with NA in class
+na_class <- db5 %>%
+  filter(is.na(class)) %>%
+  distinct(family) %>%
+  nrow()
+
+na_class
+
 # To find out family names to find movement mode for
 namovementdata <- db5 %>%
   filter(is.na(Movement.mode) | Movement.mode == "") %>%
   mutate(`Movement Mode Ref` = NA)
 
 unique(namovementdata$family)
+
 
 db6 <- db5 |>
   mutate(`Movement.mode` = case_when(
@@ -322,84 +343,69 @@ db6 <- db5 |>
   ))
 
 # Infer movement modes from species
+# Summary of species with NA in family
+na_family <- db6 %>%
+  filter(is.na(family)) %>%
+  distinct(Species.ID.reported) %>%
+  nrow()
 
+na_family
+
+na_movement_data1 <- db6 %>%
+  filter(is.na(Movement.mode) | Movement.mode == "") %>%
+  mutate(`Movement Mode Ref` = NA)
+
+unique(na_movement_data1$Species.ID.reported)
+
+## Species with NA:
+#Swimming -  Perci caprodes, Perci nigrofasciata, Perci rex, Perci roanoka
+#Other - Coleoptera, Diptera, Hymenoptera, Many bark beetles and parasitoids - all mixed
+
+## Species with wrong movement mode:
 # Running movement mode:
-# bird species (Gallirallus australis, Tribonyx mortierii, Dromaius novaehollandiae, Rhea americana, Rhea pennata, Gallirallus australis,
-# Tympanuchus cupido, Tympanuchus pallidicinctus)
+# bird species (Gallirallus australis, Tribonyx mortierii, Dromaius novaehollandiae, Rhea americana, Rhea pennata, Tympanuchus cupido, Tympanuchus pallidicinctus)
 
 # Swimming movement mode:
-# All fish species, mammal species (Physeter catodon, Castor canadensis, Castor fiber, Lontra canadensis, Mustela vison),
+# mammal species (Physeter catodon, Castor canadensis, Castor fiber, Lontra canadensis, Mustela vison),
 # bird species (Podiceps cristatus, Cygnus olor, Phalacrocorax pelagicus, Cygnus buccinator)
 
 # Other movement mode:
 # Thomomys bottae (digging), Pteromys volans (gliding), Hylobates lar, Trichosurus vulpecula, Phascolarctos cinereus, Alouatta palliata, Sciurus carolinensis, Sciurus niger,
 # Macaca sylvanus, Microcebus murinus, Tamiasciurus hudsonicus, Rupicapra rupicapra, Rupicapra pyrenaica (climbing), Ursus maritimus (mixed)
 
-na_movement_data1 <- db6 %>%
-  filter(is.na(Movement.mode) | Movement.mode == "") %>%
-  mutate(`Movement Mode Ref` = NA)
-
-unique(na_movement_data1$gbif.binomial)
-
+###NEED TO CHANGE THIS - all the fish species not needed###
 db7 <- db6 |>
   mutate(`Movement.mode` = case_when(
-    gbif.binomial %in% c("Abramis brama", "Acipenser fulvescens", "Ambloplites rupestris", "Anablepsoides hartii", "Anguilla australis australis",
-                         "Anguilla dieffenbachii", "Anguilla japonica", "Anguilla rostrata", "Barbus barbus", "Barbus haasi", "Brycon orbignyanus",
-                         "Catostomus clarkii", "Catostomus insignis", "Catostomus occidentalis", "Chrosomus eos", "Clinostomus funduloides",
-                         "Colossoma macropomum", "Cottus bairdii", "Cottus cognatus", "Cottus gobio", "Cottus pollux", "Cottus rhenanus",
-                         "Ctenopharyngodon idella", "Cyprinella caerulea", "Cyprinus carpio", "Esox lucius", "Etheostoma flabellare",
-                         "Etheostoma fonticola", "Etheostoma nigrum", "Etheostoma podostemone", "Fundulus notatus", "Fundulus olivaceus",
-                         "Gobio gobio", "Hemisorubim platyrhynchos", "Hydrocynus vittatus", "Hypophthalmichthys nobilis", "Lavinia exilicauda",
-                         "Lefua echigonia", "Lepidomeda aliciae", "Lepisosteus osseus", "Lepomis auritus", "Lepomis cyanellus", "Lepomis megalotis",
-                         "Leporinus elongatus", "Leporinus friderici", "Leporinus obtusidens", "Leuciscus idus", "Lota lota", "Maccullochella macquariensis",
-                         "Macquaria ambigua", "Micropterus dolomieu", "Micropterus salmoides", "Morone saxatilis", "Mylopharodon conocephalus",
-                         "Nocomis leptocephalus", "Notropis lutipinnis", "Oncorhynchus clarkii", "Oncorhynchus kisutch", "Oncorhynchus masou masou",
-                         "Oncorhynchus mykiss", "Oncorhynchus tshawytscha", "Oreochromis andersonii", "Oxydoras kneri", "Piaractus mesopotamicus",
-                         "Pimelodus albicans", "Pimelodus maculatus", "Pinirampus pirinampu", "Poecilia gillii", "Polyodon spathula",
-                         "Prochilodus lineatus", "Prosopium williamsoni", "Pseudoplatystoma corruscans", "Pterodoras granulosus",
-                         "Ptychocheilus grandis", "Ptychocheilus lucius", "Ptychocheilus oregonensis", "Pylodictis olivaris", "Rhinichthys atratulus",
-                         "Rhinichthys cataractae", "Rutilus rutilus", "Salminus brasiliensis", "Salmo salar", "Salmo trutta", "Salvelinus confluentus",
-                         "Salvelinus fontinalis", "Salvelinus leucomaenis leucomaenis", "Salvelinus malma", "Sander", "Sander lucioperca",
-                         "Sander vitreus", "Sargochromis giardi", "Scaphirhynchus albus", "Scaphirhynchus platorynchus", "Schizodon borellii",
-                         "Semotilus atromaculatus", "Serranochromis altus", "Sorubim lima", "Squalius torgalensis", "Thymallus thymallus",
-                         "Tinca tinca", "Xyrauchen texanus", "Zungaro jahu",
-                         "Castor canadensis", "Castor fiber", "Lontra canadensis", "Mustela vison", "Physeter catodon",
-                         "Podiceps cristatus", "Cygnus olor", "Phalacrocorax pelagicus","Cygnus buccinator") ~ "Swimming",
-    gbif.binomial %in% c("Gallirallus australis", "Tribonyx mortierii", "Dromaius novaehollandiae", "Rhea americana","Rhea pennata","Tympanuchus cupido", "Tympanuchus pallidicinctus",
-                         "Speotyto cunicularia", "Passerculus sandwichensis", "Zonotrichia leucophrys") ~ "Running",
-    gbif.binomial %in% c("Thomomys bottae", "Hylobates lar", "Trichosurus vulpecula", "Phascolarctos cinereus", "Alouatta palliata",
-                         "Sciurus carolinensis", "Sciurus niger", "Macaca sylvanus", "Microcebus murinus", "Tamiasciurus hudsonicus", "Pteromys volans",
-                         "Rupicapra rupicapra", "Rupicapra pyrenaica","Ursus maritimus") ~ "Other",
+    gbif.binomial %in% c("Perci caprodes", "Perci nigrofasciata", "Perci rex", "Perci roanoka",
+                         "Physeter catodon", "Castor canadensis", "Castor fiber", "Lontra canadensis", "Mustela vison",
+                         "Podiceps cristatus", "Cygnus olor", "Phalacrocorax pelagicus", "Cygnus buccinator") ~ "Swimming",
+    gbif.binomial %in% c("Gallirallus australis", "Tribonyx mortierii", "Dromaius novaehollandiae",
+                         "Rhea americana", "Rhea pennata", "Tympanuchus cupido", "Tympanuchus pallidicinctus") ~ "Running",
+    gbif.binomial %in% c("Thomomys bottae", "Pteromys volans", "Hylobates lar", "Trichosurus vulpecula", "Phascolarctos cinereus",
+                         "Alouatta palliata", "Sciurus carolinensis", "Sciurus niger","Macaca sylvanus", "Microcebus murinus", "Tamiasciurus hudsonicus",
+                         "Rupicapra rupicapra", "Rupicapra pyrenaica", "Ursus maritimus") ~ "Other",
     TRUE ~ `Movement.mode`
   )) |>
   mutate(`Movement Mode Ref` = case_when(
-    gbif.binomial %in% c("Abramis brama", "Acipenser fulvescens", "Ambloplites rupestris", "Anablepsoides hartii", "Anguilla australis australis",
-                         "Anguilla dieffenbachii", "Anguilla japonica", "Anguilla rostrata", "Barbus barbus", "Barbus haasi", "Brycon orbignyanus",
-                         "Catostomus clarkii", "Catostomus insignis", "Catostomus occidentalis", "Chrosomus eos", "Clinostomus funduloides",
-                         "Colossoma macropomum", "Cottus bairdii", "Cottus cognatus", "Cottus gobio", "Cottus pollux", "Cottus rhenanus",
-                         "Ctenopharyngodon idella", "Cyprinella caerulea", "Cyprinus carpio", "Esox lucius", "Etheostoma flabellare",
-                         "Etheostoma fonticola", "Etheostoma nigrum", "Etheostoma podostemone", "Fundulus notatus", "Fundulus olivaceus",
-                         "Gobio gobio", "Hemisorubim platyrhynchos", "Hydrocynus vittatus", "Hypophthalmichthys nobilis", "Lavinia exilicauda",
-                         "Lefua echigonia", "Lepidomeda aliciae", "Lepisosteus osseus", "Lepomis auritus", "Lepomis cyanellus", "Lepomis megalotis",
-                         "Leporinus elongatus", "Leporinus friderici", "Leporinus obtusidens", "Leuciscus idus", "Lota lota", "Maccullochella macquariensis",
-                         "Macquaria ambigua", "Micropterus dolomieu", "Micropterus salmoides", "Morone saxatilis", "Mylopharodon conocephalus",
-                         "Nocomis leptocephalus", "Notropis lutipinnis", "Oncorhynchus clarkii", "Oncorhynchus kisutch", "Oncorhynchus masou masou",
-                         "Oncorhynchus mykiss", "Oncorhynchus tshawytscha", "Oreochromis andersonii", "Oxydoras kneri", "Piaractus mesopotamicus",
-                         "Pimelodus albicans", "Pimelodus maculatus", "Pinirampus pirinampu", "Poecilia gillii", "Polyodon spathula",
-                         "Prochilodus lineatus", "Prosopium williamsoni", "Pseudoplatystoma corruscans", "Pterodoras granulosus",
-                         "Ptychocheilus grandis", "Ptychocheilus lucius", "Ptychocheilus oregonensis", "Pylodictis olivaris", "Rhinichthys atratulus",
-                         "Rhinichthys cataractae", "Rutilus rutilus", "Salminus brasiliensis", "Salmo salar", "Salmo trutta", "Salvelinus confluentus",
-                         "Salvelinus fontinalis", "Salvelinus leucomaenis leucomaenis", "Salvelinus malma", "Sander", "Sander lucioperca",
-                         "Sander vitreus", "Sargochromis giardi", "Scaphirhynchus albus", "Scaphirhynchus platorynchus", "Schizodon borellii",
-                         "Semotilus atromaculatus", "Serranochromis altus", "Sorubim lima", "Squalius torgalensis", "Thymallus thymallus",
-                         "Tinca tinca", "Xyrauchen texanus", "Zungaro jahu","Castor canadensis", "Castor fiber", "Lontra canadensis", "Mustela vison",
-                         "Podiceps cristatus", "Cygnus olor", "Phalacrocorax pelagicus","Cygnus buccinator", "Gallirallus australis", "Tribonyx mortierii",
-                         "Dromaius novaehollandiae", "Rhea americana","Rhea pennata","Tympanuchus cupido", "Tympanuchus pallidicinctus", "Speotyto cunicularia",
-                         "Passerculus sandwichensis", "Zonotrichia leucophrys", "Thomomys bottae", "Hylobates lar", "Trichosurus vulpecula", "Phascolarctos cinereus", "Alouatta palliata",
-                         "Sciurus carolinensis", "Sciurus niger", "Macaca sylvanus", "Microcebus murinus", "Tamiasciurus hudsonicus", "Pteromys volans","Physeter catodon",
-                         "Rupicapra rupicapra", "Rupicapra pyrenaica","Ursus maritimus") ~ paste("Inferred from Species:", gbif.binomial),
+    gbif.binomial %in% c("Perci caprodes", "Perci nigrofasciata", "Perci rex", "Perci roanoka",
+                         "Physeter catodon", "Castor canadensis", "Castor fiber", "Lontra canadensis", "Mustela vison",
+                         "Podiceps cristatus", "Cygnus olor", "Phalacrocorax pelagicus", "Cygnus buccinator",
+                         "Gallirallus australis", "Tribonyx mortierii", "Dromaius novaehollandiae","Rhea americana",
+                         "Rhea pennata", "Tympanuchus cupido", "Tympanuchus pallidicinctus","Thomomys bottae",
+                         "Pteromys volans", "Hylobates lar", "Trichosurus vulpecula", "Phascolarctos cinereus",
+                         "Alouatta palliata", "Sciurus carolinensis", "Sciurus niger","Macaca sylvanus",
+                         "Microcebus murinus", "Tamiasciurus hudsonicus","Rupicapra rupicapra", "Rupicapra pyrenaica", "Ursus maritimus") ~ paste("Inferred from Species:", gbif.binomial),
     TRUE ~ `Movement Mode Ref`
   ))
+
+mov_mod_summary <- db7 %>%
+  summarise(
+    total_movmode = sum(!is.na(Movement.mode)),
+    total_datapoints = n(),
+    proportion_filled = (total_movmode / total_datapoints) * 100
+  )
+
+mov_mod_summary
 
 # 4) Filtering data to just include flying birds, running mammals and swimming fish ----------
 db_final <- db7 %>%
@@ -432,7 +438,6 @@ db_final3 <- db_final2 |>
   mutate(Body.mass = case_when(Body.mass.units == "g" ~ Body.mass / 1000,
                                TRUE ~ Body.mass)) |>
   mutate(Body.mass.units = "kg")
-
 
 # Save transformed data and taxa overview
 setwd("~/Energy-Budget-Model/output")

@@ -6,13 +6,14 @@ library("tidyverse")
 
 # Desired units for parameters
 
-# Body mass, M_C: g
+# Body mass, M_C: kg
 # Energy storage, E_0: J
-# Basal metabolic rate, BMR: J/h
-# Field metabolic rate, FMR_disp: J/h
-# Gross cost of transport, COT: J/m
-# Movement speed, v_C: m/h
-# Time, t: h
+# Basal metabolic rate, BMR: J/s
+# Field metabolic rate, FMR_disp: J/s
+# Locomotion costs, LCOT: J/s
+# Movement speed, v_C: m/s
+# Field metabolic rate, FMR: J/s
+# Time, t: s
 # Max dispersal distance, disp_dist:  m
 
 # Load original parameters and conversion constants ----------
@@ -43,3 +44,4 @@ converted_pars <- pars_new_df %>% select(par_name,par_val_conv)
 
 setwd("~/Energy-Budget-Model/output")
 write_csv(converted_pars, "convertedparameters.csv")
+

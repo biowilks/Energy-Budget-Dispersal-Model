@@ -30,7 +30,7 @@ energy <- function(m_C, locomotion_mode, disp_dist, lambda) {
 
 # running
 for (disp_dist in seq(0, 5000000, length = 2000)) {
-  energy_result <- energy(2000, "running", disp_dist, 0.1)
+  energy_result <- energy(m_C = 2, "running", disp_dist, 0.1)
   if (!is.null(energy_result)) {
     ds.energyrun <- rbind(ds.energyrun, energy_result)
   }
@@ -38,7 +38,7 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 
 # flying
 for (disp_dist in seq(0, 5000000, length = 2000)) {
-  energy_result <- energy(2000, "flying", disp_dist, 0.1)
+  energy_result <- energy(m_C = 2, "flying", disp_dist, 0.1)
   if (!is.null(energy_result)) {
     ds.energyfly <- rbind(ds.energyfly, energy_result)
   }
@@ -46,7 +46,7 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 
 # swimming
 for (disp_dist in seq(0, 5000000, length = 2000)) {
-  energy_result <- energy(2000, "swimming", disp_dist, 0.1)
+  energy_result <- energy(m_C = 2, "swimming", disp_dist, 0.1)
   if (!is.null(energy_result)) {
     ds.energyswim <- rbind(ds.energyswim, energy_result)
   }
@@ -54,10 +54,10 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 
 
 ## plotting energy remaining against distance for different locomotion mode
-energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
+energy<- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
-  scale_x_continuous(limits=c(0, 4000000))+
-  scale_y_continuous(limits=c(0, 10000000))+
+  scale_x_continuous()+
+  scale_y_continuous()+
   theme_minimal() +
   theme( axis.line = element_line(colour = "grey20",linewidth = 1, linetype = "solid"))+
   geom_line(data = ds.energyfly, aes(x = disp_dist, y = E_R), color = "red", linewidth = 1.5) +
@@ -65,8 +65,8 @@ energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   labs(y = "", x = "")+
   ggtitle("") +
   theme(
-    axis.text.x = element_text(size = 25),
-    axis.text.y = element_text(size = 25),
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 20),
     axis.text = element_text(size = 25),
     axis.title = element_text(size = 25),
     title = element_text(size = 25, face = "bold"))
@@ -74,12 +74,12 @@ energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
 energy
 
 # FIGURE 3b - Relative energy depletion for differently sized running animals ----------
-# Calculate relative energy efficiency across different distances for small and large running mammals
+# Calculate relative energy efficiency across different distances for small (4.5kg) and large (4000 kg)running mammals
 # For different body masses
 ds.energyrunsmall  <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 45000,locomotion_mode = "running",disp_dist, lambda = 0))
+  disp = as.data.frame(energy_fun(m_C = 4.5,locomotion_mode = "running",disp_dist, lambda = 0))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunsmall = rbind(ds.energyrunsmall, mass_disp)
 }
@@ -87,7 +87,7 @@ for(disp_dist in seq(0,5000000, length = 10000)) {
 ds.energyrunlarge <- data.frame()
 
 for(disp_dist in seq(0,5000000, length = 10000)) {
-  disp = as.data.frame(energy_fun(m_C = 4000000,locomotion_mode = "running",disp_dist, lambda = 0))
+  disp = as.data.frame(energy_fun(m_C = 4000,locomotion_mode = "running",disp_dist, lambda = 0))
   mass_disp = cbind(disp_dist, disp)
   ds.energyrunlarge = rbind(ds.energyrunlarge, mass_disp)
 }
@@ -105,15 +105,15 @@ y_range <- c(breaks, max(ds.energyrunlarge_filtered$E_E))
 relative_energy <- ggplot() +
   geom_line(data = ds.energyrunsmall_filtered, aes(x = disp_dist, y = E_E), color = "#a4cc7dff", linewidth = 1.5) +
   geom_line(data = ds.energyrunlarge_filtered, aes(x = disp_dist, y = E_E), color = "#264805ff", linewidth = 1.5) +
-   theme_minimal() +
-  theme( axis.line = element_line(colour = "grey20",size = 1, linetype = "solid"))+
+  theme_minimal() +
+  theme( axis.line = element_line(colour = "grey20",linewidth = 1, linetype = "solid"))+
   geom_hline(yintercept = 0.1,linetype = "dashed", linewidth = 1.5, ) +
-  geom_vline(xintercept = 150000.0, linewidth = 1) +
+  geom_vline(xintercept = 100000, linewidth = 1)+
   labs(y = "", x = "")+
   ggtitle("") +
   theme(
-    axis.text.x = element_text(size = 25),
-    axis.text.y = element_text(size = 25),
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 20),
     axis.text = element_text(size = 25),
     axis.title = element_text(size = 25),
     title = element_text(size = 25, face = "bold"))
@@ -126,7 +126,7 @@ relative_energy
 # Allometry of energy costs at 1m (J) i.e. absolute energy cost per meter
 ds.energyrunabsolute  <- data.frame()
 
-for(m_C in seq(10,1000000, length = 100)) {
+for(m_C in seq(0.01,1000, length = 100)) {
   disp = as.data.frame(energy_fun(disp_dist = 1, locomotion_mode = "running", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyrunabsolute = rbind(ds.energyrunabsolute, mass_disp)
@@ -134,7 +134,7 @@ for(m_C in seq(10,1000000, length = 100)) {
 
 ds.energyflyabsolute  <- data.frame()
 
-for(m_C in seq(10,1000000, length = 100)) {
+for(m_C in seq(0.01,1000, length = 100)) {
   disp = as.data.frame(energy_fun(disp_dist = 1, locomotion_mode = "flying", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyflyabsolute = rbind(ds.energyflyabsolute, mass_disp)
@@ -142,7 +142,7 @@ for(m_C in seq(10,1000000, length = 100)) {
 
 ds.energyswimabsolute  <- data.frame()
 
-for(m_C in seq(10,1000000, length = 100)) {
+for(m_C in seq(0.01,1000, length = 100)) {
   disp = as.data.frame(energy_fun(disp_dist = 1, locomotion_mode = "swimming", m_C, lambda = 0.1))
   mass_disp = cbind(m_C, disp)
   ds.energyswimabsolute = rbind(ds.energyswimabsolute, mass_disp)
@@ -154,11 +154,11 @@ ds.energyflyabsolute_filtered <- ds.energyflyabsolute[ds.energyflyabsolute $E_C 
 ds.energyswimabsolute_filtered  <- ds.energyswimabsolute [ds.energyswimabsolute $E_C >= 0, ]
 
 ##plotting absolute energy remaining against mass for different locomotion_mode
-absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) +
+absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_M)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
   theme_minimal() +
-  geom_line(data = ds.energyflyabsolute_filtered, aes(x = m_C, y = E_C), color = "red", linewidth = 1.5) +
-  geom_line(data = ds.energyswimabsolute_filtered, aes(x = m_C, y = E_C), color = "blue", linewidth = 1.5) +
+  geom_line(data = ds.energyflyabsolute_filtered, aes(x = m_C, y = E_M), color = "red", linewidth = 1.5) +
+  geom_line(data = ds.energyswimabsolute_filtered, aes(x = m_C, y = E_M), color = "blue", linewidth = 1.5) +
   labs(y = "", x = "") +
   theme( axis.line = element_line(colour = "grey20",size = 1, linetype = "solid"))+
   scale_x_log10(
@@ -167,11 +167,11 @@ absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_C)) 
     labels = scales::trans_format("log10", scales::math_format(10^.x))) +
   ggtitle("") +
   theme(
-    axis.text.x = element_text(size = 25),
-    axis.text.y = element_text(size = 25),
-    axis.text = element_text(size = 25),
-    axis.title = element_text(size = 25),
-    title = element_text(size = 25, face = "bold"))
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 20),
+    axis.text = element_text(size = 20),
+    axis.title = element_text(size = 20),
+    title = element_text(size = 20, face = "bold"))
 
 absolute_energy
 
@@ -192,7 +192,7 @@ v_y = runif(n_p,min = 0, max = 1)
 # Calculate distance matrix
 coordinates <- data.frame(v_x, v_y)
 dfdist <- as.matrix(dist(coordinates))
-realised_max_distances <- 250000
+realised_max_distances <- 200000
 realised_matrix <- dfdist * realised_max_distances
 
 # Function to calculate relative energy remaining for a given distance in m and mass (m_C) in g
@@ -203,8 +203,8 @@ calculate_energy_flow <- function(distance, m_C) {
 }
 
 # Calculate energy flow for small and large masses using the realised distance matrix created above and energy flow function
-energy_flow_small <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4500))
-energy_flow_large <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000000))
+energy_flow_small <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4.5))
+energy_flow_large <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000))
 
 # Function to extract unique combinations of distance and energy flow
 # i.e. removing duplicates of the same distances and adding in patch numbers (using upper.tri), both needed for graphical visualisation
@@ -335,4 +335,3 @@ p2 <- ggraph(layout, layout = "auto") +
   labs(title = "")
 
 p2
-
