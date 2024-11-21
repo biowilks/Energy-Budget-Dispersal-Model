@@ -41,7 +41,7 @@ bioenergeticpredictions <- function(locomotion_mode) {
   }
   maximum_disp_dist <- data.frame()
   for (m_C in body_mass_range) {
-    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1))
+    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1, alpha = 0))
     mass_disp <- cbind(m_C, disp)
     maximum_disp_dist <- rbind(maximum_disp_dist, mass_disp)
   }
@@ -57,10 +57,6 @@ ds.dispswim <- bioenergeticpredictions("swimming")
 
 
 ## Plot parameters against body mass
-#custom label needed for speed graph
-#custom_labels <- c(expression(10^2.5), expression(10^3), expression(10^3.5), expression(10^4), expression(10^4.5))
-#custom_breaks <- c(10^2.5, 10^3, 10^3.5, 10^4, 10^4.5)
-
 vC_plot <- ggplot(ds.disprun, aes(x = m_C, y = v_C)) +
   geom_line() +
   scale_x_log10(labels = scales::trans_format("log10", scales::math_format(10^.x)),
@@ -168,7 +164,7 @@ body_mass_swim <- unique(swim_max$Body.mass)
 maximum_disp_dist <- function(body_mass, locomotion_mode) {
   maximum_disp_dist <- data.frame()
   for (m_C in body_mass) {
-    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1))
+    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1, alpha = 0))
     mass_disp <- cbind(m_C, disp)
     maximum_disp_dist <- rbind(maximum_disp_dist, mass_disp)
   }
@@ -271,9 +267,8 @@ scatter_plot_swim <- swim_max |>
         legend.position = "none"
   )
 
-
-
 plot(scatter_plot_swim)
+
 
 # Calculating percentage of empirical data above bioenergetic dispersal model predictions ----------
 # Left join empirical data with model predictions based on body mass
