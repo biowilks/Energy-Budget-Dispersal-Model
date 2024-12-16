@@ -53,15 +53,18 @@ The model outputs and transformed maximum dispersal distance data is provided in
 
 - [4-energy-function](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/4-energy-function.R) provides the energy-budget model function needed to obtain the energetic costs of dispersal in J.
 
-- [5-energy-data-visualisation](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/5-energy-data-visualisation.R) provides the code needed to produce figures 3a-d in the paper mentioned above. 
+- [5-energy-data-visualisation](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/5-energy-data-visualisation.R) provides the code needed to produce figures 3a-c and 4 in the paper mentioned above. 
 
 - [6-disp-function](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/6-disp-function.R) provides the energy-budget model function needed to obtain the maximum dispersal distance of animals in m. 
 
 - [7-disp-data-visualisation](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/7-disp-data-visualisation.R) provides the code needed to: 
 <div class="indent-list"> 1) Make model predictions for maximum dispersal distance for each movement mode and related taxonomic group to compare to the empirical data</div>
 <div class="indent-list"> 2) Calculate the percentage of data which lies above model predictions </div>
-<div class="indent-list"> 3) Produce figures 2a-d and 4a-c in the paper mentioned above.</div> 
+<div class="indent-list"> 3) Produce figures 2a-d and 5a-c in the paper mentioned above.</div> 
 
+- [8-supplementary-visualisation](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/8-supplementary-visualisation.R) provides the code needed to conduct: 
+<div class="indent-list"> 1) Sensitivity analyses showing the effect of changing the residual energy needed upon arrival (𝝀) on maximum dispersal distance predictions </div>
+<div class="indent-list"> 2) Sensitivity analyses showing the effect of adding resting time or stop overs (ꞵ) on maximum dispersal distance predictions </div>
 
 
 # R-packages used 
@@ -72,6 +75,8 @@ The model outputs and transformed maximum dispersal distance data is provided in
 - *scales* (Wickham et al. 2023)
 - *igraph* (Csardi et al. 2024)
 - *ggraph* (Pedersen. 2024)
+- *rfishbase* (Boettiger et al. 2023)
+- *rsealifebase* (Boettiger et al. 2023)
 
 # References
 Blischak, J., Carbonetto, P., Stephens, M., GitLab), L.Z. (Instructions for hosting with, Server), P.F. (Support for hosting with S., code), T.T. (Instructions for sharing common, et al. (2023). workflowr: A Framework for Reproducible and Collaborative Data Science.
