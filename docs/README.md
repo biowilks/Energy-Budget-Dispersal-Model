@@ -6,4 +6,4 @@
  
  
  
- Additionally, 'figures' contains all the PNG files for figures 1 - 4 in the paper (doi:XXXX).  
+ Additionally, 'figures' contains all the PNG files for figures 1 - 5 in the paper and S1-2 in supplementary (doi:XXXX).  

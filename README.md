@@ -23,6 +23,7 @@ Energy-Budget-Model/
 │   ├── 5-energy-data-visualisation.R
 │   ├── 6-disp-function.R
 │   ├── 7-disp-data-visualisation.R
+│   ├── 8-supplementary-visualisation.R
 │   ├── README.md
 ├── data/
 │   ├── parsold.csv
@@ -49,7 +50,7 @@ Energy-Budget-Model/
 │   ├── rundispdistance.csv
 │   ├── swimdispdistance.csv
 │   ├── taxonomy_gbif_match.csv
-│   ├── Output_metadata.xlsx
+│   ├── output_metadata.xlsx
 │   └── README.md
 ├── .gitattributes
 ├── .gitignore

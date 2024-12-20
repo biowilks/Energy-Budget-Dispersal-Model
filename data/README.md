@@ -40,7 +40,7 @@ Here are all the RAW data files needed for analyses in the paper (doi:XXXX):
 - gammas_old.csv
 
 **Data_metadata**
-- containing all the metadata files for each .csv file in the folder. 
+- containing all the metadata files for pars_old, gammas_old and DispersalUntransformed. 
 
 
 **References**

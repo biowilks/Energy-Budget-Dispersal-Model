@@ -15,7 +15,6 @@ conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 ## m_C = body mass in kg
 ## locomotion_mode = flying, running or swimming
 ## lambda = % of energy storage needed for survival after dispersing
-## alpha = the time spent resting during dispersal and is defined between 0 and 1
 
 ## 2) PARAMETERS
 
@@ -70,7 +69,7 @@ conv_para_list <- setNames(conv_para$par_val_conv, conv_para$par_name)
 # Bioenergetic dispersal model dispersal function ----------
 
 ## 1) INPUT VARIABLES
-disp_fun <- function(m_C,locomotion_mode,lambda,alpha) {
+disp_fun <- function(m_C,locomotion_mode,lambda) {
 
 ## 2) PARAMETERS
 
@@ -115,16 +114,16 @@ disp_fun <- function(m_C,locomotion_mode,lambda,alpha) {
 
 ## 3) OUTPUTS
 ## t_2 = time in s
-  t_2 = E_alpha/ (FMR_disp*(1-alpha) + BMR*alpha)
+  t_2 = E_alpha/ FMR_disp
 
 ## disp_dist = dispersal distance in m
-  disp_dist = (1-alpha)*t_2*v_C
+  disp_dist = t_2*v_C
 
 
-  ds.disp <- cbind(disp_dist, t_2, E_0, BMR, v_C, LCOT, alpha)
+  ds.disp <- cbind(disp_dist, t_2, E_0, BMR, v_C, LCOT)
   return(ds.disp)
 }
 
 
-disp_fun(m_C = 2, locomotion_mode = "swimming", lambda = 0.1, alpha = 0)
+disp_fun(m_C = 2, locomotion_mode = "swimming", lambda = 0.1)
 

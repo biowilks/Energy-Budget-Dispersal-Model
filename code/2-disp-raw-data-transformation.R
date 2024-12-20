@@ -277,7 +277,7 @@ db4 <- db3 |>
   ungroup()
 
 
-body_mass_summary <- db4 %>%
+body_mass_summary <- db4 |>
   summarise(
     total_bodymass = sum(!is.na(Body.mass)),
     total_datapoints = n(),
@@ -298,7 +298,7 @@ db5 <- db4 |>
   mutate(`Movement.mode` = case_when(
     class %in% c("Mammalia", "Squamata") ~ "Running",
     class == "Aves" ~ "Flying",
-    class %in% c("Amphibia", "Testudines") ~ "Mixed",
+    class %in% c("Amphibia", "Testudines", "Insecta", "Arachnida") ~ "Mixed",
     class == c("Elasmobranchii") ~ "Swimming",
     TRUE ~ `Movement.mode`
   )) |>
@@ -308,16 +308,16 @@ db5 <- db4 |>
 
 # Infer movement modes from family
 # Summary of species with NA in class
-na_class <- db5 %>%
-  filter(is.na(class)) %>%
-  distinct(family) %>%
+na_class <- db5|>
+  filter(is.na(class)) |>
+  distinct(family) |>
   nrow()
 
 na_class
 
 # To find out family names to find movement mode for
-namovementdata <- db5 %>%
-  filter(is.na(Movement.mode) | Movement.mode == "") %>%
+namovementdata <- db5 |>
+  filter(is.na(Movement.mode) | Movement.mode == "") |>
   mutate(`Movement Mode Ref` = NA)
 
 unique(namovementdata$family)
@@ -344,15 +344,15 @@ db6 <- db5 |>
 
 # Infer movement modes from species
 # Summary of species with NA in family
-na_family <- db6 %>%
-  filter(is.na(family)) %>%
-  distinct(Species.ID.reported) %>%
+na_family <- db6 |>
+  filter(is.na(family)) |>
+  distinct(Species.ID.reported) |>
   nrow()
 
 na_family
 
-na_movement_data1 <- db6 %>%
-  filter(is.na(Movement.mode) | Movement.mode == "") %>%
+na_movement_data1 <- db6 |>
+  filter(is.na(Movement.mode) | Movement.mode == "") |>
   mutate(`Movement Mode Ref` = NA)
 
 unique(na_movement_data1$Species.ID.reported)
@@ -373,7 +373,6 @@ unique(na_movement_data1$Species.ID.reported)
 # Thomomys bottae (digging), Pteromys volans (gliding), Hylobates lar, Trichosurus vulpecula, Phascolarctos cinereus, Alouatta palliata, Sciurus carolinensis, Sciurus niger,
 # Macaca sylvanus, Microcebus murinus, Tamiasciurus hudsonicus, Rupicapra rupicapra, Rupicapra pyrenaica (climbing), Ursus maritimus (mixed)
 
-###NEED TO CHANGE THIS - all the fish species not needed###
 db7 <- db6 |>
   mutate(`Movement.mode` = case_when(
     gbif.binomial %in% c("Perci caprodes", "Perci nigrofasciata", "Perci rex", "Perci roanoka",
@@ -398,7 +397,7 @@ db7 <- db6 |>
     TRUE ~ `Movement Mode Ref`
   ))
 
-mov_mod_summary <- db7 %>%
+mov_mod_summary <- db7 |>
   summarise(
     total_movmode = sum(!is.na(Movement.mode)),
     total_datapoints = n(),
@@ -408,8 +407,8 @@ mov_mod_summary <- db7 %>%
 mov_mod_summary
 
 # 4) Filtering data to just include flying birds, running mammals and swimming fish ----------
-db_final <- db7 %>%
-  filter(!is.na(Body.mass)) %>%
+db_final <- db7 |>
+  filter(!is.na(Body.mass)) |>
   filter((Movement.mode == "Flying" & !class %in% c("Mammalia", "Insecta")) |
            (Movement.mode == "Running" & !class %in% c("Aves", "Squamata")) |
            (Movement.mode == "Swimming" & !class %in% c("Mammalia", "Aves")))

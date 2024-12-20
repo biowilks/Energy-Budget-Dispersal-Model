@@ -46,3 +46,8 @@ Here is all the code needed for analyses in the paper (doi:XXXX):
 <div class="indent-list"> 1) Make model predictions for maximum dispersal distance for each movement mode and related taxonomic group to compare to the empirical data</div>
 <div class="indent-list"> 2) Calculate the percentage of data which lies above model predictions </div>
 <div class="indent-list"> 3) Produce figures 2a-d and 4a-c in the paper mentioned above.</div> 
+
+
+- [8-supplementary-visualisation](https://github.com/biowilks/Energy-Budget-Model/blob/master/code/8-supplementary-visualisation.R) provides the code needed to conduct: 
+<div class="indent-list"> 1) Sensitivity analyses showing the effect of changing the residual energy needed upon arrival (𝝀) on maximum dispersal distance predictions </div>
+<div class="indent-list"> 2) Sensitivity analyses showing the effect of adding resting time or stop overs (ꞵ) on maximum dispersal distance predictions </div>

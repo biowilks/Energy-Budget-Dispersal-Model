@@ -6,13 +6,14 @@ library("tidyverse")
 library("scales")
 library("igraph")
 library("ggraph")
+library("grid")
 
-# Import energy function ----------
+library.dynam.unload()# Import energy function ----------
 setwd("~/Energy-Budget-Model/code")
 source("4-energy-function.R")
 
 # FIGURE 3a - Absolute energy depletion across locomotion modes ----------
-# Calculate energy  across different distances (for 2kg  individual)
+# Calculate energy  across different distances (for 2kg individual)
 # create dataframes
 ds.energyrun <- data.frame()
 ds.energyfly <- data.frame()
@@ -108,7 +109,6 @@ relative_energy <- ggplot() +
   theme_minimal() +
   theme( axis.line = element_line(colour = "grey20",linewidth = 1, linetype = "solid"))+
   geom_hline(yintercept = 0.1,linetype = "dashed", linewidth = 1.5, ) +
-  geom_vline(xintercept = 100000, linewidth = 1)+
   labs(y = "", x = "")+
   ggtitle("") +
   theme(
@@ -176,24 +176,62 @@ absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_M)) 
 absolute_energy
 
 
-# FIGURE 3d - A dispersal-cost-weighted network for differently sized running animals ----------
+# FIGURE 4 - A dispersal-cost-weighted network for differently sized running animals ----------
 ### Calculating a dispersal-cost-weighted spatial network
-  #  Create matrix of distances and use the energy function to calculate relative energy remaining (E_E)
-  #  to represent the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals
+#  Create matrix of distances and use the energy function to calculate relative energy remaining (E_E)
+#  to represent the energy flow between patches, for each distance and for both small (4500) and large (40000000) mammals
 
 # Set seed for reproducibility to create same network structure each time
 set.seed(125)
 # number of patches
-n_p = 7
-# coordinates
+n_p = 15 ### should now be dividable by the number of clusters n_c (below) for the clustered landscape
+# coordinates random landscape
 v_x = runif(n_p,min = 0, max = 1)
 v_y = runif(n_p,min = 0, max = 1)
 
+# cooridnates clustered landscape
+n_c = 3 ## number of clusters
+n_pc = (n_p-n_c)/n_c
+
+# random cluster centers
+#vc_x = runif(n_c,min = 0, max = 1)
+#vc_y = runif(n_c,min = 0, max = 1)
+
+# manual cluster centers
+vc_x = c(0.2,0.5,0.8)
+vc_y = c(0.8,0.2,0.5)
+
+for (i in 1:n_c) {
+
+  repeat {
+    vc_x_temp = rnorm(n_pc, mean = vc_x[i], sd = 0.15)
+    if (all(vc_x_temp >= 0 & vc_x_temp <= 1)) break
+  }
+
+  repeat {
+    vc_y_temp = rnorm(n_pc, mean = vc_y[i], sd = 0.15)
+    if (all(vc_y_temp >= 0 & vc_y_temp <= 1)) break
+  }
+  vc_x <- c(vc_x,vc_x_temp)
+  vc_y <- c(vc_y,vc_y_temp)
+
+}
+
+
+
 # Calculate distance matrix
+
+realised_max_distances <- 400000
+
 coordinates <- data.frame(v_x, v_y)
 dfdist <- as.matrix(dist(coordinates))
-realised_max_distances <- 200000
 realised_matrix <- dfdist * realised_max_distances
+
+coordinates_c <- data.frame(vc_x, vc_y)
+dfdist_c <- as.matrix(dist(coordinates_c))
+realised_matrix_c <- dfdist_c * realised_max_distances
+
+
 
 # Function to calculate relative energy remaining for a given distance in m and mass (m_C) in g
 calculate_energy_flow <- function(distance, m_C) {
@@ -205,7 +243,8 @@ calculate_energy_flow <- function(distance, m_C) {
 # Calculate energy flow for small and large masses using the realised distance matrix created above and energy flow function
 energy_flow_small <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4.5))
 energy_flow_large <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000))
-
+energy_flow_small_c <- apply(realised_matrix_c, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4.5))
+energy_flow_large_c <- apply(realised_matrix_c, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000))
 # Function to extract unique combinations of distance and energy flow
 # i.e. removing duplicates of the same distances and adding in patch numbers (using upper.tri), both needed for graphical visualisation
 extract_unique_combinations <- function(energy_flow) {
@@ -225,12 +264,41 @@ extract_unique_combinations <- function(energy_flow) {
   )
 }
 
+#### calculating connectance and weighted connectance
+energy_flow_small[energy_flow_small < 0]<-0
+energy_flow_large[energy_flow_large < 0]<-0
+energy_flow_small_c[energy_flow_small_c<0]<-0
+energy_flow_large_c[energy_flow_large_c<0]<-0
+
+binary_energy_flow_small  <-  energy_flow_small
+binary_energy_flow_large  <-  energy_flow_large
+binary_energy_flow_small_c<-energy_flow_small_c
+binary_energy_flow_large_c<-energy_flow_large_c
+
+binary_energy_flow_small  [binary_energy_flow_small > 0]<-1
+binary_energy_flow_large  [binary_energy_flow_large > 0]<-1
+binary_energy_flow_small_c[binary_energy_flow_small_c>0]<-1
+binary_energy_flow_large_c[binary_energy_flow_large_c>0]<-1
+
+connectance_small  <- sum(binary_energy_flow_small  )/n_p^2
+connectance_large  <- sum(binary_energy_flow_large  )/n_p^2
+connectance_small_c<- sum(binary_energy_flow_small_c)/n_p^2
+connectance_large_c<- sum(binary_energy_flow_large_c)/n_p^2
+
+weighted_connectance_small  <- sum(energy_flow_small  )/n_p^2
+weighted_connectance_large  <- sum(energy_flow_large  )/n_p^2
+weighted_connectance_small_c<- sum(energy_flow_small_c)/n_p^2
+weighted_connectance_large_c<- sum(energy_flow_large_c)/n_p^2
+
+
 # Create data frames for small and large energy flow
 df_small <- extract_unique_combinations(energy_flow_small)
 df_large <- extract_unique_combinations(energy_flow_large)
+df_small_c <- extract_unique_combinations(energy_flow_small_c)
+df_large_c <- extract_unique_combinations(energy_flow_large_c)
 
 ### Visualising the dispersal-cost-weighted spatial network
-  # using igraph
+# using igraph
 
 # Creating node attributes - using coordinates produced above
 node_data <- data.frame(
@@ -240,10 +308,20 @@ node_data <- data.frame(
   y = v_y
 )
 
+node_data_c <- data.frame(
+  id = 1:n_p,
+  color = "grey30",
+  x = vc_x,
+  y = vc_y
+)
+
 # Create graph objects
 network_small <- graph_from_data_frame(df_small, directed = FALSE)
 network_large <- graph_from_data_frame(df_large, directed = FALSE)
+network_small_c <- graph_from_data_frame(df_small_c, directed = FALSE)
+network_large_c <- graph_from_data_frame(df_large_c, directed = FALSE)
 
+plot(network_small)
 # Set up the layout
 layout <- create_layout(network_small, layout = "auto")
 
@@ -269,8 +347,30 @@ edge_data_large <- df_large %>%
     size = "Large"
   )
 
+# Create edge data frames with proper energy flow and coordinates for small edges
+edge_data_small_c <- df_small_c %>%
+  mutate(
+    x = vc_x[from_patch],
+    y = vc_y[from_patch],
+    xend = vc_x[to_patch],
+    yend = vc_y[to_patch],
+    edge.id = 1:nrow(df_small_c),
+    size = "Small Clustered"
+  )
+
+# Create edge data frames with proper energy flow and coordinates for large edges
+edge_data_large_c <- df_large_c %>%
+  mutate(
+    x = vc_x[from_patch],
+    y = vc_y[from_patch],
+    xend = vc_x[to_patch],
+    yend = vc_y[to_patch],
+    edge.id = 1:nrow(df_large_c),
+    size = "Large Clustered"
+  )
+
 # Combine edge data frames
-edge_data_combined <- bind_rows(edge_data_small, edge_data_large)
+edge_data_combined <- bind_rows(edge_data_small, edge_data_large,edge_data_small_c, edge_data_large_c)
 
 # Calculate edge widths based on the energy flow for small dataset
 edge_data_combined$width <- ifelse(edge_data_combined$size == "Small" & edge_data_combined$energy_flow > 0,
@@ -284,11 +384,33 @@ edge_data_combined$width <- ifelse(edge_data_combined$size == "Large" & edge_dat
                                      (max(df_large$energy_flow) - min(df_small$energy_flow)) * 100,
                                    edge_data_combined$width)
 
+# Calculate edge widths based on the energy flow for small dataset
+edge_data_combined$width <- ifelse(edge_data_combined$size == "Small Clustered" & edge_data_combined$energy_flow > 0,
+                                   (edge_data_combined$energy_flow - min(df_small_c$energy_flow)) /
+                                     (max(df_large_c$energy_flow) - min(df_small_c$energy_flow)) * 100,
+                                   0)
+
+# Calculate edge widths based on the energy flow for large dataset
+edge_data_combined$width <- ifelse(edge_data_combined$size == "Large Clustered" & edge_data_combined$energy_flow > 0,
+                                   (edge_data_combined$energy_flow - min(df_small_c$energy_flow)) /
+                                     (max(df_large_c$energy_flow) - min(df_small_c$energy_flow)) * 100,
+                                   edge_data_combined$width)
+
 # Plot for small animal energy flow
+connectance_small
+connectance_large
+connectance_small_c
+connectance_large_c
+weighted_connectance_small
+weighted_connectance_large
+weighted_connectance_small_c
+weighted_connectance_large_c
+
+
 p1 <- ggraph(layout, layout = "auto") +
   geom_edge_link(
-    data = edge_data_combined %>% filter(size == "Small" & energy_flow > 0),
-    aes(width = width),
+    data = edge_data_combined |> filter(size == "Small" & energy_flow > 0),
+    aes(width = energy_flow),
     color = "#a4cc7dff",
     lineend = "round",
     linejoin = "round",
@@ -310,11 +432,12 @@ p1 <- ggraph(layout, layout = "auto") +
 
 p1
 
+
 # Plot for large animal energy flow
 p2 <- ggraph(layout, layout = "auto") +
   geom_edge_link(
-    data = edge_data_combined %>% filter(size == "Large" & energy_flow > 0),
-    aes(width = width),
+    data = edge_data_combined |> filter(size == "Large" & energy_flow > 0),
+    aes(width = energy_flow),
     color = "#264805ff",
     lineend = "round",
     linejoin = "round",
@@ -335,3 +458,58 @@ p2 <- ggraph(layout, layout = "auto") +
   labs(title = "")
 
 p2
+
+# Plot for large animal energy flow
+p3 <- ggraph(layout, layout = "auto") +
+  geom_edge_link(
+    data = edge_data_combined |> filter(size == "Small Clustered" & energy_flow > 0),
+    aes(width = energy_flow),
+    color = "#a4cc7dff",
+    lineend = "round",
+    linejoin = "round",
+    alpha = 1
+  ) +
+  geom_node_point(
+    data = node_data_c,
+    aes(x = x, y = y, fill = color),
+    shape = 21,
+    size = 15,
+    color = "grey35"
+  ) +
+ scale_fill_identity() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_blank()) +
+  theme(legend.position = "none") +
+  labs(title = "")
+
+p3
+
+# Plot for large animal energy flow
+p4 <- ggraph(layout, layout = "auto") +
+  geom_edge_link(
+    data = edge_data_combined |> filter(size == "Large Clustered" & energy_flow > 0),
+    aes(width = energy_flow),
+    color = "#264805ff",
+    lineend = "round",
+    linejoin = "round",
+    alpha = 1
+  ) +
+  geom_node_point(
+    data = node_data_c,
+    aes(x = x, y = y, fill = color),
+    shape = 21,
+    size = 15,
+    color = "grey35"
+  ) +
+  scale_fill_identity() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_blank()) +
+  theme(legend.position = "none") +
+  labs(title = "") +
+  # Add the scale bar
+  geom_segment(aes(x = 0.1, xend = 0.3, y = 0.05, yend = 0.05), linewidth = 1.5, color = "black")
+
+p4
+

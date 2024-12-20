@@ -21,7 +21,7 @@ dispdatamax <- dispdata |>
 
 # database summary
 dispdatamax |>
-  pull(gbif.binomial) |>
+  pull(MetaRef) |>
   n_distinct()
 
 #  Filtering for each locomotion mode
@@ -41,7 +41,7 @@ bioenergeticpredictions <- function(locomotion_mode) {
   }
   maximum_disp_dist <- data.frame()
   for (m_C in body_mass_range) {
-    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1, alpha = 0))
+    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1))
     mass_disp <- cbind(m_C, disp)
     maximum_disp_dist <- rbind(maximum_disp_dist, mass_disp)
   }
@@ -154,7 +154,7 @@ E0_plot <- ggplot(ds.disprun, aes(x = m_C, y = E_0, color = viridis(3)[3])) +
     legend.position = "none"
   )
 
-# FIGURE 4a-c - The relationship between maximum dispersal distance and body mass for a) flying birds, b) running mammals and c) swimming fish ----------
+# FIGURE 5a-c - The relationship between maximum dispersal distance and body mass for a) flying birds, b) running mammals and c) swimming fish ----------
 # Find unique body mass values from empirical data for each locomotion mode
 body_mass_run <- unique(run_max$Body.mass)
 body_mass_fly <- unique(fly_max$Body.mass)
@@ -164,7 +164,7 @@ body_mass_swim <- unique(swim_max$Body.mass)
 maximum_disp_dist <- function(body_mass, locomotion_mode) {
   maximum_disp_dist <- data.frame()
   for (m_C in body_mass) {
-    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1, alpha = 0))
+    disp <- as.data.frame(disp_fun(m_C, locomotion_mode = locomotion_mode, lambda = 0.1))
     mass_disp <- cbind(m_C, disp)
     maximum_disp_dist <- rbind(maximum_disp_dist, mass_disp)
   }
@@ -198,13 +198,13 @@ scatter_plot_fly <- fly_max |>
     limits = c(1e1, 1e8)) +
   scale_color_manual(name = "Locomotion Mode", values = mov_colour, guide = "none")+
   theme_minimal() +
- ggtitle("a)")+
+ ggtitle("a) Flying birds") +
   theme(axis.line = element_line(colour = "grey20",linewidth = 1.5, linetype = "solid"),
-    axis.text.x = element_text(size = 35),
-    axis.text.y = element_text(size = 35),
-    axis.text = element_text(size = 35),
-    axis.title = element_text(size = 35),
-    title = element_text(size = 25, face = "bold"),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
+        title = element_text(size = 15, face = "bold"),
     legend.position = "none"
   )
 
@@ -228,14 +228,14 @@ scatter_plot_run <- run_max |>
     labels = scales::trans_format("log10", scales::math_format(10^.x)),
     breaks = c(1e2, 1e4, 1e6, 1e6,1e8),
     limits = c(1e1, 1e8)) +
-  ggtitle("b)")+
+  ggtitle("b) Running mammals") +
   theme(axis.line = element_line(colour = "grey20",linewidth = 1.5, linetype = "solid"),
-    axis.text.x = element_text(size = 35),
-    axis.text.y = element_text(size = 35),
-    axis.text = element_text(size = 35),
-    axis.title = element_text(size = 35),
-    title = element_text(size = 25, face = "bold"),
-    legend.position = "none"
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
+        title = element_text(size = 15, face = "bold"),
+        legend.position = "none"
   )
 
 plot(scatter_plot_run)
@@ -257,13 +257,13 @@ scatter_plot_swim <- swim_max |>
     labels = scales::trans_format("log10", scales::math_format(10^.x)),
     breaks = c(1e2, 1e4, 1e6, 1e6,1e8),
     limits = c(1e1, 1e8)) +
-  ggtitle("c)")+
+  ggtitle("c) Swimming fish") +
   theme(axis.line = element_line(colour = "grey20",linewidth = 1.5, linetype = "solid"),
-        axis.text.x = element_text(size = 35),
-        axis.text.y = element_text(size = 35),
-        axis.text = element_text(size = 35),
-        axis.title = element_text(size = 35),
-        title = element_text(size = 25, face = "bold"),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
+        title = element_text(size = 15, face = "bold"),
         legend.position = "none"
   )
 

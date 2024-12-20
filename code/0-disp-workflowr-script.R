@@ -32,7 +32,7 @@ wflow_view()
 # Check the status of files in the workflowr project
 wflow_status()
 
-# Configure the Git remote for publishing the website ----------
+# Configure the Git remote for publishing the website
 wflow_git_remote(
   remote = "origin",
   user = "biowilks",
@@ -40,5 +40,5 @@ wflow_git_remote(
   action = "set_url"
 )
 # Publish and push the website to GitHub
-wflow_publish('analysis/about.Rmd', 'analysis/index.Rmd')
+wflow_publish('analysis/license.Rmd')
 wflow_git_push()

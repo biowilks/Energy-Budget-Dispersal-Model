@@ -77,7 +77,7 @@ bodymass <- bodymass |>
 # Combine energy data with FishBase body mass data matching by species name
 energy1 <- energy |>
   left_join(bodymass, by = c(`Species` = "Species")) |>
-  select(Species,EnergyDensity.kJ.g,Weight,Length.mm.TL) %>% mutate(Length.m = Length.mm.TL/1000)
+  select(Species,EnergyDensity.kJ.g,Weight,Length.mm.TL) |> mutate(Length.m = Length.mm.TL/1000)
 
 # For species with missing weight data, estimate the weight using the formula based on length
 energy2 <- energy1 |>
