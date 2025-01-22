@@ -1,4 +1,3 @@
-rm(list=ls())
 setwd("~/Energy-Budget-Model/output")
 
 # Load packages ----------

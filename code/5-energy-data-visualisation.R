@@ -8,7 +8,7 @@ library("igraph")
 library("ggraph")
 library("grid")
 
-library.dynam.unload()# Import energy function ----------
+# Import energy function ----------
 setwd("~/Energy-Budget-Model/code")
 source("4-energy-function.R")
 
@@ -55,7 +55,7 @@ for (disp_dist in seq(0, 5000000, length = 2000)) {
 
 
 ## plotting energy remaining against distance for different locomotion mode
-energy<- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
+energy <- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
   scale_x_continuous()+
   scale_y_continuous()+
@@ -65,12 +65,14 @@ energy<- ggplot(ds.energyrun, aes(x = disp_dist, y = E_R)) +
   geom_line(data = ds.energyswim, aes(x = disp_dist, y = E_R), color = "blue", linewidth = 1.5) +
   labs(y = "", x = "")+
   ggtitle("") +
-  theme(
-    axis.text.x = element_text(size = 20),
-    axis.text.y = element_text(size = 20),
-    axis.text = element_text(size = 25),
-    axis.title = element_text(size = 25),
-    title = element_text(size = 25, face = "bold"))
+  theme(axis.line = element_line(colour = "grey20",linewidth = 1.5, linetype = "solid"),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
+        title = element_text(size = 15, face = "bold"),
+        legend.position = "none"
+  )
 
 energy
 
@@ -111,13 +113,14 @@ relative_energy <- ggplot() +
   geom_hline(yintercept = 0.1,linetype = "dashed", linewidth = 1.5, ) +
   labs(y = "", x = "")+
   ggtitle("") +
-  theme(
-    axis.text.x = element_text(size = 20),
-    axis.text.y = element_text(size = 20),
-    axis.text = element_text(size = 25),
-    axis.title = element_text(size = 25),
-    title = element_text(size = 25, face = "bold"))
-
+  theme(axis.line = element_line(colour = "grey20",linewidth = 1.5, linetype = "solid"),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
+        title = element_text(size = 15, face = "bold"),
+        legend.position = "none"
+  )
 
 
 relative_energy
@@ -157,21 +160,23 @@ ds.energyswimabsolute_filtered  <- ds.energyswimabsolute [ds.energyswimabsolute 
 absolute_energy <- ggplot(ds.energyrunabsolute_filtered, aes(x = m_C, y = E_M)) +
   geom_line(color = "chartreuse4", linewidth = 1.5) +
   theme_minimal() +
-  geom_line(data = ds.energyflyabsolute_filtered, aes(x = m_C, y = E_M), color = "red", linewidth = 1.5) +
-  geom_line(data = ds.energyswimabsolute_filtered, aes(x = m_C, y = E_M), color = "blue", linewidth = 1.5) +
+  geom_line(data = ds.energyflyabsolute_filtered, aes(x = m_C, y = E_M), color = "red", size = 1.5) +
+  geom_line(data = ds.energyswimabsolute_filtered, aes(x = m_C, y = E_M), color = "blue", size = 1.5) +
   labs(y = "", x = "") +
-  theme( axis.line = element_line(colour = "grey20",size = 1, linetype = "solid"))+
+  theme( axis.line = element_line(colour = "grey20", size = 1, linetype = "solid"))+
   scale_x_log10(
     labels = scales::trans_format("log10", scales::math_format(10^.x))) +
   scale_y_log10(
     labels = scales::trans_format("log10", scales::math_format(10^.x))) +
   ggtitle("") +
-  theme(
-    axis.text.x = element_text(size = 20),
-    axis.text.y = element_text(size = 20),
-    axis.text = element_text(size = 20),
-    axis.title = element_text(size = 20),
-    title = element_text(size = 20, face = "bold"))
+  theme(axis.line = element_line(colour = "grey20",linewidth = 1.5, linetype = "solid"),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
+        axis.text = element_text(size = 15),
+        axis.title = element_text(size = 15),
+        title = element_text(size = 15, face = "bold"),
+        legend.position = "none"
+  )
 
 absolute_energy
 
@@ -245,6 +250,7 @@ energy_flow_small <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(dis
 energy_flow_large <- apply(realised_matrix, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000))
 energy_flow_small_c <- apply(realised_matrix_c, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4.5))
 energy_flow_large_c <- apply(realised_matrix_c, MARGIN = c(1, 2), FUN = function(distance) calculate_energy_flow(distance, m_C = 4000))
+
 # Function to extract unique combinations of distance and energy flow
 # i.e. removing duplicates of the same distances and adding in patch numbers (using upper.tri), both needed for graphical visualisation
 extract_unique_combinations <- function(energy_flow) {
@@ -322,6 +328,7 @@ network_small_c <- graph_from_data_frame(df_small_c, directed = FALSE)
 network_large_c <- graph_from_data_frame(df_large_c, directed = FALSE)
 
 plot(network_small)
+
 # Set up the layout
 layout <- create_layout(network_small, layout = "auto")
 

@@ -5,7 +5,7 @@ setwd('~/Energy-Budget-Model/data')
 library(tidyverse)
 library(rfishbase)
 
-# 1) FishBase/SeaLifeBase data extraction ----------
+# 1) Extract body mass data from Fishbase and SeaLifeBase (Boettiger et al. 2023) ----------
 
 # Load all taxa data
 fishbase_all <- load_taxa(server = "fishbase")
@@ -31,7 +31,7 @@ sealifebase <- sealifebase |>
 write_tsv(fishbase, "FishBase.txt")
 write_tsv(sealifebase, "SeaLifeBase.txt")
 
-# 2) Transforming energy-length regressions to energy-weight ----------
+# 2) Refitting energy-length regressions to energy-weight ----------
 # Load data from fish energy storage data provided in (Martin et al. 2017)
 energy <- read.csv("EnergyDensityDatebaseDryad.csv")
 
@@ -95,7 +95,6 @@ energy3$log10_Weight <- log10(energy3$Weight_final)
 # Fit a linear regression to final log-transformed data
 regression1  <- lm(log10_Energy ~ log10_Weight, data = energy3)
 summary(regression1)
-# Results: intercept 0.74, slope -0.025
 
 # Plot the final regression model
 scatter_plot3 <- ggplot(energy3, aes(x = log10_Weight, y = log10_Energy)) +
